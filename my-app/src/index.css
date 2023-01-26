@@ -1,13 +1,47 @@
-body {
+body, html {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background-color: '#FAFAFA';
+  font-family: 'MetropolisRegular';
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.button-style1{
+  align-items: center;
+  width: 216px;
+  height: 58px;
+  left: calc(50% - 216px/2 + 3.5px);
+  background-color: #323031;
+  border-radius: 100px;
+  border: 1px;
+
+}
+
+
+.button-style1:hover {
+  box-shadow: rgba(168, 218, 220,.35) 0 -25px 18px -14px inset,rgba(168, 218, 220,.25) 0 1px 2px,rgba(168, 218, 220,.25) 0 2px 4px,rgba(168, 218, 220,.25) 0 4px 8px,rgba(168, 218, 220,.25) 0 8px 16px,rgba(168, 218, 220,.25) 0 16px 32px;
+  transform: scale(1.01) ;
+}
+
+.button-text-style1 {
+  
+font-family: 'Metropolis';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 20px;
+/* identical to box height */
+
+text-align: center;
+
+color: #FFFCF2;
+
+
+/* Inside auto layout */
+
+flex: none;
+order: 0;
+flex-grow: 0;
+}
+
+.logo {
+  background: url(./utils/blob-scene-haikei.svg) no-repeat top ;
 }
