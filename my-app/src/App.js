@@ -1,12 +1,17 @@
 import React from 'react';
-import Register from './pages/Register.js';
+import { Routes, Route } from 'react-router-dom';
 
-function App() {
+import Register from './pages/Register.js';
+import SignIn from './pages/SignIn.js';
+
+export default function App() {
   return (
-    
-     <Register></Register>
-    
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<SignIn />} />
+        <Route path="register" element={<Register />} />
+        
+      </Routes>
+    </div>
   );
 }
-
-export default App;

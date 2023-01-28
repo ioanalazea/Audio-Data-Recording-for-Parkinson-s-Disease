@@ -6,8 +6,8 @@ body, html {
 
 .button-style1{
   align-items: center;
-  width: 216px;
-  height: 58px;
+  width: 145px;
+  height: 40px;
   left: calc(50% - 216px/2 + 3.5px);
   background-color: #323031;
   border-radius: 100px;
@@ -42,6 +42,7 @@ order: 0;
 flex-grow: 0;
 }
 
-.logo {
-  background: url(./utils/blob-scene-haikei.svg) no-repeat top ;
+.blob-bg {
+  height: 1000px;
+ /* background: url(./utils/blob-scene-haikei.svg) no-repeat top ;*/
 }
