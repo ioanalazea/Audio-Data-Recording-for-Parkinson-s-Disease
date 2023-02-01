@@ -46,3 +46,41 @@ flex-grow: 0;
   height: 1000px;
  /* background: url(./utils/blob-scene-haikei.svg) no-repeat top ;*/
 }
+
+
+
+.header  {
+  background: #219EBC;
+  width: 100vw;
+  height: 100px;
+  border-radius: 0px 0px 84px 84px;
+}
+
+.headerText{
+    padding-top: 57px;
+    text-align:center;
+    font-family: 'Metropolis';
+    font-style: bold;
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 40px;
+    color: #FAFAFA;
+}
+
+.homediv{
+  width: '100vw';
+  height: '100vh';
+}
+
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

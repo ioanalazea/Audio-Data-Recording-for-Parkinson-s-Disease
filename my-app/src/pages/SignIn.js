@@ -69,7 +69,9 @@ export default function SignIn(){
                     <TextField  type="password" style={styleTextField} InputProps={styleInputProps}/>              
                 </div>
                 <div  style={{marginTop:"30px"}}>
-                <button className="button-style1"><div className='button-text-style1'>Sign in</div></button>
+                <button className="button-style1" to="/home">
+                    <Link className='button-text-style1' to="/home">Sign in</Link>
+                </button>
                 </div>
             <div  style={{marginTop:"150px", marginLeft:"5px"}}>
             <Link style={{color:"#323931"}} to="/register">Don't have an account? <b>Register here.</b></Link>
