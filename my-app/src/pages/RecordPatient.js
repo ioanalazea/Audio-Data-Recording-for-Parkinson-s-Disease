@@ -16,6 +16,9 @@ import Modal from '@mui/material/Modal';
  
 import AudioReactRecorder, { RecordState } from 'audio-react-recorder'
 
+import RecorderControls from "../components/RecorderControls";
+import RecordingsList from "../components/RecordingsList";
+import useRecorder from "../hooks/useRecorder.js";
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
     'label + &': {
@@ -78,22 +81,6 @@ export default function RecordPatient(){
         alignItems: "center",   
     }
 
-    const recordButton = {
-    backgroundColor: "#219EBC",
-    border: "4px solid #323031",
-    color: "white",
-    textAlign: "center",
-    textDecoration: "none",
-    display: "inline-block",
-    fontSize: "16px",
-    width:"94px",
-    height:"94px",
-    margin: "4px 2px",
-    borderRadius: "50%",
-    marginTop:"30px",
-    alignItems:"center",
-    marginBottom:"30px"
-  }
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -117,28 +104,14 @@ export default function RecordPatient(){
 
 
 
+  const { recorderState, ...handlers } = useRecorder();
+  const { audio } = recorderState;
+  const [vowel, setVowel] = useState("A");
 
-  const [recording, setRecording] = useState();
-  const [recordState, setRecordState] = useState(null)
-  const startRecording = () => {
-    setRecordState(
-        RecordState.START);
-     
-   }
-  
-  const stopRecording = () => {
-     setRecordState(
-         RecordState.STOP);
-   }
-  
-//audioData contains blob and blobUrl
-const  onStop = (audioData) => {
-    setRecording(audioData)
-    console.log('audioData', audioData)
-  }
- 
-
-
+  const handleSelectVowel = (e) => {
+    e.preventDefault();
+    setVowel(e.target.value)
+  };
     return(
         <div>
 
@@ -148,7 +121,7 @@ const  onStop = (audioData) => {
             </div>
 
             <div style={containerStyle}>
-                <button style={recordButton} onPress={recordState === RecordState.STOP? stopRecording:startRecording}> <MicNoneOutlinedIcon sx={{ color:  "#323031", fontSize:"50px"}} ></MicNoneOutlinedIcon></button>
+            <RecorderControls recorderState={recorderState} handlers={handlers} />
 
                 <Button onClick={handleOpen}>
                     <HelpOutlineOutlinedIcon sx={{ color:  "#323031", fontSize:"40px"}} ></HelpOutlineOutlinedIcon>
@@ -178,6 +151,8 @@ const  onStop = (audioData) => {
                     <InputLabel style={{fontFamily:"Metropolis", fontWeight:"600", fontSize:"20px", color:"#219EBC"}}>Select vowel</InputLabel>
                     <Select
                     input={<BootstrapInput />}
+                    value={vowel}
+                    onChange={handleSelectVowel}
                     >
                         <MenuItem value={"A"} style={{fontFamily:"Metropolis", fontWeight:"400"}}>A</MenuItem>
                         <MenuItem value={"E"} style={{fontFamily:"Metropolis", fontWeight:"400"}}>E</MenuItem>
@@ -187,15 +162,10 @@ const  onStop = (audioData) => {
                     </Select>
                 </FormControl>
 
-                <AudioReactRecorder state={recordState} onStop={() => onStop()} />
-                <audio
-          id='audio'
-          controls
-          src={recording ? recording.url : null}
-        ></audio>
+                
             </div>
 
-
+        <RecordingsList audio={audio} vowel={vowel}/>
         </div>
     );
 }

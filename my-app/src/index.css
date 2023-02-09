@@ -84,3 +84,74 @@ flex-grow: 0;
   justify-content: center;
   align-items: center;
 }
+
+@keyframes animated-block {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.recording-indicator {
+  width: 10px;
+  height: 10px;
+  margin-right: 0.5rem;
+  border-radius: 50%;
+  background-color: #099fff;
+  animation-name: animated-block;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+
+
+.record {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 0.5rem;
+  flex-direction: "row";
+  justify-content: center;
+  align-items: center,   
+}
+
+.record audio {
+  min-width: 80%;
+  max-width: 60%;
+}
+.recordings-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.recordings-list::-webkit-scrollbar-track {
+  background: #e4d3cf;
+}
+
+.recordings-list::-webkit-scrollbar-thumb {
+  background: #099fff;
+}
+
+.recordings-list {
+ 
+  display: grid;
+  justify-content: center;
+  overflow-y: auto;
+}
+.delete-button-container {
+  padding-left: 10px;
+  display: grid;
+  place-content: center;
+}
+
+.delete-button {
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 50%;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  color: #fd1c03;
+}
