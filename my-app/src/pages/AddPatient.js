@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {  TextField} from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
+import Autocomplete from '@mui/material/Autocomplete';
+import axios from "axios";
 
 export default function AddPatient(){
 
@@ -96,6 +98,25 @@ export default function AddPatient(){
         })
       };
 
+    
+
+
+
+      const styleAutocomplete = {
+        width:"250px",
+        backgroundColor: "#F6F6F6",
+        border: "0px solid #219EBC",
+        borderRadius: "30px",
+        paddingRight:"10px",
+        paddingLeft:"10px",
+        marginTop:"5px",
+        filter: "drop-shadow(0px 0px 4px #219EBC)",
+        boxShadow: "none"
+      
+    };
+    
+    
+
 
     const [message, setMessage] = useState("");
 
@@ -117,9 +138,27 @@ export default function AddPatient(){
         { value: 'tremor', label: 'Tremor' },
         { value: 'bradykinesia', label: 'Slowness of movement (bradykinesia)' },
         { value: 'rigidity', label: 'Muscle stiffness (rigidity)' },
+        { value: 'balance', label: 'Balance problems' },
+        { value: 'anosmia', label: 'Loss of sense of smell (anosmia)' },
+        { value: 'nerve', label: 'Nerve pain' },
+        { value: 'urinary', label: 'Urinary incontience' },
+        { value: 'constipation', label: 'Constipation' },
+        { value: 'dizziness', label: 'Dizziness' },
+        { value: 'dysphagia', label: 'Swallowing difficulties (dysphagia)' },
+        { value: 'insomnia', label: 'Problems sleeping (insomnia)' },
     ]
 
-
+    const [comorbidities, setComorbidities] = useState([]);
+    const searchDisease = async(searchInput) =>{
+        console.log(searchInput)
+          try {
+            const { data } = await axios.get(`https://clinicaltables.nlm.nih.gov/api/icd10cm/v3/search?sf=code,name&df=code,name&terms=${searchInput}&maxList=500`);
+            setComorbidities(data[3]);
+            console.log(data)
+          } catch (err) {
+            console.error(err);
+          }
+      }
     
     const [patient, setPatient] = useState({
         fullName:'',
@@ -129,13 +168,18 @@ export default function AddPatient(){
         height:'',
         weight:'',
         bmi:'',
-        diagnosis:''
+        diagnosis:'',
+        symptoms:[],
+        comorbidities:[]
     })
 
   
     
 
-
+    const handleChangeSymptoms = (data) => {
+        let value = Array.from(data, option => option.value);
+        setPatient({...patient, symptoms:value})
+      }
     
     const handleValidation = () => {
         var message = ""
@@ -155,10 +199,11 @@ export default function AddPatient(){
         else if (patient.diagnosis === '')
             message = "Please provide patient's diagnosis!"
         console.log(message)
-        
-
-        
     }
+
+
+
+
     const handleAddPatient = () =>{
         handleValidation()
         
@@ -166,6 +211,9 @@ export default function AddPatient(){
         console.log(patient)
 
     }
+
+
+
     return (
         <div>
 
@@ -195,7 +243,6 @@ export default function AddPatient(){
                             styles={styleSelect}
                             classNamePrefix="select"
                             isSearchable={false}
-                            name="color"
                             options={optionsS}
                             onChange={(e) =>  {setPatient({...patient, sex: e.value})}}
                         />                
@@ -214,7 +261,6 @@ export default function AddPatient(){
                             styles={styleSelect2}
                             classNamePrefix="select"
                             isSearchable={false}
-                            name="color"
                             options={optionsD}
                             onChange={(e) =>  {setPatient({...patient, diagnosis: e.value})}}
                         />                
@@ -226,15 +272,43 @@ export default function AddPatient(){
                             classNamePrefix="select"
                             isMulti={true}
                             isSearchable={false}
-                            name="color"
                             options={optionsSymptoms}
+                            onChange={handleChangeSymptoms}
                            
                         />                
              </div>
+
+             <div style={{marginTop:"10px"}}>
+             <label>Comorbidities:</label>     
+             <Autocomplete
+        sx={styleAutocomplete}
+        onInputChange={(e) => {searchDisease(e.target.value)}}
+        onChange={(event, newValue) => {
+            setPatient({...patient, comorbidities:newValue})
+        }}
+        multiple
+        id="tags-standard"
+        options={comorbidities}
+        getOptionLabel={(option) => option[1]}
+        getOptionSelected= {(option, value) => {  
+          console.log(option,value)
+        }}
+      
+        renderInput={(params) => (
+            <TextField
+               {...params}
+               InputProps = {{...params.InputProps, disableUnderline: true,style: { fontFamily:"Metropolis" }}}
+               variant="standard"
+               label=""
+               placeholder="Search comorbidities"
+               />
+          )}
+      />
+             </div>
                 <button onClick={() => handleAddPatient()}>Add patient</button>
         </div>
-
-
+        
+        
         </div>
 
     );
