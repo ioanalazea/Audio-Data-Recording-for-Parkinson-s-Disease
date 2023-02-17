@@ -3,6 +3,7 @@ import {  TextField} from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import Autocomplete from '@mui/material/Autocomplete';
+import {Typography} from '@material-ui/core';
 import axios from "axios";
 
 export default function AddPatient(){
@@ -18,6 +19,19 @@ export default function AddPatient(){
         display: "block",
         width: "250px",
         height:"40px",
+        align:"center",
+    }
+
+    const styleTextFieldMultiline = {
+        backgroundColor: "#F6F6F6",
+        border: "0px solid #219EBC",
+        borderRadius: "30px",
+        paddingRight:"10px",
+        paddingLeft:"10px",
+        marginTop:"5px",
+        filter: "drop-shadow(0px 0px 4px #219EBC)",
+        display: "block",
+        width: "250px",
         align:"center",
     }
     const styleInputProps = {
@@ -170,7 +184,9 @@ export default function AddPatient(){
         bmi:'',
         diagnosis:'',
         symptoms:[],
-        comorbidities:[]
+        comorbidities:[],
+        postMedication:'',
+        therapeuticProc:''
     })
 
   
@@ -213,7 +229,7 @@ export default function AddPatient(){
     }
 
 
-
+    
     return (
         <div>
 
@@ -289,21 +305,32 @@ export default function AddPatient(){
         multiple
         id="tags-standard"
         options={comorbidities}
-        getOptionLabel={(option) => option[1]}
-        getOptionSelected= {(option, value) => {  
-          console.log(option,value)
-        }}
+       getOptionLabel={(option) => option[0]+" "+option[1]}
+       renderOption={(props, option) => (
+        <li {...props} style={{fontFamily:"Metropolis"}}>{option.code}&nbsp;&nbsp;&nbsp;{option}</li>
+      )}        
       
         renderInput={(params) => (
             <TextField
                {...params}
-               InputProps = {{...params.InputProps, disableUnderline: true,style: { fontFamily:"Metropolis" }}}
+               InputProps = {{...params.InputProps, disableUnderline: true,style: { fontFamily:"Metropolis", fontStyle:"normal", fontWeight:"500", marginBlockStart:"4.6px", marginBlockEnd:"4.6px" }}}
                variant="standard"
                label=""
-               placeholder="Search comorbidities"
+               placeholder="..."
                />
           )}
       />
+             </div>
+
+
+              <div style={{marginTop:"10px"}}>
+                    <label>Post-medication effects:</label>
+                    <TextField multiline style={styleTextFieldMultiline} InputProps={styleInputProps} onChange={(e) =>  {setPatient({...patient, postMedication: e.target.value})}}/>              
+             </div>
+
+             <div style={{marginTop:"10px"}}>
+                    <label>Therapetuic procedures:</label>
+                    <TextField multiline style={styleTextFieldMultiline} InputProps={styleInputProps} onChange={(e) =>  {setPatient({...patient, therapeuticProc: e.target.value})}}/>              
              </div>
                 <button onClick={() => handleAddPatient()}>Add patient</button>
         </div>
