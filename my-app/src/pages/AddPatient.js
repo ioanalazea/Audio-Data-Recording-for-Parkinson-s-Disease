@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {  TextField} from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
@@ -172,8 +172,36 @@ export default function AddPatient(){
           } catch (err) {
             console.error(err);
           }
-      }
-    
+    }
+
+
+   /*/ const searchMedication = async() =>{
+       
+          try {
+            const { data } = await axios.get(`http://192.168.88.24:5000/api/v1/resources/drugs/all`);
+            
+            console.log(data)
+          } catch (err) {
+            console.error(err);
+          }
+    }
+   const [posts, setPosts] = useState([]);
+   useEffect(() => {
+      fetch('http://192.168.88.24:5000/api/v1/resources/drugs/all')
+         .then((response) => response.json())
+         .then((data) => {
+            console.log(data);
+            setPosts(data);
+         })
+         .catch((err) => {
+            console.log(err.message);
+         });
+   }, []);
+/*/
+
+
+
+
     const [patient, setPatient] = useState({
         fullName:'',
         telephone:'',
@@ -329,7 +357,7 @@ export default function AddPatient(){
              </div>
 
              <div style={{marginTop:"10px"}}>
-                    <label>Therapetuic procedures:</label>
+                    <label>Therapeutic procedures:</label>
                     <TextField multiline style={styleTextFieldMultiline} InputProps={styleInputProps} onChange={(e) =>  {setPatient({...patient, therapeuticProc: e.target.value})}}/>              
              </div>
                 <button onClick={() => handleAddPatient()}>Add patient</button>
