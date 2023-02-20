@@ -1,7 +1,12 @@
 import React, {useRef} from "react";
 import imghome from '../utils/homepic.png';
 import Image from 'react-image-resizer';
+import { Typography } from '@material-ui/core';
+
 import { Link } from 'react-router-dom';
+import {  signOut } from 'firebase/auth';
+import { auth } from "../firebase/config.js";
+import { useNavigate } from "react-router-dom";
 
 export default function Home(){
 
@@ -26,9 +31,17 @@ export default function Home(){
         paddingLeft: "70px",
     }
 
+    const navigate = useNavigate();
+
    
-   
-   
+    const handleSignOut = () => {   
+          signOut(auth)
+          .then(() => {
+            navigate("/")
+          })
+          .catch(error => alert(error.message))
+      }
+      
 
     return(
         <div className="homediv">
@@ -37,7 +50,7 @@ export default function Home(){
         </div>
 
         <div style={welcomeText}>Welcome,</div>
-        <div style={nameText}>John Doe!</div>
+        <div style={nameText}>{auth.currentUser?.displayName}!</div>
        
         <div className="image-container">
                 <Image img src={imghome} alt="img" class="center" width={362} height={217}></Image>
@@ -53,11 +66,8 @@ export default function Home(){
                 </button>
                 </div>  
                 <div  style={{marginTop:"20px"}}>
-                <button className="button-style1">
-               
-                    <Link className='button-text-style1' to="/"> Log out</Link>
-                   
-                    
+                <button className="button-style1" onClick={handleSignOut}>
+                <div className='button-text-style1' >Log out</div>
                 </button>
                 </div>  
         </div>
