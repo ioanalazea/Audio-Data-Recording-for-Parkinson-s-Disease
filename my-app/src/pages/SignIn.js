@@ -59,6 +59,9 @@ export default function SignIn(){
     const [error, setError] = useState('');
 
     const handleSignIn = () => {
+        if (email === '' || password === '')
+            setError('Empty fields!')
+        else{
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in 
@@ -76,7 +79,8 @@ export default function SignIn(){
                 else if (errorMessage === "Firebase: Error (auth/wrong-password).")
                     setError("Wrong password!")
                 console.log(errorMessage)
-            });
+            })
+        }
     }
     return(
         <div style={drawingStyle1}>
@@ -101,9 +105,9 @@ export default function SignIn(){
                     <div className='button-text-style1' >Sign in</div>
                 </button>
                 </div>
-                <div  style={{marginTop:"15px", marginLeft:"20px"}}>
-                        <Typography style={{fontFamily:"Metropolis"}}>{error}</Typography>            
-                        </div>
+                <div  style={{marginTop:"10px", marginLeft:"10px"}}>
+                        <Typography className='blink' style={{fontFamily:"Metropolis", fontWeight: "700"}}>{error}</Typography>            
+                </div>
             <div  style={{marginTop:"130px", marginLeft:"5px"}}>
             <Link style={{color:"#323931"}} to="/register">Don't have an account? <b>Register here.</b></Link>
             </div>

@@ -155,3 +155,15 @@ flex-grow: 0;
 .delete-button:hover {
   color: #fd1c03;
 }
+
+
+/*blinker class */
+.blink {
+  animation: blinker .60s linear infinite;
+  color: red;
+}
+@keyframes blinker {
+  50% {
+      opacity: 0;
+  }
+}
