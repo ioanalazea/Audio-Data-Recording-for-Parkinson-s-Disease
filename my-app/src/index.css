@@ -167,3 +167,25 @@ flex-grow: 0;
       opacity: 0;
   }
 }
+
+
+
+.error {
+  border: 1px solid;
+  margin: 10px auto;
+  border-radius: 30px;
+  padding: 15px 10px 15px 50px;
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  max-width: 250px;
+}
+.error {
+  color: #D8000C;
+  background-color: #FFBABA;
+  background-image: url('utils/error-icon.png');
+}
+
+.error:before{
+  font-size: 24px;
+  color: #D8000C;
+}

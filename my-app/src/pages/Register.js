@@ -1,5 +1,5 @@
-import React, {useRef, useState} from 'react';
-import {  TextField, Typography} from '@material-ui/core';
+import React, { useState } from 'react';
+import {  TextField } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Background from '../utils/blob-scene-haikei.svg';
 import { createUserWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
@@ -87,7 +87,7 @@ export default function Register(){
         }
         
         //password and confirm password do not match
-        if (user.password != user.confirmPassword) {
+        if (user.password !== user.confirmPassword) {
             ok = 0; 
             errorMessage = 'Password and confirm password do not match!'
         }
@@ -198,14 +198,15 @@ export default function Register(){
                         </div>
                         
                         <div  style={{marginTop:"15px", marginLeft:"20px"}}>
-                        <Typography style={{fontFamily:"Metropolis"}}>{error}</Typography>            
-                        </div>
-                        <div  style={{marginTop:"15px", marginLeft:"20px"}}>
                         <Link style={{color:"#323931"}} to="/">Already have an account? <b>Sign in.</b></Link>
                         </div>
                 </div>
             </div>
-
+            {error!==''?
+                        <div  style={{marginTop:"15px", marginLeft:"15px"}}>
+                        <div className="error" style={{fontFamily:"Metropolis", fontWeight:"700"}}>{error}</div>            
+                        </div>:<div></div>
+                        }
         </div>
     );
 

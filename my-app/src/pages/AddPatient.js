@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {  TextField} from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import Autocomplete from '@mui/material/Autocomplete';
-import {Typography} from '@material-ui/core';
 import axios from "axios";
 
 export default function AddPatient(){
@@ -341,7 +340,7 @@ export default function AddPatient(){
         renderInput={(params) => (
             <TextField
                {...params}
-               InputProps = {{...params.InputProps, disableUnderline: true,style: { fontFamily:"Metropolis", fontStyle:"normal", fontWeight:"500", marginBlockStart:"4.6px", marginBlockEnd:"4.6px" }}}
+               InputProps = {{...params.InputProps, disableUnderline: true, style: { fontFamily:"Metropolis", fontStyle:"normal", fontWeight:"500", marginBlockStart:"4.6px", marginBlockEnd:"4.6px" }}}
                variant="standard"
                label=""
                placeholder="..."
