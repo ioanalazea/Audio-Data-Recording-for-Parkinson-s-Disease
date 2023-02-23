@@ -58,15 +58,15 @@ export default function Home(){
         </div>
         <div className="button-container">
                 <div  style={{marginTop:"40px"}}>
-                <button className="button-style1"><div className='button-text-style1'>View patients</div></button>
+                <button className="button-style-blk"><div className='button-text-style1'>View patients</div></button>
                 </div>  
                 <div  style={{marginTop:"20px"}}>
-                <button className="button-style1">
+                <button className="button-style-blk">
                 <Link className='button-text-style1' to="/home/addpatient"> Add patient</Link>
                 </button>
                 </div>  
                 <div  style={{marginTop:"20px"}}>
-                <button className="button-style1" onClick={handleSignOut}>
+                <button className="button-style-blk" onClick={handleSignOut}>
                 <div className='button-text-style1' >Log out</div>
                 </button>
                 </div>  

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {  TextField} from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
@@ -173,8 +173,8 @@ export default function AddPatient(){
           }
     }
 
-
-   /*/ const searchMedication = async() =>{
+/*
+    const searchMedication = async() =>{
        
           try {
             const { data } = await axios.get(`http://192.168.88.24:5000/api/v1/resources/drugs/all`);
@@ -196,7 +196,7 @@ export default function AddPatient(){
             console.log(err.message);
          });
    }, []);
-/*/
+*/
 
 
 
@@ -241,7 +241,7 @@ export default function AddPatient(){
             message = "Please provide patient's sex!"
         else if (patient.diagnosis === '')
             message = "Please provide patient's diagnosis!"
-        console.log(message)
+        setMessage(message)
     }
 
 
@@ -250,7 +250,7 @@ export default function AddPatient(){
     const handleAddPatient = () =>{
         handleValidation()
         
-        
+        //here handle adding the patient
         console.log(patient)
 
     }
@@ -264,23 +264,26 @@ export default function AddPatient(){
             <Link style={text1} to="/home"> Back</Link>
             <div style={text2}>Add patient</div>
             <Link style={text1} to="/home/addpatient/recordpatient"> Next</Link>
-
         </div>
+        {message!==''?
+                        <div  style={{marginTop:"40px", marginLeft:"15px"}}>
+                        <div className="error" style={{fontFamily:"Metropolis", fontWeight:"700"}}>{message}</div>            
+                        </div>:<div></div>
+        }
         <div style={containerStyle}>
-
-             <div style={{marginTop:"100px"}}>
+             <div style={{marginTop:"20px"}}>
                     <label>Full name:</label>
                     <TextField style={styleTextField} InputProps={styleInputProps} onChange={(e) =>  {setPatient({...patient, fullName: e.target.value})}}/>              
              </div>
-             <div style={{marginTop:"10px"}}>
+             <div style={{marginTop:"20px"}}>
                     <label>Telephone number:</label>
                     <TextField style={styleTextField} InputProps={styleInputProps} onChange={(e) =>  {setPatient({...patient, telephone: e.target.value})}}/>              
                 </div>
-                <div style={{marginTop:"10px"}}>
+                <div style={{marginTop:"20px"}}>
                     <label>Age:</label>
                     <TextField style={styleTextField} InputProps={styleInputProps} onChange={(e) =>  {setPatient({...patient, age: e.target.value})}}/>              
                 </div>
-                <div style={{marginTop:"10px"}}>
+                <div style={{marginTop:"20px"}}>
                     <label>Sex:</label>
                         <Select
                             styles={styleSelect}
@@ -290,15 +293,15 @@ export default function AddPatient(){
                             onChange={(e) =>  {setPatient({...patient, sex: e.value})}}
                         />                
              </div>
-                <div style={{marginTop:"10px"}}>
+                <div style={{marginTop:"20px"}}>
                     <label>Height (in cm):</label>
                     <TextField style={styleTextField} InputProps={styleInputProps} onChange={(e) =>  {setPatient({...patient, height: e.target.value})}}/>              
                 </div>
-                <div style={{marginTop:"10px"}}>
+                <div style={{marginTop:"20px"}}>
                     <label>Weight (in kg):</label>
                     <TextField style={styleTextField} InputProps={styleInputProps} onChange={(e) =>  {setPatient({...patient, weight: e.target.value})}}/>              
                 </div>
-                <div style={{marginTop:"10px"}}>
+                <div style={{marginTop:"20px"}}>
                     <label>Diagnosis:</label>
                         <Select
                             styles={styleSelect2}
@@ -308,7 +311,7 @@ export default function AddPatient(){
                             onChange={(e) =>  {setPatient({...patient, diagnosis: e.value})}}
                         />                
              </div>
-             <div style={{marginTop:"10px"}}>
+             <div style={{marginTop:"20px"}}>
                     <label>Symptoms:</label>
                         <Select
                             styles={styleSelect2}
@@ -321,7 +324,7 @@ export default function AddPatient(){
                         />                
              </div>
 
-             <div style={{marginTop:"10px"}}>
+             <div style={{marginTop:"20px"}}>
              <label>Comorbidities:</label>     
              <Autocomplete
         sx={styleAutocomplete}
@@ -350,16 +353,21 @@ export default function AddPatient(){
              </div>
 
 
-              <div style={{marginTop:"10px"}}>
+              <div style={{marginTop:"20px"}}>
                     <label>Post-medication effects:</label>
                     <TextField multiline style={styleTextFieldMultiline} InputProps={styleInputProps} onChange={(e) =>  {setPatient({...patient, postMedication: e.target.value})}}/>              
              </div>
 
-             <div style={{marginTop:"10px"}}>
+             <div style={{marginTop:"20px"}}>
                     <label>Therapeutic procedures:</label>
                     <TextField multiline style={styleTextFieldMultiline} InputProps={styleInputProps} onChange={(e) =>  {setPatient({...patient, therapeuticProc: e.target.value})}}/>              
              </div>
-                <button onClick={() => handleAddPatient()}>Add patient</button>
+                
+                <div  style={{marginTop:"20px", marginBottom:"10px"}}>
+                <button className="button-style-blue" onClick={() => handleAddPatient()}>
+                <div className='button-text-style1' >ADD</div>
+                </button>
+               </div>
         </div>
         
         
