@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import Select from 'react-select';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from "axios";
+import { database } from "../firebase/config.js";
+import {set, ref, push } from 'firebase/database';
+import { auth } from "../firebase/config.js";
 
 export default function AddPatient(){
 
@@ -242,16 +245,28 @@ export default function AddPatient(){
         else if (patient.diagnosis === '')
             message = "Please provide patient's diagnosis!"
         setMessage(message)
+        if (message != '')
+            return 0;
+        else
+            return 1;
     }
 
 
-
+    
 
     const handleAddPatient = () =>{
-        handleValidation()
-        
-        //here handle adding the patient
-        console.log(patient)
+        if (handleValidation() === 1){
+            //here handle adding the patient
+            //calculating the BMI
+            const num = ((parseFloat(patient.weight)/parseFloat(patient.height)/parseFloat(patient.height))*10000)
+            patient.bmi = num.toString().slice(0,5)
+            push(ref(database,  'users/' + auth.currentUser.uid + "/patients"),
+                patient
+            
+        );
+
+            
+        }
 
     }
 
