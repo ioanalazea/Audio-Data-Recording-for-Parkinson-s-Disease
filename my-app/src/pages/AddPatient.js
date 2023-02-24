@@ -5,9 +5,9 @@ import Select from 'react-select';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from "axios";
 import { database } from "../firebase/config.js";
-import {set, ref, push } from 'firebase/database';
+import { ref, push } from 'firebase/database';
 import { auth } from "../firebase/config.js";
-
+import { encryptStorage } from '../encryption/Encrypt.js';
 export default function AddPatient(){
 
     const styleTextField = {
@@ -255,7 +255,13 @@ export default function AddPatient(){
     
 
     const handleAddPatient = () =>{
+        const value = encryptStorage.encryptValue('John Doe');
+        console.log(value)
         if (handleValidation() === 1){
+            //encrypting details
+            patient.fullName = encryptStorage.encryptValue(patient.fullName);
+            patient.telephone = encryptStorage.encryptValue(patient.telephone);
+            patient.age = encryptStorage.encryptValue(patient.age);
             //here handle adding the patient
             //calculating the BMI
             const num = ((parseFloat(patient.weight)/parseFloat(patient.height)/parseFloat(patient.height))*10000)

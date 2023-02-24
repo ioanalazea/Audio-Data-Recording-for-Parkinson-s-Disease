@@ -1,6 +1,5 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-
 import Register from './pages/Register.js';
 import SignIn from './pages/SignIn.js';
 import Home from './pages/Home.js';
