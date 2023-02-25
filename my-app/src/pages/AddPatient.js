@@ -50,7 +50,6 @@ export default function AddPatient(){
 
 
     const containerStyle ={
-       
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",

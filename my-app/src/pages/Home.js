@@ -1,9 +1,6 @@
-import React, {useRef} from "react";
+import React from "react";
 import imghome from '../utils/homepic.png';
 import Image from 'react-image-resizer';
-import { Typography } from '@material-ui/core';
-
-import { Link } from 'react-router-dom';
 import {  signOut } from 'firebase/auth';
 import { auth } from "../firebase/config.js";
 import { useNavigate } from "react-router-dom";
@@ -34,6 +31,13 @@ export default function Home(){
     const navigate = useNavigate();
 
    
+    const handleClickAddPatient = () =>{
+        navigate("addpatient")
+    }
+
+    const handleClickViewPatient = () =>{
+        navigate("viewpatients")
+    }
     const handleSignOut = () => {   
           signOut(auth)
           .then(() => {
@@ -58,11 +62,12 @@ export default function Home(){
         </div>
         <div className="button-container">
                 <div  style={{marginTop:"40px"}}>
-                <button className="button-style-blk"><div className='button-text-style1'>View patients</div></button>
+                <button className="button-style-blk" onClick={handleClickViewPatient}>
+                <div className='button-text-style1'>View patients</div></button>
                 </div>  
                 <div  style={{marginTop:"20px"}}>
-                <button className="button-style-blk">
-                <Link className='button-text-style1' to="/home/addpatient"> Add patient</Link>
+                <button className="button-style-blk" onClick={handleClickAddPatient}>
+                <div className='button-text-style1' >Add patient</div>
                 </button>
                 </div>  
                 <div  style={{marginTop:"20px"}}>
