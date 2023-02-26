@@ -8,6 +8,7 @@ import { database } from "../firebase/config.js";
 import { ref, push } from 'firebase/database';
 import { auth } from "../firebase/config.js";
 import { encryptStorage } from '../encryption/Encrypt.js';
+
 export default function AddPatient(){
 
     const styleTextField = {
@@ -283,7 +284,7 @@ export default function AddPatient(){
         <div style={headerStyle}>
             <Link style={text1} to="/home"> Back</Link>
             <div style={text2}>Add patient</div>
-            <Link style={text1} to="/home/addpatient/recordpatient"> Next</Link>
+            
         </div>
         {message!==''?
                         <div  style={{marginTop:"40px", marginLeft:"15px"}}>

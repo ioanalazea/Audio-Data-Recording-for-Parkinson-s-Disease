@@ -43,28 +43,52 @@ body, html {
   transform: scale(1.01) ;
 }
 
+.button-style-ver3{
+  align-items: center;
+  width: 74px;
+  height: 22px;
+  left: calc(50% - 216px/2 + 3.5px);
+  background-color: rgba(212, 163, 115, 0.7);
+  border: 3px solid #FAEDCD;
+  border-radius: 8px;
+}
+
+
+.button-style-ver3:hover {
+  box-shadow: rgba(214, 221, 151, 0.35) 0 -25px 18px -14px inset,rgba(212, 140, 45, 0.25) 0 1px 2px,rgba(218, 125, 38, 0.25) 0 2px 4px,rgba(218, 158, 80, 0.25) 0 4px 8px,rgba(168, 218, 220,.25) 0 8px 16px,rgba(168, 218, 220,.25) 0 16px 32px;
+  transform: scale(1.01) ;
+  cursor:pointer;
+}
 
 .button-text-style1 {
-  
 font-family: 'Metropolis';
 font-style: normal;
 font-weight: 700;
 font-size: 20px;
 line-height: 20px;
 /* identical to box height */
-
 text-align: center;
-
 color: #FFFCF2;
-
-
 /* Inside auto layout */
-
 flex: none;
 order: 0;
 flex-grow: 0;
 }
 
+.button-text-style2 {
+  font-family: 'Metropolis';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 14px;
+  /* identical to box height */
+  text-align: center;
+  color: #FAEDCD;
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  }
 .blob-bg {
   height: 1000px;
  /* background: url(./utils/blob-scene-haikei.svg) no-repeat top ;*/

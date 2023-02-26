@@ -116,7 +116,7 @@ export default function RecordPatient(){
         <div>
 
             <div style={headerStyle}>
-                <Link style={textBack} to="/home/addpatient"> Back </Link>
+                <Link style={textBack} to="/home/viewpatients"> Back </Link>
                 <div style={textRecord}>Record patient</div>
             </div>
 

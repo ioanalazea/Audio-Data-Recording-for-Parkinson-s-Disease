@@ -1,7 +1,9 @@
 import React from 'react';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import { useNavigate } from "react-router-dom";
+import { encryptStorage } from '../encryption/Encrypt.js';
 
-export default function PatientInfo(){
+export default function PatientInfo({patient}){
 
     const styleBody = {
         width: 310,
@@ -16,6 +18,7 @@ export default function PatientInfo(){
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",   
+        marginBottom: "20px"
     }
 
     const styleSquare = {
@@ -36,6 +39,13 @@ export default function PatientInfo(){
         alignItems: "center",
     }
 
+    const buttonsContainer = {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        paddingLeft: "60px"
+    }
     const nameStyle = {
         fontFamily: 'Metropolis',
         fontStyle: "normal",
@@ -53,6 +63,12 @@ export default function PatientInfo(){
         color: "#323031",
         paddingLeft:"10px"
     }
+
+    const navigate = useNavigate();
+    const handleGoToRecording = () =>{
+        navigate("recordpatient");
+    }
+    
     return(
         <div>
             <div style={styleBody}>
@@ -60,13 +76,17 @@ export default function PatientInfo(){
                     <PersonOutlineOutlinedIcon fontSize="large" sx={{color: "#D4A373"}} ></PersonOutlineOutlinedIcon>
                 </div>
                 <div style={namePhoneContainer}>
-                   <div style={nameStyle}>Patient One</div>
-                   <div style={phoneStyle}>074634564</div>
+                   <div style={nameStyle}>{encryptStorage.decryptValue(patient.value.fullName)}</div>
+                   <div style={phoneStyle}>{encryptStorage.decryptValue(patient.value.telephone)}</div>
                 </div>
-
-                <button>Record</button>
-                <button>Details</button>
-
+                <div style={buttonsContainer}>
+                <button className='button-style-ver3' onClick={handleGoToRecording}>
+                    <div className='button-text-style2'>Record</div>
+                </button>
+                <button className='button-style-ver3'>
+                    <div className='button-text-style2'>Details</div>
+                </button>
+                </div>
             </div>
         </div>
     )

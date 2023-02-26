@@ -16,7 +16,7 @@ export default function App() {
         <Route path="home" element={<Home />}></Route>
         <Route path="home/addpatient" element={<AddPatient />}></Route>
         <Route path="home/viewpatients" element={<ViewPatients />}></Route>
-        <Route path="home/addpatient/recordpatient" element={<RecordPatient />}></Route>
+        <Route path="home/viewpatients/recordpatient" element={<RecordPatient />}></Route>
 
       </Routes>
     </div>
