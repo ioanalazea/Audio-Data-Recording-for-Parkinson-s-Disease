@@ -66,7 +66,10 @@ export default function PatientInfo({patient}){
 
     const navigate = useNavigate();
     const handleGoToRecording = () =>{
-        navigate("recordpatient");
+        navigate("recordpatient",  {state: {
+            patientKey: patient.key
+        }
+          });
     }
     
     return(

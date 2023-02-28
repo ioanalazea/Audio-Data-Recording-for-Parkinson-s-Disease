@@ -1,7 +1,11 @@
 import useRecordingsList from "../hooks/use-recordings-list";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { storage } from "../firebase/config.js";
+import { ref, uploadBytes } from 'firebase/storage';
+import { auth } from "../firebase/config.js";
 
-export default function RecordingsList({ audio, vowel }) {
+export default function RecordingsList({patientKey, audio, vowel }) {
+
 
     const containerStyle = {
         display: "flex",
@@ -42,7 +46,25 @@ export default function RecordingsList({ audio, vowel }) {
 }
 
 
+
   const { recordings, deleteAudio } = useRecordingsList(audio, vowel);
+
+  
+  const handleSaveRecordings = () => {
+   /* if (recordings.length < 5){
+      alert('Please record audios for all the vowels!')
+    }
+    else{
+
+    }*/
+   // uploadBytes(ref(storage, 'users/'),recordings[0].audio).then(function(snapshot) {
+    //  console.log('Uploaded a blob or file!');
+ //  })    
+ 
+ //uploadBytes(ref(storage, 'users/'),recordings[0]).then(function(snapshot) {
+  // console.log('Uploaded a blob or file!')})
+
+  }
 
   return (
     <div style={containerStyle}>
@@ -67,6 +89,9 @@ export default function RecordingsList({ audio, vowel }) {
               </div>
             ))}
           </div>
+          <button className="button-style-blk" onClick={handleSaveRecordings}>
+            <div className="button-text-style1">Save</div>
+          </button>
         </>
       ) : (
         <div style={noRecords}>

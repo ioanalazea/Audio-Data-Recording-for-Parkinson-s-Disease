@@ -12,7 +12,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-
+import { useLocation } from "react-router-dom";
  
 import AudioReactRecorder, { RecordState } from 'audio-react-recorder'
 
@@ -44,7 +44,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   }));
   
 export default function RecordPatient(){
-
+   
     const headerStyle ={
         marginTop:"20px",
         display: "flex",
@@ -103,6 +103,9 @@ export default function RecordPatient(){
 
 
 
+  const location = useLocation();
+  // get patient key
+  let patientKey = location.state.patientKey;
 
   const { recorderState, ...handlers } = useRecorder();
   const { audio } = recorderState;
@@ -112,6 +115,8 @@ export default function RecordPatient(){
     e.preventDefault();
     setVowel(e.target.value)
   };
+
+ 
     return(
         <div>
 
@@ -165,7 +170,7 @@ export default function RecordPatient(){
                 
             </div>
 
-        <RecordingsList audio={audio} vowel={vowel}/>
+        <RecordingsList patientKey={patientKey} audio={audio} vowel={vowel}/>
         </div>
     );
 }

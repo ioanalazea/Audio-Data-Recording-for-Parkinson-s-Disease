@@ -186,10 +186,10 @@ export default function AddPatient(){
           } catch (err) {
             console.error(err);
           }
-    }
+    }*/
    const [posts, setPosts] = useState([]);
    useEffect(() => {
-      fetch('http://192.168.88.24:5000/api/v1/resources/drugs/all')
+      fetch('http://free214.cs.upt.ro:5000/api/v1/resources/drugs?list=Warfarin,Tobramycin')
          .then((response) => response.json())
          .then((data) => {
             console.log(data);
@@ -199,7 +199,7 @@ export default function AddPatient(){
             console.log(err.message);
          });
    }, []);
-*/
+
 
 
 
