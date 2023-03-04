@@ -2,7 +2,7 @@ import React from 'react';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import { useNavigate } from "react-router-dom";
 import { encryptStorage } from '../encryption/Encrypt.js';
-
+import Swal from 'sweetalert2'
 export default function PatientInfo({patient}){
 
     const styleBody = {
@@ -71,7 +71,41 @@ export default function PatientInfo({patient}){
         }
           });
     }
-    
+
+
+
+    const handleShowDetails = () =>{
+        var str="Age: ".bold() + encryptStorage.decryptValue(patient.value.age) + "\n" +
+        "Sex: ".bold() + patient.value.sex + "\n" +
+        "Height: ".bold() + patient.value.height + " cm\n" +
+        "Weight: ".bold() + patient.value.weight + " kg\n" +
+        "BMI: ".bold() + patient.value.bmi + "\n" +
+        "Diagnosis: ".bold() + patient.value.diagnosis + "\n" +
+        "Symptoms: ".bold() + patient.value.symptoms + "\n" +
+        "Comorbidities:".bold() + patient.value.comorbidities + "\n" +
+        "Medication:".bold() + patient.value.medication + "\n" +
+        "Post-medication effects:".bold() + patient.value.postMedication + "\n" +
+        "Therapeutic procedures:".bold() + patient.value.therapeuticProc + "\n"
+
+
+
+        Swal.fire({
+            title: encryptStorage.decryptValue(patient.value.fullName),
+            html: '<pre>' + str + '</pre>',
+            width: 600,
+            padding: '3em',
+            color: '#323031',
+            fontFamily:"Metropolis",
+            background: '#fff url(/images/trees.png)',
+            backdrop: `
+              rgba(0,0,0,0.6)
+              
+              left top
+              no-repeat
+            `
+          })
+    }
+   
     return(
         <div>
             <div style={styleBody}>
@@ -86,7 +120,7 @@ export default function PatientInfo({patient}){
                 <button className='button-style-ver3' onClick={handleGoToRecording}>
                     <div className='button-text-style2'>Record</div>
                 </button>
-                <button className='button-style-ver3'>
+                <button className='button-style-ver3' onClick={handleShowDetails}>
                     <div className='button-text-style2'>Details</div>
                 </button>
                 </div>
