@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { startRecording, saveRecording } from "../handlers/recorder-controls";
 
+
 const initialState = {
   recordingMinutes: 0,
   recordingSeconds: 0,
@@ -9,7 +10,7 @@ const initialState = {
   mediaRecorder: null,
   audio: null,
 };
-
+const mimeType = "audio/mpeg";
 export default function useRecorder() {
   const [recorderState, setRecorderState] = useState(initialState);
 
@@ -52,7 +53,7 @@ export default function useRecorder() {
       setRecorderState((prevState) => {
         return {
           ...prevState,
-          mediaRecorder: new MediaRecorder(prevState.mediaStream),
+          mediaRecorder: new MediaRecorder(prevState.mediaStream, { type: mimeType }),
         };
       });
   }, [recorderState.mediaStream]);
@@ -69,9 +70,8 @@ export default function useRecorder() {
       };
 
       recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: "audio/mpeg-3" });
+        const blob = new Blob(chunks, { type: mimeType });
         chunks = [];
-
         setRecorderState((prevState) => {
           if (prevState.mediaRecorder)
             return {

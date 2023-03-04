@@ -4,6 +4,9 @@ import { storage } from "../firebase/config.js";
 import { ref, uploadBytes } from 'firebase/storage';
 import { auth } from "../firebase/config.js";
 
+
+
+
 export default function RecordingsList({patientKey, audio, vowel }) {
 
 
@@ -48,9 +51,11 @@ export default function RecordingsList({patientKey, audio, vowel }) {
 
 
   const { recordings, deleteAudio } = useRecordingsList(audio, vowel);
+  
 
   
   const handleSaveRecordings = () => {
+   
    /* if (recordings.length < 5){
       alert('Please record audios for all the vowels!')
     }
@@ -61,9 +66,19 @@ export default function RecordingsList({patientKey, audio, vowel }) {
     //  console.log('Uploaded a blob or file!');
  //  })    
  
- //uploadBytes(ref(storage, 'users/'),recordings[0]).then(function(snapshot) {
+ //uploadBytes(ref(storage, 'users/'),recordings[0].audio).then(function(snapshot) {
   // console.log('Uploaded a blob or file!')})
+  /*/var storageRef = ref(storage, 'users/')
+  var recordingRef = ref(storageRef,'recording'+new Date().getTime()+'.mpeg');
+ 
+  var metadata = {
+    contentType: 'audio/mpeg',
+  }
+  uploadBytes(ref(recordingRef),recordings[0].audio, metadata).then(function(snapshot) {
+    console.log('Uploaded recording succefully!')});
+ */
 
+  
   }
 
   return (
@@ -76,6 +91,9 @@ export default function RecordingsList({patientKey, audio, vowel }) {
               <div className="record" key={record.key}>
                 <div style={vowelType}>{record.key}: </div>
                 <audio controls src={record.audio} />
+                <a download href={record.audio}>
+        Download Recording
+     </a>
                 <div className="delete-button-container">
                    { console.log(record.audio)}
                   <button
