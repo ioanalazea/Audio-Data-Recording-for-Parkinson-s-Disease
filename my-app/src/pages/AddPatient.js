@@ -209,9 +209,9 @@ export default function AddPatient() {
     weight: "",
     bmi: "",
     diagnosis: "",
-    symptoms: [],
-    comorbidities: [],
-    medication: [],
+    symptoms: [''],
+    comorbidities: [''],
+    medication: [''],
     postMedication: "",
     therapeuticProc: "",
   });
@@ -257,6 +257,8 @@ export default function AddPatient() {
           parseFloat(patient.height)) *
         10000;
       patient.bmi = num.toString().slice(0, 5);
+
+   
       push(
         ref(database, "users/" + auth.currentUser.uid + "/patients"),
         patient

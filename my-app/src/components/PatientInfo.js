@@ -74,18 +74,57 @@ export default function PatientInfo({patient}){
 
 
 
+    const getDiagnosis = (diagnosis) => {
+        const optionsD = {
+             "hc": "Healthy - no Parkinson's" ,
+              "pd1": "Stage 1 Parkinson's" ,
+              "pd2": "Stage 2 Parkinson's" ,
+              "pd3": "Stage 3 Parkinson's" ,
+              "pd4": "Stage 4 Parkinson's" ,
+            "pd5": "Stage 5 Parkinson's" ,
+        }
+        return optionsD[diagnosis]
+    }
+
+
+    const getSymptoms = (symptoms) => {
+        
+  const optionsSymptoms = {
+     "tremor": "Tremor" ,
+     "bradykinesia": "Slowness of movement (bradykinesia)",
+     "rigidity": "Muscle stiffness (rigidity)" ,
+     "balance": "Balance problems" ,
+     "anosmia": "Loss of sense of smell (anosmia)" ,
+     "nerve": "Nerve pain" ,
+     "urinary": "Urinary incontience" ,
+     "constipation": "Constipation" ,
+     "dizziness": "Dizziness" ,
+     "dysphagia": "Swallowing difficulties (dysphagia)" ,
+     "insomnia": "Problems sleeping (insomnia)" ,
+  }
+
+  return symptoms.map((value) => "\n" + optionsSymptoms[value] )
+    }
+
+    const getComorbidities = (comorb) => {
+        return comorb.map((value) => "\n" + value[1] )
+    }
+
+    const getMedication = (medication) => {
+        return medication.map((value) => "\n" + value.drugname )
+    }
     const handleShowDetails = () =>{
         var str="Age: ".bold() + encryptStorage.decryptValue(patient.value.age) + "\n" +
         "Sex: ".bold() + patient.value.sex + "\n" +
         "Height: ".bold() + patient.value.height + " cm\n" +
         "Weight: ".bold() + patient.value.weight + " kg\n" +
         "BMI: ".bold() + patient.value.bmi + "\n" +
-        "Diagnosis: ".bold() + patient.value.diagnosis + "\n" +
-        "Symptoms: ".bold() + patient.value.symptoms + "\n" +
-        "Comorbidities:".bold() + patient.value.comorbidities + "\n" +
-        "Medication:".bold() + patient.value.medication + "\n" +
-        "Post-medication effects:".bold() + patient.value.postMedication + "\n" +
-        "Therapeutic procedures:".bold() + patient.value.therapeuticProc + "\n"
+        "Diagnosis: ".bold() + getDiagnosis(patient.value.diagnosis) + "\n" +
+        "Symptoms: ".bold() + getSymptoms(patient.value.symptoms) + "\n" +
+        "Comorbidities:".bold() + getComorbidities(patient.value.comorbidities) + "\n" +
+        "Medication:".bold() + getMedication(patient.value.medication) + "\n" +
+        "Post-medication effects: \n".bold() + patient.value.postMedication + "\n" +
+        "Therapeutic procedures: \n".bold() + patient.value.therapeuticProc + "\n"
 
 
 
