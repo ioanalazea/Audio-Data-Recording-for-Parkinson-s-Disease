@@ -4,6 +4,9 @@ body, html {
   font-family: 'MetropolisRegular';
 }
 
+.swal2-popup {
+  font-family: 'Metropolis' !important;
+}
 .a:hover {
   cursor:pointer;
  }

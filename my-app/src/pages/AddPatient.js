@@ -249,7 +249,7 @@ export default function AddPatient() {
       patient.fullName = encryptStorage.encryptValue(patient.fullName);
       patient.telephone = encryptStorage.encryptValue(patient.telephone);
       patient.age = encryptStorage.encryptValue(patient.age);
-      //here handle adding the patient
+      
       //calculating the BMI
       const num =
         (parseFloat(patient.weight) /
@@ -258,7 +258,7 @@ export default function AddPatient() {
         10000;
       patient.bmi = num.toString().slice(0, 5);
 
-   
+      //here handle adding the patient
       push(
         ref(database, "users/" + auth.currentUser.uid + "/patients"),
         patient

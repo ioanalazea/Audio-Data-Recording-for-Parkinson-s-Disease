@@ -102,15 +102,20 @@ export default function PatientInfo({patient}){
      "dysphagia": "Swallowing difficulties (dysphagia)" ,
      "insomnia": "Problems sleeping (insomnia)" ,
   }
-
+  if (symptoms[0] === "") return "\n"
+        else
   return symptoms.map((value) => "\n" + optionsSymptoms[value] )
     }
 
     const getComorbidities = (comorb) => {
+        if (comorb[0] === "") return "\n"
+        else
         return comorb.map((value) => "\n" + value[1] )
     }
 
     const getMedication = (medication) => {
+        if (medication[0] === "") return "\n"
+        else
         return medication.map((value) => "\n" + value.drugname )
     }
     const handleShowDetails = () =>{
