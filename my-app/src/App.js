@@ -17,7 +17,6 @@ export default function App() {
         <Route path="home/addpatient" element={<AddPatient />}></Route>
         <Route path="home/viewpatients" element={<ViewPatients />}></Route>
         <Route path="home/viewpatients/recordpatient" element={<RecordPatient />}></Route>
-
       </Routes>
     </div>
   );

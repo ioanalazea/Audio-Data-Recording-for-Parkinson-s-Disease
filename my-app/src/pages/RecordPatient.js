@@ -109,13 +109,14 @@ export default function RecordPatient(){
 
   const { recorderState, ...handlers } = useRecorder();
   const { audio } = recorderState;
+  const {recordedBlob} = recorderState;
   const [vowel, setVowel] = useState("A");
 
   const handleSelectVowel = (e) => {
     e.preventDefault();
     setVowel(e.target.value)
   };
-
+ 
  
     return(
         <div>
@@ -170,7 +171,7 @@ export default function RecordPatient(){
                 
             </div>
 
-        <RecordingsList patientKey={patientKey} audio={audio} vowel={vowel}/>
+        <RecordingsList patientKey={patientKey} audio={audio} vowel={vowel} recordedBlob={recordedBlob}/>
         </div>
     );
 }
