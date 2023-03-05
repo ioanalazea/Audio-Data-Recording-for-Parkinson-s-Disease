@@ -137,6 +137,7 @@ export default function PatientInfo({patient}){
             title: encryptStorage.decryptValue(patient.value.fullName),
             html: '<pre>' + str + '</pre>',
             width: 600,
+            confirmButtonColor: '#219EBC',
             padding: '3em',
             color: '#323031',
             fontFamily:"Metropolis",
