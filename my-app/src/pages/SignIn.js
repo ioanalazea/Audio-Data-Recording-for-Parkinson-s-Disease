@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
 import {  TextField, Typography} from '@material-ui/core';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import PasswordIcon from '@mui/icons-material/Password';
+import EmailIcon from '@mui/icons-material/Email';
 import { Link } from 'react-router-dom';
 import Background from '../utils/stacked-waves.svg';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -93,12 +96,28 @@ export default function SignIn(){
                
                 <div  style={{marginTop:"20px"}}>
                     <label>Email Address:</label>
-                    <TextField style={styleTextField} InputProps={styleInputProps} onChange = {(e) => setEmail(e.target.value)}/>              
+                    <TextField style={styleTextField} 
+                    InputProps={
+                    {
+                    disableUnderline:true,
+                    startAdornment:(<InputAdornment position="start">
+                    <EmailIcon />
+                  </InputAdornment>)
+                    }} 
+                    onChange = {(e) => setEmail(e.target.value)}/>              
                 </div>
                 
                 <div  style={{marginTop:"20px"}}>
                     <label>Password:</label>
-                    <TextField  type="password" style={styleTextField} InputProps={styleInputProps} onChange = {(e) => setPassword(e.target.value)}/>              
+                    <TextField  type="password" style={styleTextField}
+                     InputProps={
+                        {
+                        disableUnderline:true,
+                        startAdornment:(<InputAdornment position="start">
+                        <PasswordIcon />
+                      </InputAdornment>)
+                        }} 
+                     onChange = {(e) => setPassword(e.target.value)}/>              
                 </div>
                 <div  style={{marginTop:"30px"}}>
                 <button className="button-style-blk" to="/home" onClick={handleSignIn}>

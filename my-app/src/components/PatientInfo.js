@@ -6,8 +6,8 @@ import Swal from 'sweetalert2'
 export default function PatientInfo({patient}){
 
     const styleBody = {
-        width: 310,
-        height: 79,
+        minWidth: "310px",
+        height: "79px",
         backgroundColor: "#F6E5D4",
         shadowOpacity: 3,
         shadowRadius: 10,
@@ -16,7 +16,7 @@ export default function PatientInfo({patient}){
         borderRadius: 8,
         display: "flex",
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "space-evenly",
         alignItems: "center",   
         marginBottom: "20px"
     }
@@ -30,6 +30,7 @@ export default function PatientInfo({patient}){
         display: "flex",
         justifyContent: "center",
         alignItems: "center", 
+        
     }
 
     const namePhoneContainer = {
@@ -44,7 +45,8 @@ export default function PatientInfo({patient}){
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        paddingLeft: "60px"
+        paddingLeft: "60px",
+        paddingRight: "10px"
     }
     const nameStyle = {
         fontFamily: 'Metropolis',
@@ -118,7 +120,8 @@ export default function PatientInfo({patient}){
         else
         return medication.map((value) => "\n" + value.drugname )
     }
-    const handleShowDetails = () =>{
+
+    const getDetails = () => {
         var str="Age: ".bold() + encryptStorage.decryptValue(patient.value.age) + "\n" +
         "Sex: ".bold() + patient.value.sex + "\n" +
         "Height: ".bold() + patient.value.height + " cm\n" +
@@ -131,8 +134,10 @@ export default function PatientInfo({patient}){
         "Post-medication effects: \n".bold() + patient.value.postMedication + "\n" +
         "Therapeutic procedures: \n".bold() + patient.value.therapeuticProc + "\n"
 
-
-
+        return str
+    }
+    const handleShowDetails = () =>{
+        var str = getDetails()
         Swal.fire({
             title: encryptStorage.decryptValue(patient.value.fullName),
             html: '<pre>' + str + '</pre>',
@@ -154,9 +159,10 @@ export default function PatientInfo({patient}){
     return(
         <div>
             <div style={styleBody}>
+                <div style={{paddingLeft:"10px"}}>
                 <div style={styleSquare}>
                     <PersonOutlineOutlinedIcon fontSize="large" sx={{color: "#D4A373"}} ></PersonOutlineOutlinedIcon>
-                </div>
+                </div></div>
                 <div style={namePhoneContainer}>
                    <div style={nameStyle}>{encryptStorage.decryptValue(patient.value.fullName)}</div>
                    <div style={phoneStyle}>{encryptStorage.decryptValue(patient.value.telephone)}</div>

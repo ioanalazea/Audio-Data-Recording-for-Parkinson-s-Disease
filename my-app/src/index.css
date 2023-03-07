@@ -25,6 +25,21 @@ body, html {
 
 }
 
+.button-style-blk-small{
+  align-items: center;
+  width: 100px;
+  height: 30px;
+  left: calc(50% - 216px/2 + 3.5px);
+  background-color: #323031;
+  border-radius: 100px;
+  border: 3px solid #219EBC;
+}
+
+.button-style-blk-small:hover {
+  box-shadow: rgba(168, 218, 220,.35) 0 -25px 18px -14px inset,rgba(168, 218, 220,.25) 0 1px 2px,rgba(168, 218, 220,.25) 0 2px 4px,rgba(168, 218, 220,.25) 0 4px 8px,rgba(168, 218, 220,.25) 0 8px 16px,rgba(168, 218, 220,.25) 0 16px 32px;
+  transform: scale(1.01) ;
+  cursor:pointer;
+}
 
 .button-style-blk:hover {
   box-shadow: rgba(168, 218, 220,.35) 0 -25px 18px -14px inset,rgba(168, 218, 220,.25) 0 1px 2px,rgba(168, 218, 220,.25) 0 2px 4px,rgba(168, 218, 220,.25) 0 4px 8px,rgba(168, 218, 220,.25) 0 8px 16px,rgba(168, 218, 220,.25) 0 16px 32px;
@@ -80,6 +95,21 @@ flex: none;
 order: 0;
 flex-grow: 0;
 }
+
+.button-text-style1-small {
+  font-family: 'Metropolis';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 10px;
+  /* identical to box height */
+  text-align: center;
+  color: #219EBC;
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  }
 
 .button-text-style2 {
   font-family: 'Metropolis';

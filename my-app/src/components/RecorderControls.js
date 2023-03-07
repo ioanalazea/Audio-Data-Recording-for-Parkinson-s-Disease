@@ -77,9 +77,9 @@ onClick={startRecording}>
           </div>
     </div>
         {initRecording && (
-          <div>
-            <button title="Cancel recording" onClick={cancelRecording}>
-              CANCEL
+          <div style={{marginTop:"10px", marginBottom:"10px"}}>
+            <button className="button-style-blk-small"title="Cancel recording" onClick={cancelRecording}>
+             <div className="button-text-style1-small">CANCEL</div> 
             </button>
           </div>
         )}

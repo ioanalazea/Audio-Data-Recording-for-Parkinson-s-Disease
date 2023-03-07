@@ -194,7 +194,7 @@ export default function Register(){
                             <TextField  type="password" style={styleTextField} InputProps={styleInputProps} onChange={(e) => setUser({...user, confirmPassword: e.target.value})}/>              
                         </div>
                         <div  style={{marginTop:"40px"}}>
-                        <button className="button-style1" onClick={() => registerUser()}><div className='button-text-style1'>Create account</div></button>
+                        <button className="button-style-blk" onClick={() => registerUser()}><div className='button-text-style1'>Create account</div></button>
                         </div>
                         
                         <div  style={{marginTop:"15px", marginLeft:"20px"}}>

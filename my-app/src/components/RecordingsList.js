@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import useRecordingsList from "../hooks/use-recordings-list";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Swal from "sweetalert2";
@@ -60,7 +61,6 @@ export default function RecordingsList({
     vowel,
     recordedBlob
   );
-
   const handleSaveRecordings = () => {
     if (recordings.length < 5) {
       Swal.fire({
@@ -69,9 +69,11 @@ export default function RecordingsList({
         text: "Please record an audio for all of the 5 vowels!",
         confirmButtonColor: "#219EBC",
       });
-    } else {
+    } 
+    else {
       var today = getDate();
-      var success = 0;
+     
+
       var storageRef = ref(
         storage,
         "users/" + auth.currentUser?.uid + "/patients/" + patientKey
@@ -92,29 +94,37 @@ export default function RecordingsList({
         var metadata = {
           contentType: "audio/mp3",
         };
-        uploadBytes(
+        var promise = uploadBytes(
           ref(recordingRef),
           recordings[i].recordedBlob,
           metadata
-        ).then(function (snapshot) {
-          success = 1;
-          console.log("Uploaded recording succefully!");
-        });
-        if (success === 1)
+        ).then((snapshot) => {
           Swal.fire({
             icon: "success",
             title: "Uploaded recordings successfully!",
             showConfirmButton: false,
             timer: 1500,
-          });
-        else
+          })
+        })
+
+
+      }
+      
+        /*if (success === 1)
+          Swal.fire({
+            icon: "success",
+            title: "Uploaded recordings successfully!",
+            showConfirmButton: false,
+            timer: 1500,
+          })
+        else if (success === 0)
           Swal.fire({
             icon: "error",
             title: "Oops...",
             text: "Something went wrong!",
             confirmButtonColor: "#219EBC",
-          });
-      }
+          });*/
+      
     }
   };
 
