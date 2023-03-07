@@ -14,7 +14,6 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useLocation } from "react-router-dom";
  
-import AudioReactRecorder, { RecordState } from 'audio-react-recorder'
 
 import RecorderControls from "../components/RecorderControls";
 import RecordingsList from "../components/RecordingsList";

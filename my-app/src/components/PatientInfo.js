@@ -74,6 +74,13 @@ export default function PatientInfo({patient}){
           });
     }
 
+    const handleGoToEdit = () =>{
+        navigate("editpatient",  {state: {
+            patient: patient
+        }
+          });
+    }
+
 
 
     const getDiagnosis = (diagnosis) => {
@@ -173,6 +180,9 @@ export default function PatientInfo({patient}){
                 </button>
                 <button className='button-style-ver3' onClick={handleShowDetails}>
                     <div className='button-text-style2'>Details</div>
+                </button>
+                <button className='button-style-ver3' onClick={handleGoToEdit}>
+                    <div className='button-text-style2'>Edit</div>
                 </button>
                 </div>
             </div>

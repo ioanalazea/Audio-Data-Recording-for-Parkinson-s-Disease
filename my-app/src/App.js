@@ -6,6 +6,7 @@ import Home from './pages/Home.js';
 import AddPatient from './pages/AddPatient.js';
 import RecordPatient from './pages/RecordPatient.js';
 import ViewPatients from './pages/ViewPatients.js';
+import EditPatient from './pages/EditPatient';
 
 export default function App() {
   return (
@@ -17,6 +18,8 @@ export default function App() {
         <Route path="home/addpatient" element={<AddPatient />}></Route>
         <Route path="home/viewpatients" element={<ViewPatients />}></Route>
         <Route path="home/viewpatients/recordpatient" element={<RecordPatient />}></Route>
+        <Route path="home/viewpatients/editpatient" element={<EditPatient />}></Route>
+
       </Routes>
     </div>
   );
