@@ -213,7 +213,10 @@ export default function EditPatient() {
 
   
 
-
+  const getSymptomsPatientEdit = () =>{
+      return (patient.symptoms.map( (symptom) => optionsSymptoms.find(element => symptom === element.value)
+      ))
+  }
   const handleChangeSymptoms = (data) => {
     let value = Array.from(data, (option) => option.value);
     setPatient({ ...patient, symptoms: value });
@@ -322,7 +325,7 @@ export default function EditPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Sex:</label>
           <Select
-            
+            defaultValue={optionsS.find(element => element.value === patient.sex)}
             styles={styleSelect}
             classNamePrefix="select"
             isSearchable={false}
@@ -357,6 +360,7 @@ export default function EditPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Diagnosis:</label>
           <Select
+            defaultValue={optionsD.find(element => element.value === patient.diagnosis)}
             styles={styleSelect2}
             classNamePrefix="select"
             isSearchable={false}
@@ -369,6 +373,7 @@ export default function EditPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Symptoms:</label>
           <Select
+            defaultValue={getSymptomsPatientEdit}
             styles={styleSelect2}
             classNamePrefix="select"
             isMulti={true}
@@ -381,6 +386,7 @@ export default function EditPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Comorbidities:</label>
           <Autocomplete
+            defaultValue={patient.comorbidities}
             sx={styleAutocomplete}
             onInputChange={(e) => {
               searchDisease(e.target.value);
@@ -422,6 +428,7 @@ export default function EditPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Medication:</label>
           <Autocomplete
+            defaultValue={patient.medication}
             sx={styleAutocomplete}
             onChange={(event, newValue) => {
               setPatient({ ...patient, medication: newValue });
