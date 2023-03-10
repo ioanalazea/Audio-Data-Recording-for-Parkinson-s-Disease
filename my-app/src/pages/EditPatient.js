@@ -5,10 +5,11 @@ import Select from "react-select";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 import { database } from "../firebase/config.js";
-import { ref, push } from "firebase/database";
+import { ref, set } from "firebase/database";
 import { auth } from "../firebase/config.js";
 import { encryptStorage } from "../encryption/Encrypt.js";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function EditPatient() {
   const styleTextField = {
@@ -125,6 +126,8 @@ export default function EditPatient() {
     boxShadow: "none",
   };
 
+  const navigate = useNavigate();
+
   const [message, setMessage] = useState("");
 
   const optionsS = [
@@ -169,7 +172,6 @@ export default function EditPatient() {
     }
   };
 
- 
   const [drugs, setDrugs] = useState([]);
 
   // Function to collect data
@@ -197,8 +199,8 @@ export default function EditPatient() {
   const [patient, setPatient] = useState({
     fullName: encryptStorage.decryptValue(patientToEdit.value.fullName),
     telephone: encryptStorage.decryptValue(patientToEdit.value.telephone),
-    age : encryptStorage.decryptValue(patientToEdit.value.age),
-    sex : patientToEdit.value.sex,
+    age: encryptStorage.decryptValue(patientToEdit.value.age),
+    sex: patientToEdit.value.sex,
     height: patientToEdit.value.height,
     weight: patientToEdit.value.weight,
     diagnosis: patientToEdit.value.diagnosis,
@@ -206,15 +208,14 @@ export default function EditPatient() {
     comorbidities: patientToEdit.value.comorbidities,
     medication: patientToEdit.value.medication,
     postMedication: patientToEdit.value.postMedication,
-    therapeuticProc: patientToEdit.value.therapeuticProc
+    therapeuticProc: patientToEdit.value.therapeuticProc,
   });
 
-  
-
-  const getSymptomsPatientEdit = () =>{
-      return (patient.symptoms.map( (symptom) => optionsSymptoms.find(element => symptom === element.value)
-      ))
-  }
+  const getSymptomsPatientEdit = () => {
+    return patient.symptoms.map((symptom) =>
+      optionsSymptoms.find((element) => symptom === element.value)
+    );
+  };
   const handleChangeSymptoms = (data) => {
     let value = Array.from(data, (option) => option.value);
     setPatient({ ...patient, symptoms: value });
@@ -246,7 +247,7 @@ export default function EditPatient() {
       patient.fullName = encryptStorage.encryptValue(patient.fullName);
       patient.telephone = encryptStorage.encryptValue(patient.telephone);
       patient.age = encryptStorage.encryptValue(patient.age);
-      
+
       //calculating the BMI
       const num =
         (parseFloat(patient.weight) /
@@ -254,25 +255,47 @@ export default function EditPatient() {
           parseFloat(patient.height)) *
         10000;
       patient.bmi = num.toString().slice(0, 5);
+      console.log(patient);
 
       //here handle edit the patient
-      const patientRef =  ref(database, "users/" + auth.currentUser.uid + "/patients" + patientToEdit.key)
-      patientRef.update({
-        fullName: patient.fullName,
-        telephone: patient.telephone,
-        age : patient.age,
-        sex : patient.sex,
-        height: patient.height,
-        weight: patient.weight,
-        diagnosis: patient.diagnosis,
-        symptoms: patient.symptoms,
-        comorbidities: patient.comorbidities,
-        medication: patient.medication,
-        postMedication: patient.postMedication,
-        therapeuticProc: patient.therapeuticProc
-
-      })
-      
+      set(
+        ref(
+          database,
+          "users/" + auth.currentUser.uid + "/patients/" + patientToEdit.key
+        ),
+        {
+          fullName: patient.fullName,
+          telephone: patient.telephone,
+          age: patient.age,
+          sex: patient.sex,
+          height: patient.height,
+          weight: patient.weight,
+          diagnosis: patient.diagnosis,
+          symptoms: patient.symptoms,
+          comorbidities: patient.comorbidities,
+          medication: patient.medication,
+          postMedication: patient.postMedication,
+          therapeuticProc: patient.therapeuticProc,
+        }
+      )
+        .then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "Patient updated successfully!",
+            showConfirmButton: false,
+            timer: 1500,
+          })
+          navigate(-1)
+          console.log("Updated successfully!");
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong! "+ error,
+            confirmButtonColor: "#219EBC",
+          });
+        });
     }
   };
 
@@ -312,7 +335,7 @@ export default function EditPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Telephone number:</label>
           <TextField
-          value={patient.telephone}
+            value={patient.telephone}
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
@@ -334,7 +357,9 @@ export default function EditPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Sex:</label>
           <Select
-            defaultValue={optionsS.find(element => element.value === patient.sex)}
+            defaultValue={optionsS.find(
+              (element) => element.value === patient.sex
+            )}
             styles={styleSelect}
             classNamePrefix="select"
             isSearchable={false}
@@ -358,7 +383,7 @@ export default function EditPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Weight (in kg):</label>
           <TextField
-             value={patient.weight}
+            value={patient.weight}
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
@@ -369,7 +394,9 @@ export default function EditPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Diagnosis:</label>
           <Select
-            defaultValue={optionsD.find(element => element.value === patient.diagnosis)}
+            defaultValue={optionsD.find(
+              (element) => element.value === patient.diagnosis
+            )}
             styles={styleSelect2}
             classNamePrefix="select"
             isSearchable={false}
@@ -476,7 +503,7 @@ export default function EditPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Post-medication effects:</label>
           <TextField
-          value={patient.postMedication}
+            value={patient.postMedication}
             multiline
             style={styleTextFieldMultiline}
             InputProps={styleInputProps}
@@ -489,7 +516,7 @@ export default function EditPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Therapeutic procedures:</label>
           <TextField
-          value={patient.therapeuticProc}
+            value={patient.therapeuticProc}
             multiline
             style={styleTextFieldMultiline}
             InputProps={styleInputProps}

@@ -8,7 +8,8 @@ import { database } from "../firebase/config.js";
 import { ref, push } from "firebase/database";
 import { auth } from "../firebase/config.js";
 import { encryptStorage } from "../encryption/Encrypt.js";
-
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 export default function AddPatient() {
   const styleTextField = {
     backgroundColor: "#F6F6F6",
@@ -124,6 +125,7 @@ export default function AddPatient() {
     boxShadow: "none",
   };
 
+  const navigate = useNavigate();
   const [message, setMessage] = useState("");
 
   const optionsS = [
@@ -168,18 +170,6 @@ export default function AddPatient() {
     }
   };
 
-  /*
-    const searchMedication = async() =>{
-       
-          try {
-            const { data } = await axios.get(`http://192.168.88.24:5000/api/v1/resources/drugs/all`);
-            
-            console.log(data)
-          } catch (err) {
-            console.error(err);
-          }
-    }*/
-
   const [drugs, setDrugs] = useState([]);
 
   // Function to collect data
@@ -209,9 +199,9 @@ export default function AddPatient() {
     weight: "",
     bmi: "",
     diagnosis: "",
-    symptoms: [''],
-    comorbidities: [''],
-    medication: [''],
+    symptoms: [""],
+    comorbidities: [""],
+    medication: [""],
     postMedication: "",
     therapeuticProc: "",
   });
@@ -242,13 +232,12 @@ export default function AddPatient() {
   };
 
   const handleAddPatient = () => {
-
     if (handleValidation() === 1) {
       //encrypting details
       patient.fullName = encryptStorage.encryptValue(patient.fullName);
       patient.telephone = encryptStorage.encryptValue(patient.telephone);
       patient.age = encryptStorage.encryptValue(patient.age);
-      
+
       //calculating the BMI
       const num =
         (parseFloat(patient.weight) /
@@ -261,7 +250,25 @@ export default function AddPatient() {
       push(
         ref(database, "users/" + auth.currentUser.uid + "/patients"),
         patient
-      );
+      )
+        .then(() => {
+          Swal.fire({
+            icon: "success",
+            title: "Patient added successfully!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          navigate(-1);
+          console.log("Updated successfully!");
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Something went wrong! " + error,
+            confirmButtonColor: "#219EBC",
+          });
+        });
     }
   };
 
