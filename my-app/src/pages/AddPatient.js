@@ -242,8 +242,7 @@ export default function AddPatient() {
   };
 
   const handleAddPatient = () => {
-    const value = encryptStorage.encryptValue("John Doe");
-    console.log(value);
+
     if (handleValidation() === 1) {
       //encrypting details
       patient.fullName = encryptStorage.encryptValue(patient.fullName);

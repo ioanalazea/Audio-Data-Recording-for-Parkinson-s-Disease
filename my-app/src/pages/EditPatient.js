@@ -188,8 +188,6 @@ export default function EditPatient() {
 
   useEffect(() => {
     getApiData();
-   
-    console.log('here',patient)
   }, []);
 
   const location = useLocation();
@@ -242,9 +240,7 @@ export default function EditPatient() {
     else return 1;
   };
 
-  const handleAddPatient = () => {
-    const value = encryptStorage.encryptValue("John Doe");
-    console.log(value);
+  const handleEditPatient = () => {
     if (handleValidation() === 1) {
       //encrypting details
       patient.fullName = encryptStorage.encryptValue(patient.fullName);
@@ -259,11 +255,24 @@ export default function EditPatient() {
         10000;
       patient.bmi = num.toString().slice(0, 5);
 
-      //here handle adding the patient
-      push(
-        ref(database, "users/" + auth.currentUser.uid + "/patients"),
-        patient
-      );
+      //here handle edit the patient
+      const patientRef =  ref(database, "users/" + auth.currentUser.uid + "/patients" + patientToEdit.key)
+      patientRef.update({
+        fullName: patient.fullName,
+        telephone: patient.telephone,
+        age : patient.age,
+        sex : patient.sex,
+        height: patient.height,
+        weight: patient.weight,
+        diagnosis: patient.diagnosis,
+        symptoms: patient.symptoms,
+        comorbidities: patient.comorbidities,
+        medication: patient.medication,
+        postMedication: patient.postMedication,
+        therapeuticProc: patient.therapeuticProc
+
+      })
+      
     }
   };
 
@@ -493,7 +502,7 @@ export default function EditPatient() {
         <div style={{ marginTop: "20px", marginBottom: "10px" }}>
           <button
             className="button-style-blue"
-            onClick={() => handleAddPatient()}
+            onClick={() => handleEditPatient()}
           >
             <div className="button-text-style1">SAVE CHANGES</div>
           </button>
