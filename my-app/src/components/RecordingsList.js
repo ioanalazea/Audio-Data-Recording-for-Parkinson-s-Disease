@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import useRecordingsList from "../hooks/use-recordings-list";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Swal from "sweetalert2";
-import { storage } from "../firebase/config.js";
+import { database, storage } from "../firebase/config.js";
 import { ref, uploadBytes } from "firebase/storage";
 import { auth } from "../firebase/config.js";
+import { ref as refDatabase, set, update } from "firebase/database";
+import { useNavigate } from "react-router-dom";
 
 export default function RecordingsList({
   patientKey,
+  batchCount,
+  diagnosis,
   audio,
   vowel,
   recordedBlob,
@@ -46,14 +50,14 @@ export default function RecordingsList({
     color: "#323031",
     paddingRight: "10px",
   };
-
+  const navigate = useNavigate();
   const getDate = () => {
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, "0");
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
 
-    return mm + "." + dd + "." + yyyy;
+    return mm + "." + yyyy;  //only month and year
   };
 
   const { recordings, deleteAudio } = useRecordingsList(
@@ -87,6 +91,10 @@ export default function RecordingsList({
             "_" +
             today +
             "_" +
+            batchCount+
+            "_" +
+            diagnosis +
+            "_" +
             recordings[i].key +
             ".mp3"
         );
@@ -94,7 +102,7 @@ export default function RecordingsList({
         var metadata = {
           contentType: "audio/mp3",
         };
-        var promise = uploadBytes(
+        uploadBytes(
           ref(recordingRef),
           recordings[i].recordedBlob,
           metadata
@@ -109,8 +117,22 @@ export default function RecordingsList({
 
 
       }
+     
+      update(
+        refDatabase(
+          database,
+          "users/" + auth.currentUser.uid + "/patients/" + patientKey
+        ),
+        {
+          batchCount: batchCount + 1
+        }
+      ).catch((error) => {
+        console.log(error)
+      })
+      navigate(-1);
       
         /*if (success === 1)
+        //here should be the update and stuff addedddddddddddddddd
           Swal.fire({
             icon: "success",
             title: "Uploaded recordings successfully!",

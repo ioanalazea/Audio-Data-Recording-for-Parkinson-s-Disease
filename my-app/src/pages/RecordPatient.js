@@ -105,7 +105,8 @@ export default function RecordPatient(){
   const location = useLocation();
   // get patient key
   let patientKey = location.state.patientKey;
-
+  let batchCount = location.state.batchCount;
+  let diagnosis = location.state.diagnosis
   const { recorderState, ...handlers } = useRecorder();
   const { audio } = recorderState;
   const {recordedBlob} = recorderState;
@@ -170,7 +171,7 @@ export default function RecordPatient(){
                 
             </div>
 
-        <RecordingsList patientKey={patientKey} audio={audio} vowel={vowel} recordedBlob={recordedBlob}/>
+        <RecordingsList patientKey={patientKey} batchCount={batchCount} diagnosis={diagnosis} audio={audio} vowel={vowel} recordedBlob={recordedBlob}/>
         </div>
     );
 }

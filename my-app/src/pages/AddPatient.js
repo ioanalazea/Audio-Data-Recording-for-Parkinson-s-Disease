@@ -204,6 +204,7 @@ export default function AddPatient() {
     medication: [""],
     postMedication: "",
     therapeuticProc: "",
+    batchCount: 0
   });
 
   const handleChangeSymptoms = (data) => {

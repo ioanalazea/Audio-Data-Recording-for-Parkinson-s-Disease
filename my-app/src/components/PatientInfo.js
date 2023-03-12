@@ -69,7 +69,9 @@ export default function PatientInfo({patient}){
     const navigate = useNavigate();
     const handleGoToRecording = () =>{
         navigate("recordpatient",  {state: {
-            patientKey: patient.key
+            patientKey: patient.key,
+            batchCount: patient.value.batchCount,
+            diagnosis: patient.value.diagnosis
         }
           });
     }
