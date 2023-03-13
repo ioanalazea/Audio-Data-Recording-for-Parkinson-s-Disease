@@ -284,15 +284,15 @@ export default function EditPatient() {
             title: "Patient updated successfully!",
             showConfirmButton: false,
             timer: 1500,
-          })
-          navigate(-1)
+          });
+          navigate(-1);
           console.log("Updated successfully!");
         })
         .catch((error) => {
           Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: "Something went wrong! "+ error,
+            text: "Something went wrong! " + error,
             confirmButtonColor: "#219EBC",
           });
         });

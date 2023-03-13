@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import useRecordingsList from "../hooks/use-recordings-list";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Swal from "sweetalert2";
@@ -57,7 +57,7 @@ export default function RecordingsList({
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
 
-    return mm + "." + yyyy;  //only month and year
+    return mm + "." + yyyy; //only month and year
   };
 
   const { recordings, deleteAudio } = useRecordingsList(
@@ -65,6 +65,8 @@ export default function RecordingsList({
     vowel,
     recordedBlob
   );
+
+  const [uploadStatus, setUploadStatus] = useState({ message: "", status: 1 });
   const handleSaveRecordings = () => {
     if (recordings.length < 5) {
       Swal.fire({
@@ -73,11 +75,8 @@ export default function RecordingsList({
         text: "Please record an audio for all of the 5 vowels!",
         confirmButtonColor: "#219EBC",
       });
-    } 
-    else {
+    } else {
       var today = getDate();
-     
-
       var storageRef = ref(
         storage,
         "users/" + auth.currentUser?.uid + "/patients/" + patientKey
@@ -91,7 +90,7 @@ export default function RecordingsList({
             "_" +
             today +
             "_" +
-            batchCount+
+            batchCount +
             "_" +
             diagnosis +
             "_" +
@@ -102,51 +101,40 @@ export default function RecordingsList({
         var metadata = {
           contentType: "audio/mp3",
         };
-        uploadBytes(
-          ref(recordingRef),
-          recordings[i].recordedBlob,
-          metadata
-        ).then((snapshot) => {
-          Swal.fire({
-            icon: "success",
-            title: "Uploaded recordings successfully!",
-            showConfirmButton: false,
-            timer: 1500,
-          })
-        })
-
-
+        uploadBytes(ref(recordingRef), recordings[i].recordedBlob, metadata)
+          .then((snapshot) => {})
+          .catch((error) => {
+            setUploadStatus({ message: error, status: 0 });
+          });
       }
-     
-      update(
-        refDatabase(
-          database,
-          "users/" + auth.currentUser.uid + "/patients/" + patientKey
-        ),
-        {
-          batchCount: batchCount + 1
-        }
-      ).catch((error) => {
-        console.log(error)
-      })
-      navigate(-1);
-      
-        /*if (success === 1)
-        //here should be the update and stuff addedddddddddddddddd
-          Swal.fire({
-            icon: "success",
-            title: "Uploaded recordings successfully!",
-            showConfirmButton: false,
-            timer: 1500,
-          })
-        else if (success === 0)
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Something went wrong!",
-            confirmButtonColor: "#219EBC",
-          });*/
-      
+
+      if (uploadStatus.status === 1) {
+        Swal.fire({
+          icon: "success",
+          title: "Uploaded recordings successfully!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        update(
+          refDatabase(
+            database,
+            "users/" + auth.currentUser.uid + "/patients/" + patientKey
+          ),
+          {
+            batchCount: batchCount + 1,
+          }
+        ).catch((error) => {
+          setUploadStatus({ message: error, status: 0 });
+        });
+        console.log(uploadStatus);
+        navigate(-1);
+      } else if (uploadStatus.success === 0)
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+          confirmButtonColor: "#219EBC",
+        });
     }
   };
 
