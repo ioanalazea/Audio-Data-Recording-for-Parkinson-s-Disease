@@ -183,6 +183,7 @@ export default function AddPatient() {
       });
 
     // update the state
+    if(response)
     setDrugs(response);
   };
 

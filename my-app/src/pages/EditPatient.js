@@ -181,11 +181,13 @@ export default function EditPatient() {
     )
       .then((response) => response.json())
       .catch((err) => {
-        console.log(err.message);
+        console.log('DRUGBANK',err.message);
       });
 
     // update the state
+    if(response)
     setDrugs(response);
+   
   };
 
   useEffect(() => {
