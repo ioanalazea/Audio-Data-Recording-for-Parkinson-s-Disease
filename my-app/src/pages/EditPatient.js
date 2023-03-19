@@ -5,12 +5,13 @@ import Select from "react-select";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 import { database } from "../firebase/config.js";
-import { ref, push } from "firebase/database";
+import { ref, set } from "firebase/database";
 import { auth } from "../firebase/config.js";
 import { encryptStorage } from "../encryption/Encrypt.js";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-export default function AddPatient() {
+
+export default function EditPatient() {
   const styleTextField = {
     backgroundColor: "#F6F6F6",
     border: "0px solid #219EBC",
@@ -126,6 +127,7 @@ export default function AddPatient() {
   };
 
   const navigate = useNavigate();
+
   const [message, setMessage] = useState("");
 
   const optionsS = [
@@ -179,35 +181,43 @@ export default function AddPatient() {
     )
       .then((response) => response.json())
       .catch((err) => {
-        console.log(err.message);
+        console.log('DRUGBANK',err.message);
       });
 
     // update the state
     if(response)
     setDrugs(response);
+   
   };
 
   useEffect(() => {
     getApiData();
   }, []);
 
+  const location = useLocation();
+  // get patient key
+  let patientToEdit = location.state.patient;
+
   const [patient, setPatient] = useState({
-    fullName: "",
-    telephone: "",
-    age: "",
-    sex: "",
-    height: "",
-    weight: "",
-    bmi: "",
-    diagnosis: "",
-    symptoms: [""],
-    comorbidities: [""],
-    medication: [""],
-    postMedication: "",
-    therapeuticProc: "",
-    batchCount: 0
+    fullName: encryptStorage.decryptValue(patientToEdit.value.fullName),
+    telephone: encryptStorage.decryptValue(patientToEdit.value.telephone),
+    age: encryptStorage.decryptValue(patientToEdit.value.age),
+    sex: patientToEdit.value.sex,
+    height: patientToEdit.value.height,
+    weight: patientToEdit.value.weight,
+    diagnosis: patientToEdit.value.diagnosis,
+    symptoms: patientToEdit.value.symptoms,
+    comorbidities: patientToEdit.value.comorbidities,
+    medication: patientToEdit.value.medication,
+    postMedication: patientToEdit.value.postMedication,
+    therapeuticProc: patientToEdit.value.therapeuticProc,
   });
 
+  const getSymptomsPatientEdit = () => {
+    return patient.symptoms.map((symptom) =>
+      optionsSymptoms.find((element) => symptom === element.value)
+    );
+  };
   const handleChangeSymptoms = (data) => {
     let value = Array.from(data, (option) => option.value);
     setPatient({ ...patient, symptoms: value });
@@ -233,7 +243,7 @@ export default function AddPatient() {
     else return 1;
   };
 
-  const handleAddPatient = () => {
+  const handleEditPatient = () => {
     if (handleValidation() === 1) {
       //encrypting details
       patient.fullName = encryptStorage.encryptValue(patient.fullName);
@@ -247,16 +257,33 @@ export default function AddPatient() {
           parseFloat(patient.height)) *
         10000;
       patient.bmi = num.toString().slice(0, 5);
+      console.log(patient);
 
-      //here handle adding the patient
-      push(
-        ref(database, "users/" + auth.currentUser.uid + "/patients"),
-        patient
+      //here handle edit the patient
+      set(
+        ref(
+          database,
+          "users/" + auth.currentUser.uid + "/patients/" + patientToEdit.key
+        ),
+        {
+          fullName: patient.fullName,
+          telephone: patient.telephone,
+          age: patient.age,
+          sex: patient.sex,
+          height: patient.height,
+          weight: patient.weight,
+          diagnosis: patient.diagnosis,
+          symptoms: patient.symptoms,
+          comorbidities: patient.comorbidities,
+          medication: patient.medication,
+          postMedication: patient.postMedication,
+          therapeuticProc: patient.therapeuticProc,
+        }
       )
         .then(() => {
           Swal.fire({
             icon: "success",
-            title: "Patient added successfully!",
+            title: "Patient updated successfully!",
             showConfirmButton: false,
             timer: 1500,
           });
@@ -277,11 +304,11 @@ export default function AddPatient() {
   return (
     <div>
       <div style={headerStyle}>
-        <Link style={text1} to="/home">
+        <Link style={text1} to="/home/viewpatients">
           {" "}
           Back
         </Link>
-        <div style={text2}>Add patient</div>
+        <div style={text2}>Edit patient</div>
       </div>
       {message !== "" ? (
         <div style={{ marginTop: "40px", marginLeft: "15px" }}>
@@ -299,6 +326,7 @@ export default function AddPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Full name:</label>
           <TextField
+            value={patient.fullName}
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
@@ -309,6 +337,7 @@ export default function AddPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Telephone number:</label>
           <TextField
+            value={patient.telephone}
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
@@ -319,6 +348,7 @@ export default function AddPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Age:</label>
           <TextField
+            value={patient.age}
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
@@ -329,6 +359,9 @@ export default function AddPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Sex:</label>
           <Select
+            defaultValue={optionsS.find(
+              (element) => element.value === patient.sex
+            )}
             styles={styleSelect}
             classNamePrefix="select"
             isSearchable={false}
@@ -341,6 +374,7 @@ export default function AddPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Height (in cm):</label>
           <TextField
+            value={patient.height}
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
@@ -351,6 +385,7 @@ export default function AddPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Weight (in kg):</label>
           <TextField
+            value={patient.weight}
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
@@ -361,6 +396,9 @@ export default function AddPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Diagnosis:</label>
           <Select
+            defaultValue={optionsD.find(
+              (element) => element.value === patient.diagnosis
+            )}
             styles={styleSelect2}
             classNamePrefix="select"
             isSearchable={false}
@@ -373,6 +411,7 @@ export default function AddPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Symptoms:</label>
           <Select
+            defaultValue={getSymptomsPatientEdit}
             styles={styleSelect2}
             classNamePrefix="select"
             isMulti={true}
@@ -385,6 +424,7 @@ export default function AddPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Comorbidities:</label>
           <Autocomplete
+            defaultValue={patient.comorbidities}
             sx={styleAutocomplete}
             onInputChange={(e) => {
               searchDisease(e.target.value);
@@ -426,6 +466,7 @@ export default function AddPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Medication:</label>
           <Autocomplete
+            defaultValue={patient.medication}
             sx={styleAutocomplete}
             onChange={(event, newValue) => {
               setPatient({ ...patient, medication: newValue });
@@ -464,6 +505,7 @@ export default function AddPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Post-medication effects:</label>
           <TextField
+            value={patient.postMedication}
             multiline
             style={styleTextFieldMultiline}
             InputProps={styleInputProps}
@@ -476,6 +518,7 @@ export default function AddPatient() {
         <div style={{ marginTop: "20px" }}>
           <label>Therapeutic procedures:</label>
           <TextField
+            value={patient.therapeuticProc}
             multiline
             style={styleTextFieldMultiline}
             InputProps={styleInputProps}
@@ -488,9 +531,9 @@ export default function AddPatient() {
         <div style={{ marginTop: "20px", marginBottom: "10px" }}>
           <button
             className="button-style-blue"
-            onClick={() => handleAddPatient()}
+            onClick={() => handleEditPatient()}
           >
-            <div className="button-text-style1">ADD</div>
+            <div className="button-text-style1">SAVE CHANGES</div>
           </button>
         </div>
       </div>

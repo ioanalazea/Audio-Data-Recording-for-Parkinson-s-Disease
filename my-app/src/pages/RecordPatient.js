@@ -12,9 +12,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-
+import { useLocation } from "react-router-dom";
  
-import AudioReactRecorder, { RecordState } from 'audio-react-recorder'
 
 import RecorderControls from "../components/RecorderControls";
 import RecordingsList from "../components/RecordingsList";
@@ -44,7 +43,7 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
   }));
   
 export default function RecordPatient(){
-
+   
     const headerStyle ={
         marginTop:"20px",
         display: "flex",
@@ -103,20 +102,27 @@ export default function RecordPatient(){
 
 
 
-
+  const location = useLocation();
+  // get patient key
+  let patientKey = location.state.patientKey;
+  let batchCount = location.state.batchCount;
+  let diagnosis = location.state.diagnosis
   const { recorderState, ...handlers } = useRecorder();
   const { audio } = recorderState;
+  const {recordedBlob} = recorderState;
   const [vowel, setVowel] = useState("A");
 
   const handleSelectVowel = (e) => {
     e.preventDefault();
     setVowel(e.target.value)
   };
+ 
+ 
     return(
         <div>
 
             <div style={headerStyle}>
-                <Link style={textBack} to="/home/addpatient"> Back </Link>
+                <Link style={textBack} to="/home/viewpatients"> Back </Link>
                 <div style={textRecord}>Record patient</div>
             </div>
 
@@ -165,7 +171,7 @@ export default function RecordPatient(){
                 
             </div>
 
-        <RecordingsList audio={audio} vowel={vowel}/>
+        <RecordingsList patientKey={patientKey} batchCount={batchCount} diagnosis={diagnosis} audio={audio} vowel={vowel} recordedBlob={recordedBlob}/>
         </div>
     );
 }

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { startRecording, saveRecording } from "../handlers/recorder-controls";
+import { storage } from "../firebase/config.js";
+import { ref, uploadBytes } from 'firebase/storage';
 
 const initialState = {
   recordingMinutes: 0,
@@ -8,8 +10,9 @@ const initialState = {
   mediaStream: null,
   mediaRecorder: null,
   audio: null,
+  recordedBlob: null
 };
-
+const mimeType = "audio/webm";
 export default function useRecorder() {
   const [recorderState, setRecorderState] = useState(initialState);
 
@@ -60,6 +63,7 @@ export default function useRecorder() {
   useEffect(() => {
     const recorder = recorderState.mediaRecorder;
     let chunks = [];
+    let recorded = []
 
     if (recorder && recorder.state === "inactive") {
       recorder.start();
@@ -67,16 +71,20 @@ export default function useRecorder() {
       recorder.ondataavailable = (e) => {
         chunks.push(e.data);
       };
+      recorder.addEventListener("dataavailable", (event) => {
+        recorded = event.data
+      });
 
       recorder.onstop = () => {
-        const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
+        const blob = new Blob(chunks, { type: mimeType });
+        var recordedBlob = recorded;
         chunks = [];
-
         setRecorderState((prevState) => {
           if (prevState.mediaRecorder)
             return {
               ...initialState,
               audio: window.URL.createObjectURL(blob),
+              recordedBlob: recordedBlob
             };
           else return initialState;
         });

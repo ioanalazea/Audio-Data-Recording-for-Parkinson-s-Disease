@@ -4,7 +4,17 @@ body, html {
   font-family: 'MetropolisRegular';
 }
 
-.button-style1{
+.swal2-popup {
+  font-family: 'Metropolis' !important;
+}
+.swal2-popup .swal2-styled:focus {
+  box-shadow: none !important;
+}
+.a:hover {
+  cursor:pointer;
+ }
+
+.button-style-blk{
   align-items: center;
   width: 145px;
   height: 40px;
@@ -15,33 +25,106 @@ body, html {
 
 }
 
+.button-style-blk-small{
+  align-items: center;
+  width: 100px;
+  height: 30px;
+  left: calc(50% - 216px/2 + 3.5px);
+  background-color: #323031;
+  border-radius: 100px;
+  border: 3px solid #219EBC;
+}
 
-.button-style1:hover {
+.button-style-blk-small:hover {
+  box-shadow: rgba(168, 218, 220,.35) 0 -25px 18px -14px inset,rgba(168, 218, 220,.25) 0 1px 2px,rgba(168, 218, 220,.25) 0 2px 4px,rgba(168, 218, 220,.25) 0 4px 8px,rgba(168, 218, 220,.25) 0 8px 16px,rgba(168, 218, 220,.25) 0 16px 32px;
+  transform: scale(1.01) ;
+  cursor:pointer;
+}
+
+.button-style-blk:hover {
+  box-shadow: rgba(168, 218, 220,.35) 0 -25px 18px -14px inset,rgba(168, 218, 220,.25) 0 1px 2px,rgba(168, 218, 220,.25) 0 2px 4px,rgba(168, 218, 220,.25) 0 4px 8px,rgba(168, 218, 220,.25) 0 8px 16px,rgba(168, 218, 220,.25) 0 16px 32px;
+  transform: scale(1.01) ;
+  cursor:pointer;
+}
+
+.button-style-blue{
+  align-items: center;
+  width: 145px;
+  height: 40px;
+  left: calc(50% - 216px/2 + 3.5px);
+  background-color: #219EBC;
+  border-radius: 100px;
+  border: 1px;
+
+}
+
+
+.button-style-blue:hover {
   box-shadow: rgba(168, 218, 220,.35) 0 -25px 18px -14px inset,rgba(168, 218, 220,.25) 0 1px 2px,rgba(168, 218, 220,.25) 0 2px 4px,rgba(168, 218, 220,.25) 0 4px 8px,rgba(168, 218, 220,.25) 0 8px 16px,rgba(168, 218, 220,.25) 0 16px 32px;
   transform: scale(1.01) ;
 }
 
+.button-style-ver3{
+  align-items: center;
+  width: 74px;
+  height: 22px;
+  left: calc(50% - 216px/2 + 3.5px);
+  background-color: rgba(212, 163, 115, 0.7);
+  border: 3px solid #FAEDCD;
+  border-radius: 8px;
+}
+
+
+.button-style-ver3:hover {
+  box-shadow: rgba(214, 221, 151, 0.35) 0 -25px 18px -14px inset,rgba(212, 140, 45, 0.25) 0 1px 2px,rgba(218, 125, 38, 0.25) 0 2px 4px,rgba(218, 158, 80, 0.25) 0 4px 8px,rgba(168, 218, 220,.25) 0 8px 16px,rgba(168, 218, 220,.25) 0 16px 32px;
+  transform: scale(1.01) ;
+  cursor:pointer;
+}
+
 .button-text-style1 {
-  
 font-family: 'Metropolis';
 font-style: normal;
 font-weight: 700;
 font-size: 20px;
 line-height: 20px;
 /* identical to box height */
-
 text-align: center;
-
 color: #FFFCF2;
-
-
 /* Inside auto layout */
-
 flex: none;
 order: 0;
 flex-grow: 0;
 }
 
+.button-text-style1-small {
+  font-family: 'Metropolis';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 10px;
+  /* identical to box height */
+  text-align: center;
+  color: #219EBC;
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  }
+
+.button-text-style2 {
+  font-family: 'Metropolis';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 14px;
+  /* identical to box height */
+  text-align: center;
+  color: #FAEDCD;
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+  }
 .blob-bg {
   height: 1000px;
  /* background: url(./utils/blob-scene-haikei.svg) no-repeat top ;*/
@@ -154,4 +237,38 @@ flex-grow: 0;
 
 .delete-button:hover {
   color: #fd1c03;
+}
+
+
+/*blinker class */
+.blink {
+  animation: blinker .60s linear infinite;
+  color: red;
+}
+@keyframes blinker {
+  50% {
+      opacity: 0;
+  }
+}
+
+
+
+.error {
+  border: 1px solid;
+  margin: 10px auto;
+  border-radius: 30px;
+  padding: 15px 10px 15px 50px;
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  max-width: 250px;
+}
+.error {
+  color: #D8000C;
+  background-color: #FFBABA;
+  background-image: url('utils/error-icon.png');
+}
+
+.error:before{
+  font-size: 24px;
+  color: #D8000C;
 }

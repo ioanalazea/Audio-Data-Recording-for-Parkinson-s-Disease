@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { deleteAudio } from "../handlers/recordings-list";
 import generateKey from "../utils/generate-key";
 
-export default function useRecordingsList(audio, vowel) {
+export default function useRecordingsList(audio, vowel, recordedBlob) {
   const [recordings, setRecordings] = useState([]);
 
   useEffect(() => {
@@ -15,14 +15,14 @@ export default function useRecordingsList(audio, vowel) {
       )
       if (exists === 0)
       setRecordings((prevState) => {
-        return [...prevState, { key: vowel, audio }];
+        return [...prevState, { key: vowel, audio, recordedBlob }];
       });
       else{
         setRecordings(existingRecordings => {
 
           return existingRecordings.map((record) => {
       
-            return record.key === vowel? {key:vowel, audio}: record;
+            return record.key === vowel? {key:vowel, audio, recordedBlob}: record;
       
           })
         })
