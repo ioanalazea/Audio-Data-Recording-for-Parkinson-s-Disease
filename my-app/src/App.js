@@ -7,6 +7,7 @@ import AddPatient from './pages/AddPatient.js';
 import RecordPatient from './pages/RecordPatient.js';
 import ViewPatients from './pages/ViewPatients.js';
 import EditPatient from './pages/EditPatient';
+import AdminDashboard from './pages/AdminDashboard.js';
 
 export default function App() {
   return (
@@ -19,6 +20,9 @@ export default function App() {
         <Route path="home/viewpatients" element={<ViewPatients />}></Route>
         <Route path="home/viewpatients/recordpatient" element={<RecordPatient />}></Route>
         <Route path="home/viewpatients/editpatient" element={<EditPatient />}></Route>
+
+        <Route path="home/download" element={<AdminDashboard />}></Route>
+
 
       </Routes>
     </div>
