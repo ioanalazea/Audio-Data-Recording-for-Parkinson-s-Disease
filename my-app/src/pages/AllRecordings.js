@@ -88,6 +88,15 @@ TablePaginationActions.propTypes = {
 
 
 export default function AllRecordings() {
+  const title = {
+    fontFamily: "Metropolis",
+    fontStyle: "bold",
+    fontWeight: "800",
+    fontSize: "38px",
+    lineHeight: "40px",
+    /* identical to box height */
+    color: "#323031",
+  }
   const [recordingRefs, setRecordingRefs] = useState([]);
   //const [recordingRefs, setRecordingRefs] = useState([])
   const getRecordingRefs = () => {
@@ -159,17 +168,13 @@ const handleChangeRowsPerPage = (event) => {
 };
 
 return (<div>
-        <div>
-          <button onClick={downloadData} className="button-style-blue">
-            <div className="button-text-style1">Download all data</div>
-          </button>
-          </div>
+         <div style={title}> All recordings  </div>
   <TableContainer component={Paper}>
-    <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-    <TableHead>
+    <Table sx={{ minWidth: 500  }} aria-label="custom pagination table">
+    <TableHead sx={{background:"#219EBC"}}>
         <TableRow>
-            <TableCell><b>Recording name</b></TableCell>
-            <TableCell align="right"><b>Audio</b></TableCell>
+            <TableCell sx={{fontFamily:"Metropolis", fontSize:"20px"}}><b>Recording name</b></TableCell>
+            <TableCell sx={{fontFamily:"Metropolis", fontSize:"20px"}} align="right"><b>Audio</b></TableCell>
         </TableRow>
     </TableHead>
       <TableBody>
@@ -178,7 +183,7 @@ return (<div>
           : recordingRefs
         ).map((row) => (
           <TableRow key={row.name}>
-            <TableCell component="th" scope="row">
+            <TableCell sx={{fontFamily:"Metropolis", fontWeight:"400", color:"black", fontSize:"16px"}} component="th" scope="row">
               {row.name}
             </TableCell>
             <TableCell style={{ width: 160, paddingRight:20 }} align="right">
@@ -215,6 +220,12 @@ return (<div>
       </TableFooter>
     </Table>
   </TableContainer>
+
+  <div style={{paddingTop:"20px", display:"flex", justifyContent:"center"}}>
+          <button onClick={downloadData} className="button-style-blue">
+            <div className="button-text-style1">Download all data</div>
+          </button>
+          </div>
   </div>
 );
 
