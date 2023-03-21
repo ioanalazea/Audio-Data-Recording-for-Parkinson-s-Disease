@@ -75,9 +75,6 @@ export default function Home(){
                 <div className='button-text-style1' >Log out</div>
                 </button>
                 </div>  
-
-                <button className="button-style-blk"
-                onClick={() =>{navigate("download")}}></button>
         </div>
         </div>
     );

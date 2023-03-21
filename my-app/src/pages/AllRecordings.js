@@ -170,7 +170,7 @@ const handleChangeRowsPerPage = (event) => {
 return (<div>
          <div style={title}> All recordings  </div>
   <TableContainer component={Paper}>
-    <Table sx={{ minWidth: 500  }} aria-label="custom pagination table">
+    <Table sx={{ minWidth: 500, border:"4px solid #323031"  }} aria-label="custom pagination table">
     <TableHead sx={{background:"#219EBC"}}>
         <TableRow>
             <TableCell sx={{fontFamily:"Metropolis", fontSize:"20px"}}><b>Recording name</b></TableCell>
@@ -221,7 +221,7 @@ return (<div>
     </Table>
   </TableContainer>
 
-  <div style={{paddingTop:"20px", display:"flex", justifyContent:"center"}}>
+  <div style={{paddingTop:"15px", display:"flex", justifyContent:"center"}}>
           <button onClick={downloadData} className="button-style-blue">
             <div className="button-text-style1">Download all data</div>
           </button>

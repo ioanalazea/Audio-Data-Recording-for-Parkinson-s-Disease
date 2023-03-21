@@ -77,6 +77,9 @@ export default function SignIn() {
           // Signed in
           const user = userCredential.user;
           console.log("Signed in successfully!");
+          if (user.uid === "hR48GeIObJONCigXNt0oAbo58no2")
+          navigate("/admin")
+          else
           navigate("/home");
           // ...
         })
