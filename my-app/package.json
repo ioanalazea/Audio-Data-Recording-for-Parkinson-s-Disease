@@ -34,6 +34,7 @@
     "react-router-dom": "^6.8.1",
     "react-scripts": "5.0.1",
     "react-select": "^5.7.0",
+    "recharts": "^2.5.0",
     "request": "^2.88.2",
     "sweetalert2": "^11.7.3",
     "video-to-audio": "^1.0.1",

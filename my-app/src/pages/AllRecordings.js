@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { storage } from "../firebase/config.js";
-import { ref, listAll, getDownloadURL, getBlob } from "firebase/storage";
+import { ref, listAll, getDownloadURL } from "firebase/storage";
 import fileDownload from "js-file-download";
 
 import PropTypes from 'prop-types';
