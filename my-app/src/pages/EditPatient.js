@@ -177,7 +177,7 @@ export default function EditPatient() {
   // Function to collect data
   const getApiData = async () => {
     const response = await fetch(
-      "http://free214.cs.upt.ro:5000/api/v1/resources/drugs/all"
+      "https://free214.cs.upt.ro:5000/api/v1/resources/drugs/all"
     )
       .then((response) => response.json())
       .catch((err) => {
