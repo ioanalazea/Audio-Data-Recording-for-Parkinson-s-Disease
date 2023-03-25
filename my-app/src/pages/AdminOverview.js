@@ -13,6 +13,7 @@ import {
   Legend,
   Tooltip,
   Bar,
+  Label,
 } from "recharts";
 export default function AdminOverview() {
   const title = {
@@ -25,23 +26,196 @@ export default function AdminOverview() {
     /* identical to box height */
     color: "#323031",
   };
-  const [recordingsCount, setRecordingsCount] = useState(0);
-  const [patients, setPatients] = useState(0);
+
+  const titleChart = {
+    fontFamily: "Metropolis",
+    fontStyle: "bold",
+    fontWeight: "800",
+    fontSize: "20px",
+    lineHeight: "40px",
+    /* identical to box height */
+    color: "#323031",
+  };
+
+  const [recordings, setRecordings] = useState([]);
+  const extractMonthRecName = (name) => {
+    const date = name.split("_")[3];
+    const month = date.split(".")[0];
+    if (month === "01") return "Jan";
+    else if (month === "02") return "Feb";
+    else if (month === "03") return "Mar";
+    else if (month === "04") return "Apr";
+    else if (month === "05") return "May";
+    else if (month === "06") return "Jun";
+    else if (month === "07") return "Jul";
+    else if (month === "08") return "Aug";
+    else if (month === "09") return "Sep";
+    else if (month === "10") return "Oct";
+    else if (month === "11") return "Nov";
+    else if (month === "12") return "Dec";
+  };
+
+  const extractYearRecName = (name) => {
+    const date = name.split("_")[3];
+    const year = date.split(".")[1];
+    return year;
+  };
+
+  const extractVowel = (name) => {
+    const str = name.split("_")[6];
+    const vowel = str.split(".")[0];
+    return vowel;
+  };
+
+  const extractDiagnosis = (name) => {
+    const str = name.split("_")[5];
+    return str;
+  };
+
+  const getRecsPerMonth = (recordings) => {
+    var data = [
+      {
+        name: "Jan",
+        nrRec: 0,
+      },
+      {
+        name: "Feb",
+        nrRec: 0,
+      },
+      {
+        name: "Mar",
+        nrRec: 0,
+      },
+      {
+        name: "Apr",
+        nrRec: 0,
+      },
+      {
+        name: "May",
+        nrRec: 0,
+      },
+      {
+        name: "Jun",
+        nrRec: 0,
+      },
+      {
+        name: "Jul",
+        nrRec: 0,
+      },
+      {
+        name: "Sep",
+        nrRec: 0,
+      },
+      {
+        name: "Oct",
+        nrRec: 0,
+      },
+      {
+        name: "Nov",
+        nrRec: 0,
+      },
+      {
+        name: "Dec",
+        nrRec: 0,
+      },
+    ];
+    recordings.map((item) => {
+      const month = extractMonthRecName(item);
+      const year = extractYearRecName(item);
+      console.log(new Date().getFullYear() == "2023");
+      data.map((i) => {
+        if (i.name === month && year == new Date().getFullYear())
+          i.nrRec = i.nrRec + 1;
+      });
+    });
+    return data;
+  };
+
+  const getRecsBasedOnVowels = (recordings) => {
+    var data = [
+      {
+        name: "A",
+        nrRec: 0,
+      },
+      {
+        name: "E",
+        nrRec: 0,
+      },
+      {
+        name: "I",
+        nrRec: 0,
+      },
+      {
+        name: "O",
+        nrRec: 0,
+      },
+      {
+        name: "U",
+        nrRec: 0,
+      },
+    ];
+    recordings.map((item) => {
+      const vowel = extractVowel(item);
+
+      data.map((i) => {
+        if (i.name === vowel) i.nrRec = i.nrRec + 1;
+      });
+    });
+    return data;
+  };
+
+  const getRecsBasedOnDiagnosis = (recordings) => {
+    var data = [
+      {
+        name: "PD Stage 1",
+        short: "pd1",
+        nrRec: 0,
+      },
+      {
+        name: "PD Stage 2",
+        short: "pd2",
+        nrRec: 0,
+      },
+      {
+        name: "PD Stage 3",
+        short: "pd3",
+        nrRec: 0,
+      },
+      {
+        name: "PD Stage 4",
+        short: "pd4",
+        nrRec: 0,
+      },
+      {
+        name: "PD Stage 5",
+        short: "pd5",
+        nrRec: 0,
+      },
+      {
+        name: "Healthy Control",
+        short: "hc",
+        nrRec: 0,
+      },
+    ];
+    recordings.map((item) => {
+      const diagnosis = extractDiagnosis(item);
+
+      data.map((i) => {
+        if (i.short === diagnosis) i.nrRec = i.nrRec + 1;
+      });
+    });
+    return data;
+  };
 
   const getRecordingsInfo = () => {
-    const listRef = ref(storage, "recordings/");
+    const recRef = ref(storage, "recordings/");
 
     // Find all the prefixes and items.
-    listAll(listRef)
+    listAll(recRef)
       .then((res) => {
-        var count = 0;
         res.items.forEach((itemRef) => {
-          count = count + 1;
-          // All the items under listRef.
-          console.log(itemRef.name);
+          setRecordings((oldArray) => [...oldArray, itemRef.name]);
         });
-
-        setRecordingsCount(count);
       })
       .catch((error) => {
         // Uh-oh, an error occurred!
@@ -51,76 +225,8 @@ export default function AdminOverview() {
 
   useEffect(() => {
     getRecordingsInfo();
+    console.log(recordings);
   }, []);
-
-  const data = [
-    {
-      name: "Jan",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: "Feb",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: "Mar",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: "Apr",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: "May",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: "Jun",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: "Jul",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-    {
-      name: "Sep",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-    {
-      name: "Oct",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-    {
-      name: "Nov",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-    {
-      name: "Dec",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ];
 
   return (
     <div style={{ background: "#FAFAFA", width: "100vw", height: "100vh" }}>
@@ -133,12 +239,12 @@ export default function AdminOverview() {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          background:"#e8e8e8",
-          marginLeft:"100px",
-          marginRight:"100px",
-          paddingTop:"20px",
-          paddingBottom:"50px",
-          borderRadius:"10px"
+          background: "#e8e8e8",
+          marginLeft: "100px",
+          marginRight: "100px",
+          paddingTop: "20px",
+          paddingBottom: "50px",
+          borderRadius: "10px",
         }}
       >
         <Card
@@ -156,31 +262,84 @@ export default function AdminOverview() {
         >
           <CardContent>
             <Typography
-              sx={{ fontFamily: "Metropolis", fontSize: 19, fontWeight: 700 }}
+              sx={{ fontFamily: "Metropolis", fontSize: 17, fontWeight: 700 }}
               color="text.secondary"
               gutterBottom
             >
-              Number of recordings
+              Total number of recordings
             </Typography>
 
             <Typography
               sx={{ fontFamily: "Metropolis", fontSize: 40, fontWeight: 700 }}
               color="text.secondary"
             >
-              {recordingsCount}
+              {recordings.length}
             </Typography>
           </CardContent>
         </Card>
-        <div style={{paddingTop:"30px"}}>
-        <BarChart width={730} height={250} data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="pv" fill="#D4A373" />
-          <Bar dataKey="uv" fill="#219EBC" />
-        </BarChart>
+        <div style={{ paddingTop: "30px" }}>
+          <Typography
+            sx={{ fontFamily: "Metropolis", fontSize: 17, fontWeight: 700 }}
+            color="text.secondary"
+            gutterBottom
+          >
+            Number of recordings each month in {new Date().getFullYear()}
+          </Typography>
+
+          <BarChart width={730} height={250} data={getRecsPerMonth(recordings)}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="nrRec" fill="#D4A373" />
+          </BarChart>
+        </div>
+
+        <div style={{ paddingTop: "100px" }}>
+          <Typography
+            sx={{ fontFamily: "Metropolis", fontSize: 17, fontWeight: 700 }}
+            color="text.secondary"
+            gutterBottom
+          >
+            Number of recordings for each vowel
+          </Typography>
+
+          <BarChart
+            width={730}
+            height={250}
+            data={getRecsBasedOnVowels(recordings)}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="nrRec" fill="#219EBC" />
+          </BarChart>
+        </div>
+
+        <div style={{ paddingTop: "100px" }}>
+          <Typography
+            sx={{ fontFamily: "Metropolis", fontSize: 17, fontWeight: 700 }}
+            color="text.secondary"
+            gutterBottom
+          >
+            Number of recordings for each diagnosis
+          </Typography>
+
+          <BarChart
+            width={730}
+            height={250}
+            data={getRecsBasedOnDiagnosis(recordings)}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="nrRec" fill="#D4A373" />
+          </BarChart>
         </div>
       </div>
     </div>
