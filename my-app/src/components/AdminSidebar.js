@@ -1,7 +1,7 @@
 import React from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/config.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import Drawer from "@mui/material/Drawer";
@@ -32,7 +32,7 @@ export default function AdminSidebar() {
     setState({ ...state, [anchor]: open });
   };
   const navigate = useNavigate();
-
+  const location = useLocation();
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -42,11 +42,13 @@ export default function AdminSidebar() {
   };
 
   const handleGoToAll = () => {
-    navigate(-1);
+    if (location.pathname.includes('overview'))
+      navigate(-1);
   };
 
   const handleGoToOverview = () => {
-    navigate("overview");
+    if (!location.pathname.includes('overview'))
+      navigate("overview");
   };
 
   const list = (anchor) => (

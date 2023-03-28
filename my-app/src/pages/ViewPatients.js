@@ -58,7 +58,7 @@ export default function ViewPatients(){
     const [myPatients, setMyPatients] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const filteredList = myPatients.filter((item) => {
-        return encryptStorage.decryptValue(item.value.fullName).includes(searchTerm);
+        return (encryptStorage.decryptValue(item.value.fullName).toLowerCase()).includes(searchTerm.toLowerCase());
     })
 
     const getMyPatients = () => {
