@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { storage } from "../firebase/config.js";
-import { ref, listAll, getDownloadURL } from "firebase/storage";
+import { ref, listAll } from "firebase/storage";
 import AdminSidebar from "../components/AdminSidebar.js";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -13,7 +13,6 @@ import {
   Legend,
   Tooltip,
   Bar,
-  Label,
 } from "recharts";
 export default function AdminOverview() {
   const title = {
@@ -27,15 +26,7 @@ export default function AdminOverview() {
     color: "#323031",
   };
 
-  const titleChart = {
-    fontFamily: "Metropolis",
-    fontStyle: "bold",
-    fontWeight: "800",
-    fontSize: "20px",
-    lineHeight: "40px",
-    /* identical to box height */
-    color: "#323031",
-  };
+
 
   const [recordings, setRecordings] = useState([]);
   const extractMonthRecName = (name) => {
@@ -119,11 +110,10 @@ export default function AdminOverview() {
         nrRec: 0,
       },
     ];
-    recordings.map((item) => {
+    recordings.forEach((item) => {
       const month = extractMonthRecName(item);
       const year = extractYearRecName(item);
-      console.log(new Date().getFullYear() == "2023");
-      data.map((i) => {
+      data.forEach((i) => {
         if (i.name === month && year == new Date().getFullYear())
           i.nrRec = i.nrRec + 1;
       });
@@ -154,10 +144,10 @@ export default function AdminOverview() {
         nrRec: 0,
       },
     ];
-    recordings.map((item) => {
+    recordings.forEach((item) => {
       const vowel = extractVowel(item);
 
-      data.map((i) => {
+      data.forEach((i) => {
         if (i.name === vowel) i.nrRec = i.nrRec + 1;
       });
     });
@@ -197,10 +187,10 @@ export default function AdminOverview() {
         nrRec: 0,
       },
     ];
-    recordings.map((item) => {
+    recordings.forEach((item) => {
       const diagnosis = extractDiagnosis(item);
 
-      data.map((i) => {
+      data.forEach((i) => {
         if (i.short === diagnosis) i.nrRec = i.nrRec + 1;
       });
     });
@@ -226,7 +216,7 @@ export default function AdminOverview() {
   useEffect(() => {
     getRecordingsInfo();
     console.log(recordings);
-  }, []);
+  });
 
   return (
     <div style={{ background: "#FAFAFA", width: "100vw", height: "100vh" }}>

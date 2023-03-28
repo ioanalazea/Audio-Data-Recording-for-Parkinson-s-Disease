@@ -239,7 +239,7 @@ export default function EditPatient() {
     else if (patient.diagnosis === "")
       message = "Please provide patient's diagnosis!";
     setMessage(message);
-    if (message != "") return 0;
+    if (message !== "") return 0;
     else return 1;
   };
 

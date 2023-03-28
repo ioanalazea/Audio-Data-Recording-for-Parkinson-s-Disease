@@ -50,17 +50,7 @@ export default function SignIn() {
     width: "250px",
     align: "center",
   };
-  const styleInputProps = {
-    disableUnderline: true,
-    style: {
-      color: "#323031",
-      fontFamily: "Metropolis",
-      fontStyle: "normal",
-      fontWeight: "400",
-      fontSize: "18px",
-      lineHeight: "18px",
-    },
-  };
+  
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -83,7 +73,6 @@ export default function SignIn() {
           // ...
         })
         .catch((error) => {
-          const errorCode = error.code;
           const errorMessage = error.message;
 
           if (errorMessage === "Firebase: Error (auth/invalid-email).")

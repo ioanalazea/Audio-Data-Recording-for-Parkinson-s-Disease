@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
-import MicNoneOutlinedIcon from '@mui/icons-material/MicNoneOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -31,7 +30,6 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
       fontSize: 16,
       padding: '10px 26px 10px 12px',
       transition: theme.transitions.create(['border-color', 'box-shadow']),
-      // Use the system font instead of the default Roboto font.
       fontFamily: 
         'Metropolis',
       '&:focus': {
@@ -79,23 +77,23 @@ export default function RecordPatient(){
         justifyContent: "center",
         alignItems: "center",   
     }
-
+    const styleModal = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 300,
+        bgcolor: 'background.paper',
+        border: '2px solid #323031',
+        borderRadius:"5%",
+        p: 4,
+      };
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const styleModal = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 300,
-    bgcolor: 'background.paper',
-    border: '2px solid #323031',
-    borderRadius:"5%",
-    p: 4,
-  };
+ 
 
 
 

@@ -150,6 +150,7 @@ export default function AllRecordings() {
   const downloadData = () => {
     recordingRefs.map((item) => {
       fileDownload(item.blob, item.name);
+      return(1);
     })
   }
 /////////////////////////////////////////////////////
