@@ -3,13 +3,13 @@ import HomeIcon from '@mui/icons-material/Home';
 import {  TextField } from '@material-ui/core';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from '@mui/icons-material/Search';
-import EmailIcon from "@mui/icons-material/Email";
 import { useNavigate } from "react-router-dom";
 import PatientInfo from '../components/PatientInfo';
 import { database } from "../firebase/config.js";
 import { ref, get} from 'firebase/database';
 import { auth } from "../firebase/config.js";
 import { encryptStorage } from "../encryption/Encrypt.js";
+import ReactLoading from "react-loading";
 
 export default function ViewPatients(){
 
@@ -26,7 +26,7 @@ export default function ViewPatients(){
         paddingLeft:"10px",
         filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
         display: "block",
-        width: "250px",
+        width: "300px",
         align:"center",
         marginBottom:"50px"
     }
@@ -53,6 +53,7 @@ export default function ViewPatients(){
         alignItems: "center",   
         marginTop: "100px"
     }
+    const [isLoading, setIsLoading] = useState(false);
 
     const [myPatients, setMyPatients] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -72,11 +73,15 @@ export default function ViewPatients(){
         }); 
 
         setMyPatients(myPatientsArray);
+        setIsLoading(false);
+
       });
 
     }
 
     useEffect(()=>{
+      setIsLoading(true);
+
         getMyPatients();
     },[navigate]);
 
@@ -95,13 +100,22 @@ export default function ViewPatients(){
             <div className="headerText" style={{paddingTop:"17px"}}>Your patients</div>
         </div>
         <div style={containerStyle}>
+        {isLoading ? (
+        <ReactLoading
+        type="spinningBubbles"
+        color="#219EBC"
+        height={100}
+        width={100}
+      />
+      ) : (
+          <div>
         <TextField style={styleTextField} InputProps={styleInputProps}  onChange={(e) => setSearchTerm(e.target.value)}/>              
 
       {filteredList.map((item, index) => (
         <PatientInfo key={index} patient={item}/>
       ))}
 
-        
+        </div>)}
         </div>
         </div>
     )

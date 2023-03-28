@@ -25,7 +25,6 @@ export default function SignIn() {
     fontWeight: "800",
     fontSize: "38px",
     lineHeight: "40px",
-    /* identical to box height */
     color: "#323031",
   };
 

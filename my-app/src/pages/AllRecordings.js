@@ -20,6 +20,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import ReactLoading from "react-loading";
 
 
 
@@ -97,6 +98,8 @@ export default function AllRecordings() {
     /* identical to box height */
     color: "#323031",
   }
+  const [isLoading, setIsLoading] = useState(false);
+
   const [recordingRefs, setRecordingRefs] = useState([]);
   //const [recordingRefs, setRecordingRefs] = useState([])
   const getRecordingRefs = () => {
@@ -117,7 +120,8 @@ export default function AllRecordings() {
               const blob = xhr.response;
               //recordingRefs.push({name:itemRef.name, url:url, blob:blob})
               setRecordingRefs(oldArray => [...oldArray, {name:itemRef.name, url:url, blob:blob}]);
-            
+              setIsLoading(false);
+
 
             };
             xhr.open('GET', url);
@@ -138,8 +142,8 @@ export default function AllRecordings() {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     getRecordingRefs();
-    console.log(recordingRefs)
   }, []);
 
 
@@ -169,6 +173,14 @@ const handleChangeRowsPerPage = (event) => {
 
 return (<div>
          <div style={title}> All recordings  </div>
+         {isLoading ? (
+        <ReactLoading
+        type="spinningBubbles"
+        color="#219EBC"
+        height={100}
+        width={100}
+      />
+      ) : (
   <TableContainer component={Paper}>
     <Table sx={{ minWidth: 500, border:"4px solid #323031"  }} aria-label="custom pagination table">
     <TableHead sx={{background:"#219EBC"}}>
@@ -220,7 +232,7 @@ return (<div>
       </TableFooter>
     </Table>
   </TableContainer>
-
+)}
   <div style={{paddingTop:"15px", display:"flex", justifyContent:"center"}}>
           <button onClick={downloadData} className="button-style-blue">
             <div className="button-text-style1">Download all data</div>
@@ -229,5 +241,5 @@ return (<div>
   </div>
 );
 
-
+ 
 }
