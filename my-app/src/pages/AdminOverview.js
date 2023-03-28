@@ -216,7 +216,7 @@ export default function AdminOverview() {
   useEffect(() => {
     getRecordingsInfo();
     console.log(recordings);
-  });
+  }, []);
 
   return (
     <div style={{ background: "#FAFAFA", width: "100vw", height: "100vh" }}>
