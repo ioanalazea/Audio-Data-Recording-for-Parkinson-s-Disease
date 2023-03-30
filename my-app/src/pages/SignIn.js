@@ -167,7 +167,7 @@ export default function SignIn() {
             </Typography>
           </div>
           <div style={{ marginTop: "80px", marginLeft: "5px" }}>
-            <Link style={{ color: "#323931" }} to="/register">
+            <Link style={{ color: "#323931" }} href="/register">
               Don't have an account? <b>Register here.</b>
             </Link>
           </div>
