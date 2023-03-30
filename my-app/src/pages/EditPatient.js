@@ -211,6 +211,8 @@ export default function EditPatient() {
     medication: patientToEdit.value.medication,
     postMedication: patientToEdit.value.postMedication,
     therapeuticProc: patientToEdit.value.therapeuticProc,
+    batchCount: patientToEdit.value.batchCount,
+
   });
 
   const getSymptomsPatientEdit = () => {
@@ -222,7 +224,7 @@ export default function EditPatient() {
     let value = Array.from(data, (option) => option.value);
     setPatient({ ...patient, symptoms: value });
   };
-
+console.log(patient.comorbidities,'/////',patient.medication)
   const handleValidation = () => {
     var message = "";
     if (patient.fullName === "")
@@ -257,6 +259,11 @@ export default function EditPatient() {
           parseFloat(patient.height)) *
         10000;
       patient.bmi = num.toString().slice(0, 5);
+      if (patient.medication.length === 0)
+        patient.medication = [""]
+      if (patient.comorbidities.length === 0)
+        patient.comorbidities = [""]
+      
       console.log(patient);
 
       //here handle edit the patient
@@ -278,6 +285,7 @@ export default function EditPatient() {
           medication: patient.medication,
           postMedication: patient.postMedication,
           therapeuticProc: patient.therapeuticProc,
+          batchCount: patientToEdit.value.batchCount,
         }
       )
         .then(() => {

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { TextField, Typography } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Image from 'react-image-resizer';
 import EmailIcon from "@mui/icons-material/Email";
 import img from '../utils/icons8-password-reset-68.png';
 import Background from "../utils/stacked-waves.svg";
@@ -115,7 +114,7 @@ export default function ResetPassword() {
         <div>
           <div style={title}> Forgot password?</div>
           <div className="image-container">
-                <img src={img} alt="img" class="center" width={90} height={90}></img>
+                <img src={img} alt="img"  width={90} height={90}></img>
                 
         </div>
           <div style={resetMessage}> Please enter your email address and we will email you a link to reset your password.</div>
@@ -148,7 +147,7 @@ export default function ResetPassword() {
           <div style={{ marginTop: "25px",  paddingLeft:"85px", }}>
             <button
               className="button-style-blk"
-              onClick={() => navigate(-1)}
+              onClick={() => navigate('/')}
             >
               <div className="button-text-style1">Go back</div>
             </button>

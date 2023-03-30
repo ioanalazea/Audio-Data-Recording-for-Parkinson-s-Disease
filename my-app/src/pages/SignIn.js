@@ -6,8 +6,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import Link from '@mui/material/Link';
 import Background from "../utils/stacked-waves.svg";
 import {
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
+  signInWithEmailAndPassword
 } from "firebase/auth";
 import { auth } from "../firebase/config.js";
 import { useNavigate } from "react-router-dom";
@@ -87,7 +86,6 @@ export default function SignIn() {
         });
     }
   };
-
 
   return (
     <div style={signInBackground}>

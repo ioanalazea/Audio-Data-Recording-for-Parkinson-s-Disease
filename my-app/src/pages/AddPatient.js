@@ -183,8 +183,7 @@ export default function AddPatient() {
       });
 
     // update the state
-    if(response)
-    setDrugs(response);
+    if (response) setDrugs(response);
   };
 
   useEffect(() => {
@@ -205,7 +204,7 @@ export default function AddPatient() {
     medication: [""],
     postMedication: "",
     therapeuticProc: "",
-    batchCount: 0
+    batchCount: 0,
   });
 
   const handleChangeSymptoms = (data) => {
