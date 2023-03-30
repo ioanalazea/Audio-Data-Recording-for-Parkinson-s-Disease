@@ -9,12 +9,14 @@ import ViewPatients from './pages/ViewPatients.js';
 import EditPatient from './pages/EditPatient';
 import AdminDashboard from './pages/AdminDashboard.js';
 import AdminOverview from './pages/AdminOverview.js';
+import ResetPassword from './pages/ResetPassword.js';
 
 export default function App() {
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<SignIn />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="register" element={<Register />} />
         <Route path="home" element={<Home />}></Route>
         <Route path="home/addpatient" element={<AddPatient />}></Route>
