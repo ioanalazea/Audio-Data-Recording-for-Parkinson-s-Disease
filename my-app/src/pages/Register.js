@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import {  TextField } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Background from '../utils/blob-scene-haikei.svg';
 import { createUserWithEmailAndPassword, signOut, updateProfile } from 'firebase/auth';
 import { auth } from "../firebase/config.js";
+import Swal from "sweetalert2";
 
 export default function Register(){
 
@@ -50,7 +52,7 @@ export default function Register(){
         }
     }
 
-
+    const navigate = useNavigate();
     const isEmail = (email) =>
   /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
     const [user, setUser] = useState({ 
@@ -127,8 +129,13 @@ export default function Register(){
               .then((userCredential) => {
 
                 console.log('User registered successfully!')
-                alert('Account created successfully!')
-
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Account created successfully!',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+                navigate(-1);
                 updateProfile(auth.currentUser,{
                     displayName: user.displayName,
                     phoneNumber: user.phoneNumber

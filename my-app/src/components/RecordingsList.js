@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { database, storage } from "../firebase/config.js";
 import { ref, uploadBytes } from "firebase/storage";
 import { auth } from "../firebase/config.js";
-import { ref as refDatabase, set, update } from "firebase/database";
+import { ref as refDatabase, update } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 
 export default function RecordingsList({
@@ -53,7 +53,7 @@ export default function RecordingsList({
   const navigate = useNavigate();
   const getDate = () => {
     var today = new Date();
-    var dd = String(today.getDate()).padStart(2, "0");
+    //var dd = String(today.getDate()).padStart(2, "0");
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
     var yyyy = today.getFullYear();
 
@@ -79,7 +79,8 @@ export default function RecordingsList({
       var today = getDate();
       var storageRef = ref(
         storage,
-        "users/" + auth.currentUser?.uid + "/patients/" + patientKey
+        //"users/" + auth.currentUser?.uid + "/patients/" + patientKey
+        "recordings/"
       );
 
       for (let i = 0; i < 5; i++) {

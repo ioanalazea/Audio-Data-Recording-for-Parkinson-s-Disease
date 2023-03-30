@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import HomeIcon from '@mui/icons-material/Home';
+import {  TextField } from '@material-ui/core';
+import InputAdornment from "@material-ui/core/InputAdornment";
+import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from "react-router-dom";
 import PatientInfo from '../components/PatientInfo';
 import { database } from "../firebase/config.js";
 import { ref, get} from 'firebase/database';
 import { auth } from "../firebase/config.js";
+import { encryptStorage } from "../encryption/Encrypt.js";
+import ReactLoading from "react-loading";
+
 export default function ViewPatients(){
 
     const navigate = useNavigate();
@@ -12,6 +18,34 @@ export default function ViewPatients(){
         navigate("/home");
     }
 
+    const styleTextField = {
+        backgroundColor: "rgba(212, 163, 115, 0.2)",
+       // border: "1px solid #323031",
+        borderRadius: "10px",
+        paddingRight:"10px",
+        paddingLeft:"10px",
+        filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
+        display: "block",
+        width: "300px",
+        align:"center",
+        marginBottom:"50px"
+    }
+    const styleInputProps = {
+        startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+        disableUnderline: true,
+        style: {
+            color: "#323031",
+            fontFamily: 'Metropolis',
+            fontStyle: "normal",
+            fontWeight: "400",
+            fontSize: "18px",
+            lineHeight:"18px",
+        }
+    }
     const containerStyle ={
         display: "flex",
         flexDirection: "column",
@@ -19,9 +53,14 @@ export default function ViewPatients(){
         alignItems: "center",   
         marginTop: "100px"
     }
+    const [isLoading, setIsLoading] = useState(false);
 
     const [myPatients, setMyPatients] = useState([]);
-    const [deleted ,setDeleted] = useState(false)
+    const [searchTerm, setSearchTerm] = useState("");
+    const filteredList = myPatients.filter((item) => {
+        return (encryptStorage.decryptValue(item.value.fullName).toLowerCase()).includes(searchTerm.toLowerCase());
+    })
+
     const getMyPatients = () => {
        
       var goalsRef = ref(database,'users/' + auth.currentUser.uid + "/patients")
@@ -34,12 +73,15 @@ export default function ViewPatients(){
         }); 
 
         setMyPatients(myPatientsArray);
-        
+        setIsLoading(false);
+
       });
 
     }
 
     useEffect(()=>{
+      setIsLoading(true);
+
         getMyPatients();
     },[navigate]);
 
@@ -58,9 +100,22 @@ export default function ViewPatients(){
             <div className="headerText" style={{paddingTop:"17px"}}>Your patients</div>
         </div>
         <div style={containerStyle}>
-        {myPatients.map((item)=>{
-                        return(<PatientInfo key={item.key} patient={item}/>)
-                    })}
+        {isLoading ? (
+        <ReactLoading
+        type="spinningBubbles"
+        color="#219EBC"
+        height={100}
+        width={100}
+      />
+      ) : (
+          <div>
+        <TextField style={styleTextField} InputProps={styleInputProps}  onChange={(e) => setSearchTerm(e.target.value)}/>              
+
+      {filteredList.map((item, index) => (
+        <PatientInfo key={index} patient={item}/>
+      ))}
+
+        </div>)}
         </div>
         </div>
     )

@@ -5,12 +5,12 @@ import PasswordIcon from "@mui/icons-material/Password";
 import EmailIcon from "@mui/icons-material/Email";
 import { Link } from "react-router-dom";
 import Background from "../utils/stacked-waves.svg";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase/config.js";
 import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
-  const drawingStyle1 = {
+  const signInBackground = {
     backgroundImage: "url(" + Background + ")",
     backgroundPosition: "center",
     backgroundSize: "cover",
@@ -25,7 +25,6 @@ export default function SignIn() {
     fontWeight: "800",
     fontSize: "38px",
     lineHeight: "40px",
-    /* identical to box height */
     color: "#323031",
   };
 
@@ -51,17 +50,7 @@ export default function SignIn() {
     width: "250px",
     align: "center",
   };
-  const styleInputProps = {
-    disableUnderline: true,
-    style: {
-      color: "#323031",
-      fontFamily: "Metropolis",
-      fontStyle: "normal",
-      fontWeight: "400",
-      fontSize: "18px",
-      lineHeight: "18px",
-    },
-  };
+  
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -77,23 +66,35 @@ export default function SignIn() {
           // Signed in
           const user = userCredential.user;
           console.log("Signed in successfully!");
+          if (user.uid === "hR48GeIObJONCigXNt0oAbo58no2")
+          navigate("/admin")
+          else
           navigate("/home");
           // ...
         })
         .catch((error) => {
-          const errorCode = error.code;
           const errorMessage = error.message;
 
           if (errorMessage === "Firebase: Error (auth/invalid-email).")
             setError("Email is invalid!");
           else if (errorMessage === "Firebase: Error (auth/wrong-password).")
             setError("Wrong password!");
-          console.log(errorMessage);
+          else if (errorMessage === "Firebase: Error (auth/user-not-found).")
+          setError("User not found!");
+
+            console.log(errorMessage);
         });
     }
-  };
+  }
+
+
+  const triggerResetEmail = async () => {
+    await sendPasswordResetEmail(auth, email);
+    console.log("Password reset email sent")
+  }
+ 
   return (
-    <div style={drawingStyle1}>
+    <div style={signInBackground}>
 
       <div
         style={{
@@ -151,6 +152,13 @@ export default function SignIn() {
               <div className="button-text-style1">Sign in</div>
             </button>
           </div>
+
+
+          {error === "Wrong password!"?(<div style={{ marginTop: "10px", marginLeft: "5px" }}>
+            <Link style={{ color: "#323931" }} onClick={triggerResetEmail}>
+              Forgot password? <b>Click to reset here.</b>
+            </Link>
+          </div>):(<></>)}
           <div style={{ marginTop: "10px", marginLeft: "10px" }}>
             <Typography
               className="blink"
@@ -159,7 +167,7 @@ export default function SignIn() {
               {error}
             </Typography>
           </div>
-          <div style={{ marginTop: "130px", marginLeft: "5px" }}>
+          <div style={{ marginTop: "80px", marginLeft: "5px" }}>
             <Link style={{ color: "#323931" }} to="/register">
               Don't have an account? <b>Register here.</b>
             </Link>
