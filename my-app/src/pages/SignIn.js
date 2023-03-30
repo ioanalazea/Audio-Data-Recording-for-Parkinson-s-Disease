@@ -10,7 +10,7 @@ import { auth } from "../firebase/config.js";
 import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
-  const drawingStyle1 = {
+  const signInBackground = {
     backgroundImage: "url(" + Background + ")",
     backgroundPosition: "center",
     backgroundSize: "cover",
@@ -94,7 +94,7 @@ export default function SignIn() {
   }
  
   return (
-    <div style={drawingStyle1}>
+    <div style={signInBackground}>
 
       <div
         style={{
