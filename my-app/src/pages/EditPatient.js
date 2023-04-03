@@ -197,7 +197,6 @@ export default function EditPatient() {
   const location = useLocation();
   // get patient key
   let patientToEdit = location.state.patient;
-console.log(patientToEdit.value.comorbidities[0].length===1?[]:patientToEdit.value.comorbidities)
   const [patient, setPatient] = useState({
     fullName: encryptStorage.decryptValue(patientToEdit.value.fullName),
     telephone: encryptStorage.decryptValue(patientToEdit.value.telephone),
