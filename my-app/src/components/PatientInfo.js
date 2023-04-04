@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 export default function PatientInfo({ patient }) {
   const styleBody = {
     minWidth: "310px",
-    height: "100px",
+    height: "125px",
     backgroundColor: "#F6E5D4",
     shadowOpacity: 3,
     shadowRadius: 10,
@@ -204,10 +204,18 @@ export default function PatientInfo({ patient }) {
           <button className="button-style-ver3" onClick={handleGoToRecording}>
             <div className="button-text-style2">Record</div>
           </button>
-          <button style={{marginTop:"10px"}} className="button-style-ver3" onClick={handleShowDetails}>
+          <button
+            style={{ marginTop: "20px" }}
+            className="button-style-ver3"
+            onClick={handleShowDetails}
+          >
             <div className="button-text-style2">Details</div>
           </button>
-          <button  style={{marginTop:"10px"}} className="button-style-ver3" onClick={handleGoToEdit}>
+          <button
+            style={{ marginTop: "20px" }}
+            className="button-style-ver3"
+            onClick={handleGoToEdit}
+          >
             <div className="button-text-style2">Edit</div>
           </button>
         </div>

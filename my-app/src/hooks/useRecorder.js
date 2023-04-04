@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { startRecording, saveRecording } from "../handlers/recorder-controls";
 import { storage } from "../firebase/config.js";
-import { ref, uploadBytes } from 'firebase/storage';
+import { ref, uploadBytes } from "firebase/storage";
 
 const initialState = {
   recordingMinutes: 0,
@@ -10,7 +10,7 @@ const initialState = {
   mediaStream: null,
   mediaRecorder: null,
   audio: null,
-  recordedBlob: null
+  recordedBlob: null,
 };
 const mimeType = "audio/webm";
 export default function useRecorder() {
@@ -31,7 +31,10 @@ export default function useRecorder() {
             return prevState;
           }
 
-          if (prevState.recordingSeconds >= 0 && prevState.recordingSeconds < 59)
+          if (
+            prevState.recordingSeconds >= 0 &&
+            prevState.recordingSeconds < 59
+          )
             return {
               ...prevState,
               recordingSeconds: prevState.recordingSeconds + 1,
@@ -63,7 +66,7 @@ export default function useRecorder() {
   useEffect(() => {
     const recorder = recorderState.mediaRecorder;
     let chunks = [];
-    let recorded = []
+    let recorded = [];
 
     if (recorder && recorder.state === "inactive") {
       recorder.start();
@@ -72,7 +75,7 @@ export default function useRecorder() {
         chunks.push(e.data);
       };
       recorder.addEventListener("dataavailable", (event) => {
-        recorded = event.data
+        recorded = event.data;
       });
 
       recorder.onstop = () => {
@@ -84,7 +87,7 @@ export default function useRecorder() {
             return {
               ...initialState,
               audio: window.URL.createObjectURL(blob),
-              recordedBlob: recordedBlob
+              recordedBlob: recordedBlob,
             };
           else return initialState;
         });
@@ -92,7 +95,8 @@ export default function useRecorder() {
     }
 
     return () => {
-      if (recorder) recorder.stream.getAudioTracks().forEach((track) => track.stop());
+      if (recorder)
+        recorder.stream.getAudioTracks().forEach((track) => track.stop());
     };
   }, [recorderState.mediaRecorder]);
 

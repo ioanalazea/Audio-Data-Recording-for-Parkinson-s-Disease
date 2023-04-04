@@ -6,31 +6,25 @@ export default function useRecordingsList(audio, vowel, recordedBlob) {
   const [recordings, setRecordings] = useState([]);
 
   useEffect(() => {
-    if (audio){
-      var exists = 0
+    if (audio) {
+      var exists = 0;
       recordings.map((record) => {
-        if (record.key === vowel)
-        exists = 1
-      }
-      )
-      if (exists === 0)
-      setRecordings((prevState) => {
-        return [...prevState, { key: vowel, audio, recordedBlob }];
+        if (record.key === vowel) exists = 1;
       });
-      else{
-        setRecordings(existingRecordings => {
-
+      if (exists === 0)
+        setRecordings((prevState) => {
+          return [...prevState, { key: vowel, audio, recordedBlob }];
+        });
+      else {
+        setRecordings((existingRecordings) => {
           return existingRecordings.map((record) => {
-      
-            return record.key === vowel? {key:vowel, audio, recordedBlob}: record;
-      
-          })
-        })
+            return record.key === vowel
+              ? { key: vowel, audio, recordedBlob }
+              : record;
+          });
+        });
       }
     }
-    
-    
-    
   }, [audio]);
 
   return {

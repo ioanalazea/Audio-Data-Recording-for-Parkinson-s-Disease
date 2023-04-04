@@ -42,13 +42,11 @@ export default function AdminSidebar() {
   };
 
   const handleGoToAll = () => {
-    if (location.pathname.includes('overview'))
-      navigate(-1);
+    if (location.pathname.includes("overview")) navigate(-1);
   };
 
   const handleGoToOverview = () => {
-    if (!location.pathname.includes('overview'))
-      navigate("overview");
+    if (!location.pathname.includes("overview")) navigate("overview");
   };
 
   const list = (anchor) => (

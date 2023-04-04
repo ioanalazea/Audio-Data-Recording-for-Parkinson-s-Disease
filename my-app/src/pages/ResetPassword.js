@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { TextField } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import EmailIcon from "@mui/icons-material/Email";
-import img from '../utils/icons8-password-reset-68.png';
+import img from "../utils/icons8-password-reset-68.png";
 import Background from "../utils/stacked-waves.svg";
 import Swal from "sweetalert2";
-import {
-  sendPasswordResetEmail,
-} from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase/config.js";
 import { useNavigate } from "react-router-dom";
 
@@ -31,8 +29,8 @@ export default function ResetPassword() {
   };
 
   const resetMessage = {
-    paddingLeft:"20px",
-    paddingTop:"25px",
+    paddingLeft: "20px",
+    paddingTop: "25px",
     fontFamily: "Metropolis",
     fontStyle: "bold",
     fontWeight: "700",
@@ -57,47 +55,42 @@ export default function ResetPassword() {
 
   const [email, setEmail] = useState("");
 
-
-
   const handleSendResetEmail = () => {
-    if(email === "") {
-        Swal.fire({
-            icon: "error",
-            title: "Please enter your email!",
-            showConfirmButton: false,
-            timer: 2500
-          })  
-    }
-    else
-    sendPasswordResetEmail(auth, email)
-    .then((response)=> {
-        Swal.fire({
+    if (email === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Please enter your email!",
+        showConfirmButton: false,
+        timer: 2500,
+      });
+    } else
+      sendPasswordResetEmail(auth, email)
+        .then((response) => {
+          Swal.fire({
             icon: "success",
             title: "Password reset email sent!",
-            text: 'Please check your email and follow the instructions in order to reset your password!',
+            text: "Please check your email and follow the instructions in order to reset your password!",
             showConfirmButton: true,
-            
-          })
-        console.log("Password reset email sent");}
-    )
-    .catch((error)=>{
-        console.log(error)
-        if (error.message.includes("auth/invalid-email"))
-        Swal.fire({
-            icon: "error",
-            title: "Invalid email address!",
-            showConfirmButton: false,
-            timer: 1500
-          })        
-        else if (error.message.includes("auth/user-not-found"))
-        Swal.fire({
-            icon: "error",
-            title: "No user corresponding to the email address!",
-            showConfirmButton: false,
-            timer: 2500
-          })     
-
-    })
+          });
+          console.log("Password reset email sent");
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.message.includes("auth/invalid-email"))
+            Swal.fire({
+              icon: "error",
+              title: "Invalid email address!",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          else if (error.message.includes("auth/user-not-found"))
+            Swal.fire({
+              icon: "error",
+              title: "No user corresponding to the email address!",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+        });
   };
 
   return (
@@ -114,10 +107,13 @@ export default function ResetPassword() {
         <div>
           <div style={title}> Forgot password?</div>
           <div className="image-container">
-                <img src={img} alt="img"  width={90} height={90}></img>
-                
-        </div>
-          <div style={resetMessage}> Please enter your email address and we will email you a link to reset your password.</div>
+            <img src={img} alt="img" width={90} height={90}></img>
+          </div>
+          <div style={resetMessage}>
+            {" "}
+            Please enter your email address and we will email you a link to
+            reset your password.
+          </div>
 
           <div style={{ marginTop: "20px" }}>
             <label>Email Address:</label>
@@ -135,23 +131,20 @@ export default function ResetPassword() {
             />
           </div>
 
-          <div style={{ marginTop: "25px",  paddingLeft:"35px", }}>
+          <div style={{ marginTop: "25px", paddingLeft: "35px" }}>
             <button
               className="button-style-blk"
-              style={{width:"250px"}}
+              style={{ width: "250px" }}
               onClick={handleSendResetEmail}
             >
               <div className="button-text-style1">Send reset email</div>
             </button>
           </div>
-          <div style={{ marginTop: "25px",  paddingLeft:"85px", }}>
-            <button
-              className="button-style-blk"
-              onClick={() => navigate('/')}
-            >
+          <div style={{ marginTop: "25px", paddingLeft: "85px" }}>
+            <button className="button-style-blk" onClick={() => navigate("/")}>
               <div className="button-text-style1">Go back</div>
             </button>
-          </div>          
+          </div>
         </div>
       </div>
     </div>

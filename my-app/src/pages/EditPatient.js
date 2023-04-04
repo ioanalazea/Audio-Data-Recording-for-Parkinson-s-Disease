@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { TextField } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import Link from "@mui/material/Link";
 import Select from "react-select";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
@@ -72,11 +72,13 @@ export default function EditPatient() {
     fontSize: "20px",
     lineHeight: "20px",
     color: "#219EBC",
+    cursor:"pointer"
+
   };
 
   const text2 = {
-    paddingRight: "50px",
-    paddingLeft: "50px",
+    paddingRight: "70px",
+    paddingLeft: "35px",
     fontFamily: "Metropolis",
     fontStyle: "bold",
     fontWeight: "700",
@@ -181,13 +183,11 @@ export default function EditPatient() {
     )
       .then((response) => response.json())
       .catch((err) => {
-        console.log('DRUGBANK',err.message);
+        console.log("DRUGBANK", err.message);
       });
 
     // update the state
-    if(response)
-    setDrugs(response);
-   
+    if (response) setDrugs(response);
   };
 
   useEffect(() => {
@@ -206,12 +206,14 @@ export default function EditPatient() {
     weight: patientToEdit.value.weight,
     diagnosis: patientToEdit.value.diagnosis,
     symptoms: patientToEdit.value.symptoms,
-    comorbidities: patientToEdit.value.comorbidities.length === 1?[]:patientToEdit.value.comorbidities,
+    comorbidities:
+      patientToEdit.value.comorbidities.length === 1
+        ? []
+        : patientToEdit.value.comorbidities,
     medication: patientToEdit.value.medication,
     postMedication: patientToEdit.value.postMedication,
     therapeuticProc: patientToEdit.value.therapeuticProc,
     batchCount: patientToEdit.value.batchCount,
-
   });
 
   const getSymptomsPatientEdit = () => {
@@ -223,7 +225,7 @@ export default function EditPatient() {
     let value = Array.from(data, (option) => option.value);
     setPatient({ ...patient, symptoms: value });
   };
-console.log(patient.comorbidities,'/////',patient.medication)
+  console.log(patient.comorbidities, "/////", patient.medication);
   const handleValidation = () => {
     var message = "";
     if (patient.fullName === "")
@@ -258,11 +260,9 @@ console.log(patient.comorbidities,'/////',patient.medication)
           parseFloat(patient.height)) *
         10000;
       patient.bmi = num.toString().slice(0, 5);
-      if (patient.medication.length === 0)
-        patient.medication = [""]
-      if (patient.comorbidities.length === 0)
-        patient.comorbidities = [""]
-      
+      if (patient.medication.length === 0) patient.medication = [""];
+      if (patient.comorbidities.length === 0) patient.comorbidities = [""];
+
       console.log(patient);
 
       //here handle edit the patient
@@ -311,8 +311,7 @@ console.log(patient.comorbidities,'/////',patient.medication)
   return (
     <div>
       <div style={headerStyle}>
-        <Link style={text1} to="/home/viewpatients">
-          {" "}
+         <Link underline="none" style={text1} onClick={()=>navigate(-1)}>
           Back
         </Link>
         <div style={text2}>Edit patient</div>

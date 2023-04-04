@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { TextField } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import Link from "@mui/material/Link";
 import Select from "react-select";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
@@ -71,11 +71,12 @@ export default function AddPatient() {
     fontSize: "20px",
     lineHeight: "20px",
     color: "#219EBC",
+    cursor:"pointer"
   };
 
   const text2 = {
-    paddingRight: "50px",
-    paddingLeft: "50px",
+    paddingRight: "75px",
+    paddingLeft: "40px",
     fontFamily: "Metropolis",
     fontStyle: "bold",
     fontWeight: "700",
@@ -276,8 +277,7 @@ export default function AddPatient() {
   return (
     <div>
       <div style={headerStyle}>
-        <Link style={text1} to="/home">
-          {" "}
+        <Link underline="none" style={text1} onClick={()=>navigate(-1)}>
           Back
         </Link>
         <div style={text2}>Add patient</div>

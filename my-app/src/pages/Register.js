@@ -20,12 +20,19 @@ export default function Register() {
     width: "100vw",
     height: "100vh",
   };
-
+  const title = {
+    fontFamily: "Metropolis",
+    fontStyle: "bold",
+    fontWeight: "800",
+    fontSize: "38px",
+    lineHeight: "40px",
+    color: "#323031",
+  }
   const registerHeader = {
     paddingLeft: "120px",
     fontFamily: "Metropolis",
     fontStyle: "bold",
-    fontWeight: "700",
+    fontWeight: "500",
     fontSize: "38px",
     lineHeight: "40px",
     color: "#323031",
@@ -110,7 +117,7 @@ export default function Register() {
     //User did not enter email and password
     if (user.email === "" || user.password === "") {
       ok = 0;
-      errorMessage = "Enter details to sign up!";
+      errorMessage = "Enter details to register!";
     }
 
     if (ok === 0) {
@@ -129,7 +136,7 @@ export default function Register() {
             icon: "success",
             title: "Account created successfully!",
             showConfirmButton: false,
-            timer: 1500,
+            timer: 2500,
           });
           navigate(-1);
           updateProfile(auth.currentUser, {
@@ -140,7 +147,7 @@ export default function Register() {
               console.log("Profile updated successfully!");
             })
             .catch((error) => {
-              console.log("Error updating profile!");
+              console.log(error);
               setError("Error updating profile!");
             });
 
@@ -179,11 +186,13 @@ export default function Register() {
           align: "center",
           display: "flex",
           justifyContent: "center",
-          paddingTop: "90px",
+          paddingTop: "30px",
           paddingBottom: "10px",
         }}
       >
         <div>
+        <div style={title}> Parkinson's </div>
+          <div style={title}> Recording App </div>
           <div style={registerHeader}> Register </div>
 
           <div style={{ marginTop: "20px" }}>

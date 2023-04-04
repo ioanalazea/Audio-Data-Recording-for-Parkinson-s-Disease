@@ -3,13 +3,12 @@ import { TextField, Typography } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import PasswordIcon from "@mui/icons-material/Password";
 import EmailIcon from "@mui/icons-material/Email";
-import Link from '@mui/material/Link';
+import Link from "@mui/material/Link";
 import Background from "../utils/stacked-waves.svg";
-import {
-  signInWithEmailAndPassword
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config.js";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function SignIn() {
   const signInBackground = {
@@ -79,8 +78,17 @@ export default function SignIn() {
           else if (errorMessage === "Firebase: Error (auth/user-not-found).")
             setError("User not found!");
           else if (errorMessage.includes("(auth/too-many-requests)"))
-          setError("Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.");
-
+          {
+            setError(
+              "Access temporarily disabled."
+            );
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later."
+            })
+          }
+            
 
           console.log(errorMessage);
         });
@@ -136,13 +144,17 @@ export default function SignIn() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          
-            <div style={{ marginTop: "15px", marginLeft: "5px" }}>
-              <Link underline="hover" style={{ color: "#323931", fontWeight:700}} href={'resetpassword'}>
-                <b>Forgot your password?</b>
-              </Link>
-            </div>
-          
+
+          <div style={{ marginTop: "15px", marginLeft: "5px" }}>
+            <Link
+              underline="hover"
+              style={{ color: "#323931", fontWeight: 700 }}
+              href={"resetpassword"}
+            >
+              <b>Forgot your password?</b>
+            </Link>
+          </div>
+
           <div style={{ marginTop: "25px" }}>
             <button
               className="button-style-blk"
@@ -153,18 +165,20 @@ export default function SignIn() {
             </button>
           </div>
 
-        
           <div style={{ marginTop: "10px", marginLeft: "10px" }}>
             <Typography
               className="blink"
               align="justify"
-              
-              style={{ fontFamily: "Metropolis", fontWeight: "700", width:"250px" }}
+              style={{
+                fontFamily: "Metropolis",
+                fontWeight: "700",
+                width: "250px",
+              }}
             >
               {error}
             </Typography>
           </div>
-          <div style={{ marginTop: "80px", marginLeft: "5px" }}>
+          <div style={{ marginTop: "70px", marginLeft: "5px" }}>
             <Link style={{ color: "#323931" }} href="/register">
               Don't have an account? <b>Register here.</b>
             </Link>
