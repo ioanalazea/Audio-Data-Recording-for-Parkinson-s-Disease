@@ -15,8 +15,8 @@ import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import DvrIcon from "@mui/icons-material/Dvr";
 import LogoutIcon from "@mui/icons-material/Logout";
-import BarChartIcon from '@mui/icons-material/BarChart';
-import TopicIcon from '@mui/icons-material/Topic';
+import BarChartIcon from "@mui/icons-material/BarChart";
+import TopicIcon from "@mui/icons-material/Topic";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 export default function AdminSidebar() {
   const [state, setState] = React.useState({
@@ -43,19 +43,21 @@ export default function AdminSidebar() {
   };
 
   const handleGoToAll = () => {
-    if (location.pathname.includes("overview") || location.pathname.includes("data")) navigate(-1);
+    if (location.pathname.includes("overview")) navigate(-1);
+    else if (location.pathname.includes("data")) navigate(-2);
   };
 
   const handleGoToOverview = () => {
-    if (!location.pathname.includes("overview")) navigate("overview")
-    else if (location.pathname.includes("data")){
-      navigate(-1)
-      navigate("overview")
-    }
+    if (location.pathname.includes("data")) {
+      navigate(-1);
+    } else if (!location.pathname.includes("overview")) navigate("overview");
   };
 
-  const handleGoToData= () => {
-    if (!location.pathname.includes("data")) navigate("data");
+  const handleGoToData = () => {
+    if (!location.pathname.includes("data")) {
+      if (location.pathname.includes("overview")) navigate("data");
+      else navigate("overview/data");
+    }
   };
 
   const list = (anchor) => (
@@ -82,23 +84,6 @@ export default function AdminSidebar() {
             }}
           />
         </ListItem>
-        <ListItem key={"Overview"} disablePadding>
-          <ListItemButton onClick={handleGoToOverview}>
-            <ListItemIcon>
-              <BarChartIcon sx={{ color: "#A4A6B3" }}/>
-            </ListItemIcon>
-            <ListItemText
-              primary={"Overview"}
-              sx={{
-                color: "#A4A6B3",
-                ".MuiListItemText-primary": {
-                  fontFamily: "Metropolis",
-                  fontWeight: "600",
-                },
-              }}
-            />
-          </ListItemButton>
-        </ListItem>
         <ListItem key={"All1"} disablePadding>
           <ListItemButton onClick={handleGoToAll}>
             <ListItemIcon>
@@ -116,10 +101,28 @@ export default function AdminSidebar() {
             />
           </ListItemButton>
         </ListItem>
-          <ListItem key={"Data"} disablePadding>
+        <ListItem key={"Overview"} disablePadding>
+          <ListItemButton onClick={handleGoToOverview}>
+            <ListItemIcon>
+              <BarChartIcon sx={{ color: "#A4A6B3" }} />
+            </ListItemIcon>
+            <ListItemText
+              primary={"Overview"}
+              sx={{
+                color: "#A4A6B3",
+                ".MuiListItemText-primary": {
+                  fontFamily: "Metropolis",
+                  fontWeight: "600",
+                },
+              }}
+            />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem key={"Data"} disablePadding>
           <ListItemButton onClick={handleGoToData}>
             <ListItemIcon>
-              <TopicIcon sx={{ color: "#A4A6B3" }}/>
+              <TopicIcon sx={{ color: "#A4A6B3" }} />
             </ListItemIcon>
             <ListItemText
               primary={"Patient data"}

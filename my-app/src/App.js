@@ -27,7 +27,7 @@ export default function App() {
 
         <Route path="admin" element={<AdminDashboard />}></Route>
         <Route path="admin/overview" element={<AdminOverview />}></Route>
-        <Route path="admin/data" element={<AdminPatientData />}></Route>
+        <Route path="admin/overview/data" element={<AdminPatientData />}></Route>
 
 
 
