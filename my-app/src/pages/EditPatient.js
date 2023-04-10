@@ -193,10 +193,10 @@ export default function EditPatient() {
   useEffect(() => {
     getApiData();
   }, []);
-
   const location = useLocation();
   // get patient key
   let patientToEdit = location.state.patient;
+
   const [patient, setPatient] = useState({
     fullName: encryptStorage.decryptValue(patientToEdit.value.fullName),
     telephone: encryptStorage.decryptValue(patientToEdit.value.telephone),
@@ -210,7 +210,9 @@ export default function EditPatient() {
       patientToEdit.value.comorbidities.length === 1
         ? []
         : patientToEdit.value.comorbidities,
-    medication: patientToEdit.value.medication,
+    medication: patientToEdit.value.medication.length === 1
+    ? []
+    : patientToEdit.value.medication,
     postMedication: patientToEdit.value.postMedication,
     therapeuticProc: patientToEdit.value.therapeuticProc,
     batchCount: patientToEdit.value.batchCount,
@@ -225,7 +227,6 @@ export default function EditPatient() {
     let value = Array.from(data, (option) => option.value);
     setPatient({ ...patient, symptoms: value });
   };
-  console.log(patient.comorbidities, "/////", patient.medication);
   const handleValidation = () => {
     var message = "";
     if (patient.fullName === "")
