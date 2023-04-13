@@ -207,6 +207,7 @@ export default function EditPatient() {
     sex: patientToEdit.value.sex,
     height: patientToEdit.value.height,
     weight: patientToEdit.value.weight,
+    bmi: patientToEdit.value.bmi,
     diagnosis: patientToEdit.value.diagnosis,
     symptoms: patientToEdit.value.symptoms,
     comorbidities: isEmpty(patientToEdit.value.comorbidities)
@@ -279,6 +280,7 @@ export default function EditPatient() {
           sex: patient.sex,
           height: patient.height,
           weight: patient.weight,
+          bmi: patient.bmi,
           diagnosis: patient.diagnosis,
           symptoms: patient.symptoms,
           comorbidities: patient.comorbidities,

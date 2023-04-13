@@ -20,6 +20,7 @@ const columns = [
   { id: "medication", label: "Medication", minWidth: 170 },
   { id: "comorbidities", label: "Comorbidities", minWidth: 100 },
   { id: "postMedication", label: "Post\u00a0medication", minWidth: 100 },
+  { id: "therapeuticProc", label: "Therapeutic\u00a0procedures", minWidth: 100 },
   { id: "sex", label: "Sex", minWidth: 100 },
   { id: "symptoms", label: "Symptoms", minWidth: 170 },
   { id: "weight", label: "Weight", minWidth: 100 },
