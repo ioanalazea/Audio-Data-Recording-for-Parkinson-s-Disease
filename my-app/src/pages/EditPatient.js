@@ -72,8 +72,7 @@ export default function EditPatient() {
     fontSize: "20px",
     lineHeight: "20px",
     color: "#219EBC",
-    cursor:"pointer"
-
+    cursor: "pointer",
   };
 
   const text2 = {
@@ -196,6 +195,10 @@ export default function EditPatient() {
   const location = useLocation();
   // get patient key
   let patientToEdit = location.state.patient;
+  const isEmpty = (array) => {
+    if (array[0] === "") return 1;
+    else return 0;
+  };
 
   const [patient, setPatient] = useState({
     fullName: encryptStorage.decryptValue(patientToEdit.value.fullName),
@@ -206,13 +209,12 @@ export default function EditPatient() {
     weight: patientToEdit.value.weight,
     diagnosis: patientToEdit.value.diagnosis,
     symptoms: patientToEdit.value.symptoms,
-    comorbidities:
-      patientToEdit.value.comorbidities.length === 1
-        ? []
-        : patientToEdit.value.comorbidities,
-    medication: patientToEdit.value.medication.length === 1
-    ? []
-    : patientToEdit.value.medication,
+    comorbidities: isEmpty(patientToEdit.value.comorbidities)
+      ? []
+      : patientToEdit.value.comorbidities,
+    medication: isEmpty(patientToEdit.value.medication)
+      ? []
+      : patientToEdit.value.medication,
     postMedication: patientToEdit.value.postMedication,
     therapeuticProc: patientToEdit.value.therapeuticProc,
     batchCount: patientToEdit.value.batchCount,
@@ -264,8 +266,6 @@ export default function EditPatient() {
       if (patient.medication.length === 0) patient.medication = [""];
       if (patient.comorbidities.length === 0) patient.comorbidities = [""];
 
-      console.log(patient);
-
       //here handle edit the patient
       set(
         ref(
@@ -312,7 +312,7 @@ export default function EditPatient() {
   return (
     <div>
       <div style={headerStyle}>
-         <Link underline="none" style={text1} onClick={()=>navigate(-1)}>
+        <Link underline="none" style={text1} onClick={() => navigate(-1)}>
           Back
         </Link>
         <div style={text2}>Edit patient</div>
