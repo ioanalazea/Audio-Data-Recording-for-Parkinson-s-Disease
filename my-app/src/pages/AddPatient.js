@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { TextField } from "@material-ui/core";
 import Link from "@mui/material/Link";
 import Select from "react-select";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 import { database } from "../firebase/config.js";
@@ -71,7 +76,7 @@ export default function AddPatient() {
     fontSize: "20px",
     lineHeight: "20px",
     color: "#219EBC",
-    cursor:"pointer"
+    cursor: "pointer",
   };
 
   const text2 = {
@@ -125,6 +130,20 @@ export default function AddPatient() {
     filter: "drop-shadow(0px 0px 4px #219EBC)",
     boxShadow: "none",
   };
+  const styleModal = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 300,
+    bgcolor: "background.paper",
+    border: "2px solid #323031",
+    borderRadius: "5%",
+    p: 4,
+  };
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
@@ -277,7 +296,7 @@ export default function AddPatient() {
   return (
     <div>
       <div style={headerStyle}>
-        <Link underline="none" style={text1} onClick={()=>navigate(-1)}>
+        <Link underline="none" style={text1} onClick={() => navigate(-1)}>
           Back
         </Link>
         <div style={text2}>Add patient</div>
@@ -420,6 +439,40 @@ export default function AddPatient() {
               />
             )}
           />
+
+          <Button style={{ marginTop: "5px" }} onClick={handleOpen}>
+            <HelpOutlineOutlinedIcon
+              sx={{ color: "#323031", fontSize: "25px" }}
+            ></HelpOutlineOutlinedIcon>
+            <div
+              style={{
+                fontFamily: "Metropolis",
+                fontWeight: "600",
+                fontSize: "14px",
+                color: "#323031",
+                marginLeft: "10px",
+              }}
+            >
+              Help
+            </div>
+          </Button>
+
+          <Modal open={open} onClose={handleClose}>
+            <Box sx={styleModal}>
+              <Typography
+                variant="h6"
+                component="h2"
+                sx={{ fontFamily: "Metropolis", fontWeight: "600" }}
+              >
+                How do I find comorbidities?
+              </Typography>
+              <Typography sx={{ mt: 2, fontFamily: "Metropolis" }}>
+                To search for comorbidities, start typing in the box and
+                suggestions that will match best the written letters will
+                appear. You can either type the code of the disease or the name.
+              </Typography>
+            </Box>
+          </Modal>
         </div>
 
         <div style={{ marginTop: "20px" }}>

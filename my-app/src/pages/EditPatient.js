@@ -3,6 +3,11 @@ import { TextField } from "@material-ui/core";
 import Link from "@mui/material/Link";
 import Select from "react-select";
 import Autocomplete from "@mui/material/Autocomplete";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import axios from "axios";
 import { database } from "../firebase/config.js";
 import { ref, set } from "firebase/database";
@@ -126,6 +131,20 @@ export default function EditPatient() {
     filter: "drop-shadow(0px 0px 4px #219EBC)",
     boxShadow: "none",
   };
+  const styleModal = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 300,
+    bgcolor: "background.paper",
+    border: "2px solid #323031",
+    borderRadius: "5%",
+    p: 4,
+  };
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const navigate = useNavigate();
 
@@ -470,6 +489,39 @@ export default function EditPatient() {
               />
             )}
           />
+          <Button style={{ marginTop: "5px" }} onClick={handleOpen}>
+            <HelpOutlineOutlinedIcon
+              sx={{ color: "#323031", fontSize: "25px" }}
+            ></HelpOutlineOutlinedIcon>
+            <div
+              style={{
+                fontFamily: "Metropolis",
+                fontWeight: "600",
+                fontSize: "14px",
+                color: "#323031",
+                marginLeft: "10px",
+              }}
+            >
+              Help
+            </div>
+          </Button>
+
+          <Modal open={open} onClose={handleClose}>
+            <Box sx={styleModal}>
+              <Typography
+                variant="h6"
+                component="h2"
+                sx={{ fontFamily: "Metropolis", fontWeight: "600" }}
+              >
+                How do I find comorbidities?
+              </Typography>
+              <Typography sx={{ mt: 2, fontFamily: "Metropolis" }}>
+                To search for comorbidities, start typing in the box and
+                suggestions that will match best the written letters will
+                appear. You can either type the code of the disease or the name.
+              </Typography>
+            </Box>
+          </Modal>
         </div>
 
         <div style={{ marginTop: "20px" }}>
