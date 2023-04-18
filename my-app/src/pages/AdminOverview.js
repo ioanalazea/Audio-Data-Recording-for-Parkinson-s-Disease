@@ -22,15 +22,12 @@ export default function AdminOverview() {
     fontWeight: "800",
     fontSize: "38px",
     lineHeight: "40px",
-    /* identical to box height */
     color: "#323031",
   };
 
-
-
   const [recordings, setRecordings] = useState([]);
   const extractMonthRecName = (name) => {
-    const date = name.split("_")[3];
+    const date = name.split("~")[3];
     const month = date.split(".")[0];
     if (month === "01") return "Jan";
     else if (month === "02") return "Feb";
@@ -47,19 +44,20 @@ export default function AdminOverview() {
   };
 
   const extractYearRecName = (name) => {
-    const date = name.split("_")[3];
+    const date = name.split("~")[2];
     const year = date.split(".")[1];
     return year;
   };
 
   const extractVowel = (name) => {
-    const str = name.split("_")[6];
+    console.log(name.split("~"))
+    const str = name.split("~")[5];
     const vowel = str.split(".")[0];
     return vowel;
   };
 
   const extractDiagnosis = (name) => {
-    const str = name.split("_")[5];
+    const str = name.split("~")[4];
     return str;
   };
 
@@ -145,6 +143,7 @@ export default function AdminOverview() {
       },
     ];
     recordings.forEach((item) => {
+      console.log(item)
       const vowel = extractVowel(item);
 
       data.forEach((i) => {

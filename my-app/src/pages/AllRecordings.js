@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { storage } from "../firebase/config.js";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import fileDownload from "js-file-download";
-
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -98,7 +97,6 @@ export default function AllRecordings() {
     fontWeight: "800",
     fontSize: "38px",
     lineHeight: "40px",
-    /* identical to box height */
     color: "#323031",
   };
   const [isLoading, setIsLoading] = useState(false);

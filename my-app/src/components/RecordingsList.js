@@ -86,15 +86,15 @@ export default function RecordingsList({
       for (let i = 0; i < 5; i++) {
         var recordingRef = ref(
           storageRef,
-          "recording_" +
+          "recording~" +
             patientKey +
-            "_" +
+            "~" +
             today +
-            "_" +
+            "~" +
             batchCount +
-            "_" +
+            "~" +
             diagnosis +
-            "_" +
+            "~" +
             recordings[i].key +
             ".mp3"
         );

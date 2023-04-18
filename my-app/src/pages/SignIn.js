@@ -3,11 +3,12 @@ import { TextField, Typography } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import PasswordIcon from "@mui/icons-material/Password";
 import EmailIcon from "@mui/icons-material/Email";
-import { Link } from "react-router-dom";
+import Link from "@mui/material/Link";
 import Background from "../utils/stacked-waves.svg";
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config.js";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function SignIn() {
   const signInBackground = {
@@ -28,14 +29,13 @@ export default function SignIn() {
     color: "#323031",
   };
 
-  const signHeader = {
+  const signInHeader = {
     paddingLeft: "70px",
     fontFamily: "Metropolis",
     fontStyle: "bold",
     fontWeight: "500",
     fontSize: "38px",
     lineHeight: "40px",
-    /* identical to box height */
     color: "#323031",
   };
 
@@ -50,7 +50,7 @@ export default function SignIn() {
     width: "250px",
     align: "center",
   };
-  
+
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -63,14 +63,10 @@ export default function SignIn() {
     else {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          // Signed in
           const user = userCredential.user;
           console.log("Signed in successfully!");
-          if (user.uid === "hR48GeIObJONCigXNt0oAbo58no2")
-          navigate("/admin")
-          else
-          navigate("/home");
-          // ...
+          if (user.uid === "hR48GeIObJONCigXNt0oAbo58no2") navigate("/admin");
+          else navigate("/home");
         })
         .catch((error) => {
           const errorMessage = error.message;
@@ -80,22 +76,27 @@ export default function SignIn() {
           else if (errorMessage === "Firebase: Error (auth/wrong-password).")
             setError("Wrong password!");
           else if (errorMessage === "Firebase: Error (auth/user-not-found).")
-          setError("User not found!");
+            setError("User not found!");
+          else if (errorMessage.includes("(auth/too-many-requests)"))
+          {
+            setError(
+              "Access temporarily disabled."
+            );
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later."
+            })
+          }
+            
 
-            console.log(errorMessage);
+          console.log(errorMessage);
         });
     }
-  }
+  };
 
-
-  const triggerResetEmail = async () => {
-    await sendPasswordResetEmail(auth, email);
-    console.log("Password reset email sent")
-  }
- 
   return (
     <div style={signInBackground}>
-
       <div
         style={{
           align: "center",
@@ -106,10 +107,10 @@ export default function SignIn() {
         }}
       >
         <div>
-        <div style={title}> Parkinson's  </div>
-        <div style={title}> Recording App  </div>
+          <div style={title}> Parkinson's </div>
+          <div style={title}> Recording App </div>
 
-          <div style={signHeader}> Sign in </div>
+          <div style={signInHeader}> Sign in </div>
 
           <div style={{ marginTop: "20px" }}>
             <label>Email Address:</label>
@@ -143,7 +144,18 @@ export default function SignIn() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div style={{ marginTop: "30px" }}>
+
+          <div style={{ marginTop: "15px", marginLeft: "5px" }}>
+            <Link
+              underline="hover"
+              style={{ color: "#323931", fontWeight: 700 }}
+              href={"resetpassword"}
+            >
+              <b>Forgot your password?</b>
+            </Link>
+          </div>
+
+          <div style={{ marginTop: "25px" }}>
             <button
               className="button-style-blk"
               to="/home"
@@ -153,22 +165,21 @@ export default function SignIn() {
             </button>
           </div>
 
-
-          {error === "Wrong password!"?(<div style={{ marginTop: "10px", marginLeft: "5px" }}>
-            <Link style={{ color: "#323931" }} onClick={triggerResetEmail}>
-              Forgot password? <b>Click to reset here.</b>
-            </Link>
-          </div>):(<></>)}
           <div style={{ marginTop: "10px", marginLeft: "10px" }}>
             <Typography
               className="blink"
-              style={{ fontFamily: "Metropolis", fontWeight: "700" }}
+              align="justify"
+              style={{
+                fontFamily: "Metropolis",
+                fontWeight: "700",
+                width: "250px",
+              }}
             >
               {error}
             </Typography>
           </div>
-          <div style={{ marginTop: "80px", marginLeft: "5px" }}>
-            <Link style={{ color: "#323931" }} to="/register">
+          <div style={{ marginTop: "70px", marginLeft: "5px" }}>
+            <Link style={{ color: "#323931" }} href="/register">
               Don't have an account? <b>Register here.</b>
             </Link>
           </div>

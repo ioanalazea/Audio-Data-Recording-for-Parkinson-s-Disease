@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { TextField } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import Link from "@mui/material/Link";
 import Select from "react-select";
 import Autocomplete from "@mui/material/Autocomplete";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import axios from "axios";
 import { database } from "../firebase/config.js";
 import { ref, set } from "firebase/database";
@@ -72,11 +77,12 @@ export default function EditPatient() {
     fontSize: "20px",
     lineHeight: "20px",
     color: "#219EBC",
+    cursor: "pointer",
   };
 
   const text2 = {
-    paddingRight: "50px",
-    paddingLeft: "50px",
+    paddingRight: "70px",
+    paddingLeft: "35px",
     fontFamily: "Metropolis",
     fontStyle: "bold",
     fontWeight: "700",
@@ -125,6 +131,20 @@ export default function EditPatient() {
     filter: "drop-shadow(0px 0px 4px #219EBC)",
     boxShadow: "none",
   };
+  const styleModal = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 300,
+    bgcolor: "background.paper",
+    border: "2px solid #323031",
+    borderRadius: "5%",
+    p: 4,
+  };
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const navigate = useNavigate();
 
@@ -181,22 +201,23 @@ export default function EditPatient() {
     )
       .then((response) => response.json())
       .catch((err) => {
-        console.log('DRUGBANK',err.message);
+        console.log("DRUGBANK", err.message);
       });
 
     // update the state
-    if(response)
-    setDrugs(response);
-   
+    if (response) setDrugs(response);
   };
 
   useEffect(() => {
     getApiData();
   }, []);
-
   const location = useLocation();
   // get patient key
   let patientToEdit = location.state.patient;
+  const isEmpty = (array) => {
+    if (array[0] === "") return 1;
+    else return 0;
+  };
 
   const [patient, setPatient] = useState({
     fullName: encryptStorage.decryptValue(patientToEdit.value.fullName),
@@ -205,12 +226,18 @@ export default function EditPatient() {
     sex: patientToEdit.value.sex,
     height: patientToEdit.value.height,
     weight: patientToEdit.value.weight,
+    bmi: patientToEdit.value.bmi,
     diagnosis: patientToEdit.value.diagnosis,
     symptoms: patientToEdit.value.symptoms,
-    comorbidities: patientToEdit.value.comorbidities,
-    medication: patientToEdit.value.medication,
+    comorbidities: isEmpty(patientToEdit.value.comorbidities)
+      ? []
+      : patientToEdit.value.comorbidities,
+    medication: isEmpty(patientToEdit.value.medication)
+      ? []
+      : patientToEdit.value.medication,
     postMedication: patientToEdit.value.postMedication,
     therapeuticProc: patientToEdit.value.therapeuticProc,
+    batchCount: patientToEdit.value.batchCount,
   });
 
   const getSymptomsPatientEdit = () => {
@@ -222,7 +249,6 @@ export default function EditPatient() {
     let value = Array.from(data, (option) => option.value);
     setPatient({ ...patient, symptoms: value });
   };
-
   const handleValidation = () => {
     var message = "";
     if (patient.fullName === "")
@@ -257,7 +283,8 @@ export default function EditPatient() {
           parseFloat(patient.height)) *
         10000;
       patient.bmi = num.toString().slice(0, 5);
-      console.log(patient);
+      if (patient.medication.length === 0) patient.medication = [""];
+      if (patient.comorbidities.length === 0) patient.comorbidities = [""];
 
       //here handle edit the patient
       set(
@@ -272,12 +299,14 @@ export default function EditPatient() {
           sex: patient.sex,
           height: patient.height,
           weight: patient.weight,
+          bmi: patient.bmi,
           diagnosis: patient.diagnosis,
           symptoms: patient.symptoms,
           comorbidities: patient.comorbidities,
           medication: patient.medication,
           postMedication: patient.postMedication,
           therapeuticProc: patient.therapeuticProc,
+          batchCount: patientToEdit.value.batchCount,
         }
       )
         .then(() => {
@@ -304,8 +333,7 @@ export default function EditPatient() {
   return (
     <div>
       <div style={headerStyle}>
-        <Link style={text1} to="/home/viewpatients">
-          {" "}
+        <Link underline="none" style={text1} onClick={() => navigate(-1)}>
           Back
         </Link>
         <div style={text2}>Edit patient</div>
@@ -461,6 +489,39 @@ export default function EditPatient() {
               />
             )}
           />
+          <Button style={{ marginTop: "5px" }} onClick={handleOpen}>
+            <HelpOutlineOutlinedIcon
+              sx={{ color: "#323031", fontSize: "25px" }}
+            ></HelpOutlineOutlinedIcon>
+            <div
+              style={{
+                fontFamily: "Metropolis",
+                fontWeight: "600",
+                fontSize: "14px",
+                color: "#323031",
+                marginLeft: "10px",
+              }}
+            >
+              Help
+            </div>
+          </Button>
+
+          <Modal open={open} onClose={handleClose}>
+            <Box sx={styleModal}>
+              <Typography
+                variant="h6"
+                component="h2"
+                sx={{ fontFamily: "Metropolis", fontWeight: "600" }}
+              >
+                How do I find comorbidities?
+              </Typography>
+              <Typography sx={{ mt: 2, fontFamily: "Metropolis" }}>
+                To search for comorbidities, start typing in the box and
+                suggestions that will match best the written letters will
+                appear. You can either type the code of the disease or the name.
+              </Typography>
+            </Box>
+          </Modal>
         </div>
 
         <div style={{ marginTop: "20px" }}>

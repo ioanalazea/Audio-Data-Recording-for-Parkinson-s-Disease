@@ -242,7 +242,7 @@ flex-grow: 0;
 
 /*blinker class */
 .blink {
-  animation: blinker .60s linear infinite;
+  animation: blinker 1.60s linear infinite;
   color: red;
 }
 @keyframes blinker {
