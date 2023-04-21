@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, HashRouter } from 'react-router-dom';
 import Register from './pages/Register.js';
 import SignIn from './pages/SignIn.js';
 import Home from './pages/Home.js';
@@ -15,6 +15,7 @@ import AdminPatientData from './pages/AdminPatientData.js';
 export default function App() {
   return (
     <div className="App">
+    <HashRouter>
       <Routes>
         <Route path="/" element={<SignIn />} />
         <Route path="/resetpassword" element={<ResetPassword />} />
@@ -32,6 +33,7 @@ export default function App() {
 
 
       </Routes>
+      </HashRouter>
     </div>
   );
 }
