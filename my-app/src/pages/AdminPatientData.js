@@ -11,19 +11,18 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import { encryptStorage } from "../encryption/Encrypt.js";
 
 const columns = [
   { id: "bmi", label: "BMI", minWidth: 100 },
-  { id: "comorbidities", label: "Comorbidities", minWidth: 170 },
-  { id: "diagnosis", label: "Diagnosis", minWidth: 100 },
-  { id: "height", label: "Height", minWidth: 100 },
-  { id: "medication", label: "Medication", minWidth: 170 },
-  { id: "comorbidities", label: "Comorbidities", minWidth: 100 },
+  { id: "sex", label: "Sex", minWidth: 100 },
+  { id: "age", label: "Age", minWidth: 100 },
+  { id: "symptoms", label: "Symptoms", minWidth: 170 },
+  { id: "medication", label: "Medication", minWidth: 180 },
+  { id: "comorbidities", label: "Comorbidities", minWidth: 190 },
   { id: "postMedication", label: "Post\u00a0medication", minWidth: 100 },
   { id: "therapeuticProc", label: "Therapeutic\u00a0procedures", minWidth: 100 },
-  { id: "sex", label: "Sex", minWidth: 100 },
-  { id: "symptoms", label: "Symptoms", minWidth: 170 },
-  { id: "weight", label: "Weight", minWidth: 100 },
+  { id: "diagnosis", label: "Diagnosis", minWidth: 100 },
 ];
 
 export default function AdminPatientData() {
@@ -39,15 +38,14 @@ export default function AdminPatientData() {
   };
   const headers = [
     { label: "BMI", key: "bmi" },
-    { label: "Comorbidities", key: "comorbidities" },
-    { label: "Diagnosis", key: "diagnosis" },
-    { label: "Height", key: "height" },
-    { label: "Medication", key: "medication" },
-    { label: "Post medication", key: "postMedication" },
     { label: "Sex", key: "sex" },
+    { label: "Age", key: "age" },
     { label: "Symptoms", key: "symptoms" },
+    { label: "Medication", key: "medication" },
+    { label: "Comorbidities", key: "comorbidities" },
+    { label: "Post medication", key: "postMedication" },
     { label: "Therapeutic procedures", key: "therapeuticProc" },
-    { label: "Weight", key: "weight" },
+    { label: "Diagnosis", key: "diagnosis" },
   ];
 
   const [patients, setPatients] = useState([]);
@@ -77,13 +75,12 @@ export default function AdminPatientData() {
             bmi: value["bmi"],
             comorbidities: value["comorbidities"].toString(),
             diagnosis: value["diagnosis"],
-            height: value["height"],
+            age: encryptStorage.decryptValue(value["age"]),
             medication: getMedication(value["medication"]),
             postMedication: value["postMedication"],
             sex: value["sex"],
             symptoms: value["symptoms"].toString(),
             therapeuticProc: value["therapeuticProc"],
-            weight: value["weight"],
           });
         }
       });

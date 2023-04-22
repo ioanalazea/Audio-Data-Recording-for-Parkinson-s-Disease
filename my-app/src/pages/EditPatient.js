@@ -238,6 +238,8 @@ export default function EditPatient() {
     postMedication: patientToEdit.value.postMedication,
     therapeuticProc: patientToEdit.value.therapeuticProc,
     batchCount: patientToEdit.value.batchCount,
+    forDeletion: patientToEdit.value.forDeletion,
+
   });
 
   const getSymptomsPatientEdit = () => {
@@ -307,6 +309,7 @@ export default function EditPatient() {
           postMedication: patient.postMedication,
           therapeuticProc: patient.therapeuticProc,
           batchCount: patientToEdit.value.batchCount,
+          forDeletion: patientToEdit.value.forDeletion,
         }
       )
         .then(() => {
