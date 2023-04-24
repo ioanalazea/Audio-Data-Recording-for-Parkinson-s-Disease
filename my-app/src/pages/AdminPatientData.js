@@ -12,6 +12,8 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { encryptStorage } from "../encryption/Encrypt.js";
+import { remove } from "firebase/database";
+
 
 const columns = [
   { id: "bmi", label: "BMI", minWidth: 100 },
@@ -32,6 +34,17 @@ export default function AdminPatientData() {
     fontStyle: "bold",
     fontWeight: "800",
     fontSize: "38px",
+    lineHeight: "40px",
+    color: "#323031",
+    marginBottom: "20px",
+  };
+
+  const subTitle = {
+    paddingLeft: "100px",
+    fontFamily: "Metropolis",
+    fontStyle: "bold",
+    fontWeight: "800",
+    fontSize: "28px",
     lineHeight: "40px",
     color: "#323031",
     marginBottom: "20px",
@@ -81,6 +94,9 @@ export default function AdminPatientData() {
             sex: value["sex"],
             symptoms: value["symptoms"].toString(),
             therapeuticProc: value["therapeuticProc"],
+            forDeletion: value["forDeletion"],
+            userKey:item.key,
+            key:key
           });
         }
       });
@@ -103,12 +119,36 @@ export default function AdminPatientData() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const deletePatient = (patient) => {
+// Get a reference to the node you want to delete
+const dbRef = ref(database, 'users/'+patient.userKey+'/patients/'+patient.key);
+
+// Delete the node
+remove(dbRef)
+  .then(() => {
+    console.log('Node deleted successfully.');
+  })
+  .catch((error) => {
+    console.error('Error deleting node:', error);
+  });
+  }
   return (
     <div style={{ background: "#FAFAFA", width: "100vw", height: "100vh" }}>
       <AdminSidebar></AdminSidebar>
 
       <div style={title}> Patient data </div>
-
+    <div>
+    <div style={subTitle}> Delete requests </div>
+    {
+      patients.map((patient)=>{
+        if (patient.forDeletion)
+        return(<div>Patient{patient.key}
+        <button onClick={deletePatient(patient)}>Delete</button>
+        </div>)
+      })
+    }
+    </div>
       <div
         style={{
           display: "flex",
