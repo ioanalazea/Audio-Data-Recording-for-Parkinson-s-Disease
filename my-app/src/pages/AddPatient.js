@@ -178,13 +178,11 @@ export default function AddPatient() {
 
   const [comorbidities, setComorbidities] = useState([]);
   const searchDisease = async (searchInput) => {
-    console.log(searchInput);
     try {
       const { data } = await axios.get(
         `https://clinicaltables.nlm.nih.gov/api/icd10cm/v3/search?sf=code,name&df=code,name&terms=${searchInput}&maxList=500`
       );
       setComorbidities(data[3]);
-      console.log(data);
     } catch (err) {
       console.error(err);
     }
@@ -232,7 +230,6 @@ export default function AddPatient() {
     let value = Array.from(data, (option) => option.value);
     setPatient({ ...patient, symptoms: value });
   };
-
   const handleValidation = () => {
     var message = "";
     if (patient.fullName === "")
@@ -267,7 +264,7 @@ export default function AddPatient() {
           parseFloat(patient.height)) *
         10000;
       patient.bmi = num.toString().slice(0, 5);
-
+      if (patient.comorbidities.length === 0) patient.comorbidities = [""];
       //here handle adding the patient
       push(
         ref(database, "users/" + auth.currentUser.uid + "/patients"),
