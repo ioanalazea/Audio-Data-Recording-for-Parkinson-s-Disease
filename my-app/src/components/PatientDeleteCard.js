@@ -109,7 +109,7 @@ export default function PatientDeleteCard({ patient, refresh, setRefresh }) {
           });
         });
 
-       Swal.fire("Deleted!", "Patient has been deleted.", "success");
+        Swal.fire("Deleted!", "Patient has been deleted.", "success");
         refresh();
       }
     });
