@@ -77,12 +77,22 @@ export default function ViewPatients() {
     });
   };
 
+  /* useEffect(() => {
+    
+  }, [navigate]);*/
   useEffect(() => {
-    setIsLoading(true);
+    const unsub = auth.onAuthStateChanged((authObj) => {
+      unsub();
+      if (authObj) {
+        // logged in, use authObj
+        setIsLoading(true);
 
-    getMyPatients();
-  }, [navigate]);
-
+        getMyPatients();
+      } else {
+        // not logged in
+      }
+    });
+  }, []);
   return (
     <div className="homediv">
       <div className="header">

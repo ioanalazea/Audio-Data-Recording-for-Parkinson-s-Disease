@@ -12,18 +12,22 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { encryptStorage } from "../encryption/Encrypt.js";
-import { remove } from "firebase/database";
-
+import PatientDeleteCard from "../components/PatientDeleteCard.js";
 
 const columns = [
+  { id: "key", label: "ID", minWidth: 100 },
   { id: "bmi", label: "BMI", minWidth: 100 },
   { id: "sex", label: "Sex", minWidth: 100 },
   { id: "age", label: "Age", minWidth: 100 },
   { id: "symptoms", label: "Symptoms", minWidth: 170 },
   { id: "medication", label: "Medication", minWidth: 180 },
-  { id: "comorbidities", label: "Comorbidities", minWidth: 190 },
+  { id: "comorbidities", label: "Comorbidities", minWidth: 200 },
   { id: "postMedication", label: "Post\u00a0medication", minWidth: 100 },
-  { id: "therapeuticProc", label: "Therapeutic\u00a0procedures", minWidth: 100 },
+  {
+    id: "therapeuticProc",
+    label: "Therapeutic\u00a0procedures",
+    minWidth: 100,
+  },
   { id: "diagnosis", label: "Diagnosis", minWidth: 100 },
 ];
 
@@ -50,6 +54,7 @@ export default function AdminPatientData() {
     marginBottom: "20px",
   };
   const headers = [
+    { label: "ID", key: "key" },
     { label: "BMI", key: "bmi" },
     { label: "Sex", key: "sex" },
     { label: "Age", key: "age" },
@@ -71,7 +76,6 @@ export default function AdminPatientData() {
   const getMedication = (array) => {
     var string = "";
     array.forEach((item) => {
-      console.log(item);
       if (item) string = string + item["id"] + ", " + item["drugname"] + "; ";
     });
     return string;
@@ -95,8 +99,8 @@ export default function AdminPatientData() {
             symptoms: value["symptoms"].toString(),
             therapeuticProc: value["therapeuticProc"],
             forDeletion: value["forDeletion"],
-            userKey:item.key,
-            key:key
+            userKey: item.key,
+            key: key,
           });
         }
       });
@@ -105,7 +109,6 @@ export default function AdminPatientData() {
   };
   useEffect(() => {
     getPatientData();
-    console.log(csvReport.data);
   }, []);
 
   const [page, setPage] = React.useState(0);
@@ -120,35 +123,29 @@ export default function AdminPatientData() {
     setPage(0);
   };
 
-  const deletePatient = (patient) => {
-// Get a reference to the node you want to delete
-const dbRef = ref(database, 'users/'+patient.userKey+'/patients/'+patient.key);
-
-// Delete the node
-remove(dbRef)
-  .then(() => {
-    console.log('Node deleted successfully.');
-  })
-  .catch((error) => {
-    console.error('Error deleting node:', error);
-  });
+  function handleRefreshClick() {
+    window.location.reload();
   }
+
   return (
     <div style={{ background: "#FAFAFA", width: "100vw", height: "100vh" }}>
       <AdminSidebar></AdminSidebar>
 
       <div style={title}> Patient data </div>
-    <div>
-    <div style={subTitle}> Delete requests </div>
-    {
-      patients.map((patient)=>{
-        if (patient.forDeletion)
-        return(<div>Patient{patient.key}
-        <button onClick={deletePatient(patient)}>Delete</button>
-        </div>)
-      })
-    }
-    </div>
+      <div>
+        <div style={subTitle}> Delete requests </div>
+        <div style={{ paddingLeft: "100px" }}>
+          {patients.map((patient) => {
+            if (patient.forDeletion === 1)
+              return (
+                <PatientDeleteCard
+                  patient={patient}
+                  refresh={handleRefreshClick}
+                ></PatientDeleteCard>
+              );
+          })}
+        </div>
+      </div>
       <div
         style={{
           display: "flex",
