@@ -15,7 +15,7 @@ import { encryptStorage } from "../encryption/Encrypt.js";
 import PatientDeleteCard from "../components/PatientDeleteCard.js";
 
 const columns = [
-  { id: "key", label: "ID", minWidth: 100 },
+  { id: "patientKey", label: "ID", minWidth: 100 },
   { id: "bmi", label: "BMI", minWidth: 100 },
   { id: "sex", label: "Sex", minWidth: 100 },
   { id: "age", label: "Age", minWidth: 100 },
@@ -54,7 +54,7 @@ export default function AdminPatientData() {
     marginBottom: "20px",
   };
   const headers = [
-    { label: "ID", key: "key" },
+    { label: "ID", key: "patientKey" },
     { label: "BMI", key: "bmi" },
     { label: "Sex", key: "sex" },
     { label: "Age", key: "age" },
@@ -100,6 +100,7 @@ export default function AdminPatientData() {
             therapeuticProc: value["therapeuticProc"],
             forDeletion: value["forDeletion"],
             userKey: item.key,
+            patientKey: key.toString().substring(1),
             key: key,
           });
         }
@@ -139,6 +140,7 @@ export default function AdminPatientData() {
             if (patient.forDeletion === 1)
               return (
                 <PatientDeleteCard
+                  key={patient.key}
                   patient={patient}
                   refresh={handleRefreshClick}
                 ></PatientDeleteCard>

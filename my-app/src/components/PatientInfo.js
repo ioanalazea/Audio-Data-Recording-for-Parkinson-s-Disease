@@ -6,7 +6,7 @@ import { database } from "../firebase/config.js";
 import { auth } from "../firebase/config.js";
 import { ref as refDatabase, update } from "firebase/database";
 import Swal from "sweetalert2";
-export default function PatientInfo({ patient }) {
+export default function PatientInfo({ patient, refresh, setRefresh }) {
   const styleBody = {
     minWidth: "310px",
     height: "160px",
@@ -103,6 +103,7 @@ export default function PatientInfo({ patient }) {
               "info"
             );
           } else if (result.isDenied) {
+            setRefresh(!refresh);
             Swal.fire("Request sent!", "", "success");
             update(
               refDatabase(
@@ -133,6 +134,7 @@ export default function PatientInfo({ patient }) {
             );
           } else if (result.isDenied) {
             Swal.fire("Request sent!", "", "success");
+            setRefresh(!refresh);
             update(
               refDatabase(
                 database,
@@ -234,7 +236,6 @@ export default function PatientInfo({ patient }) {
       confirmButtonColor: "#219EBC",
       padding: "3em",
       color: "#323031",
-      fontFamily: "Metropolis",
       background: "#fff url(/images/trees.png)",
       backdrop: `
               rgba(0,0,0,0.6)
@@ -283,7 +284,11 @@ export default function PatientInfo({ patient }) {
             <div className="button-text-style2">Edit</div>
           </button>
           <button
-            style={{ marginTop: "20px" }}
+            style={{
+              marginTop: "15px",
+              backgroundColor: "#c95960",
+              border: "1px solid #c95960",
+            }}
             className="button-style-ver3"
             onClick={handleSendDeleteRequest}
           >

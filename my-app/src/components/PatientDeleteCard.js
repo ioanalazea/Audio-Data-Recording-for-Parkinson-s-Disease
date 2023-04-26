@@ -59,7 +59,7 @@ export default function PatientDeleteCard({ patient, refresh }) {
     color: "#323031",
     paddingLeft: "10px",
   };
-  console.log(refresh);
+
   const deletePatient = (patient) => {
     Swal.fire({
       title: "Are you sure?",
@@ -71,8 +71,6 @@ export default function PatientDeleteCard({ patient, refresh }) {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
-        refresh();
         // Get a reference to the node you want to delete
         const dbRef = ref(
           database,
@@ -110,6 +108,9 @@ export default function PatientDeleteCard({ patient, refresh }) {
             }
           });
         });
+
+        Swal.fire("Deleted!", "Patient has been deleted.", "success");
+        //refresh();
       }
     });
   };

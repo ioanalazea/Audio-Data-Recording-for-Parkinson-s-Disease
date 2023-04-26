@@ -80,6 +80,8 @@ export default function ViewPatients() {
   /* useEffect(() => {
     
   }, [navigate]);*/
+  const [refresh, setRefresh] = useState(false);
+
   useEffect(() => {
     const unsub = auth.onAuthStateChanged((authObj) => {
       unsub();
@@ -92,7 +94,8 @@ export default function ViewPatients() {
         // not logged in
       }
     });
-  }, []);
+  }, [refresh]);
+
   return (
     <div className="homediv">
       <div className="header">
@@ -124,7 +127,12 @@ export default function ViewPatients() {
             />
 
             {filteredList.map((item, index) => (
-              <PatientInfo key={index} patient={item} />
+              <PatientInfo
+                key={index}
+                patient={item}
+                refresh={refresh}
+                setRefresh={setRefresh}
+              />
             ))}
           </div>
         )}
