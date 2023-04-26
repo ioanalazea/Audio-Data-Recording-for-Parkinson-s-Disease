@@ -128,13 +128,17 @@ export default function AdminPatientData() {
     window.location.reload();
   }
 
+
+
   return (
     <div style={{ background: "#FAFAFA", width: "100vw", height: "100vh" }}>
-      <AdminSidebar></AdminSidebar>
-
+   <AdminSidebar></AdminSidebar>
+      
       <div style={title}> Patient data </div>
+   
       <div>
         <div style={subTitle}> Delete requests </div>
+
         <div style={{ paddingLeft: "100px" }}>
           {patients.map((patient) => {
             if (patient.forDeletion === 1)
@@ -143,6 +147,7 @@ export default function AdminPatientData() {
                   key={patient.key}
                   patient={patient}
                   refresh={handleRefreshClick}
+                  
                 ></PatientDeleteCard>
               );
           })}
@@ -243,6 +248,7 @@ export default function AdminPatientData() {
           </div>
         </button>
       </div>
+
     </div>
   );
 }

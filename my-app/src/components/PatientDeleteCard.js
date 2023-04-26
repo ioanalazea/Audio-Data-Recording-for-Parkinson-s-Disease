@@ -7,7 +7,7 @@ import { ref, remove } from "firebase/database";
 import { ref as refStorage, listAll, deleteObject } from "firebase/storage";
 
 import Swal from "sweetalert2";
-export default function PatientDeleteCard({ patient, refresh }) {
+export default function PatientDeleteCard({ patient, refresh, setRefresh }) {
   const styleBody = {
     overflow: "auto",
     width: "340px",
@@ -69,7 +69,7 @@ export default function PatientDeleteCard({ patient, refresh }) {
       confirmButtonColor: "#219EBC",
       cancelButtonColor: "#b0373f",
       confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
         // Get a reference to the node you want to delete
         const dbRef = ref(
@@ -89,7 +89,7 @@ export default function PatientDeleteCard({ patient, refresh }) {
         //DELETE all recordings of that patient
         const listRef = refStorage(storage, "recordings/");
         // Find all the prefixes and items.
-        listAll(listRef).then((res) => {
+        await listAll(listRef).then((res) => {
           res.items.forEach((itemRef) => {
             var recordingName = itemRef.name;
 
@@ -109,8 +109,8 @@ export default function PatientDeleteCard({ patient, refresh }) {
           });
         });
 
-        Swal.fire("Deleted!", "Patient has been deleted.", "success");
-        //refresh();
+       Swal.fire("Deleted!", "Patient has been deleted.", "success");
+        refresh();
       }
     });
   };
