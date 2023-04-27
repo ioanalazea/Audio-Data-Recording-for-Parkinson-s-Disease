@@ -72,7 +72,6 @@ export default function ResetPassword() {
             text: "Please check your email and follow the instructions in order to reset your password!",
             showConfirmButton: true,
           });
-          console.log("Password reset email sent");
         })
         .catch((error) => {
           console.log(error);

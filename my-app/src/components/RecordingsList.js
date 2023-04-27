@@ -127,7 +127,6 @@ export default function RecordingsList({
         ).catch((error) => {
           setUploadStatus({ message: error, status: 0 });
         });
-        console.log(uploadStatus);
         navigate(-1);
       } else if (uploadStatus.success === 0)
         Swal.fire({

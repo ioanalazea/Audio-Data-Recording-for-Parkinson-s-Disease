@@ -278,7 +278,6 @@ export default function AddPatient() {
             timer: 1500,
           });
           navigate(-1);
-          console.log("Updated successfully!");
         })
         .catch((error) => {
           Swal.fire({
