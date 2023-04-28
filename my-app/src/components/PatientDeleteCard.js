@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 
 import { database } from "../firebase/config.js";
@@ -7,10 +7,10 @@ import { ref, remove } from "firebase/database";
 import { ref as refStorage, listAll, deleteObject } from "firebase/storage";
 
 import Swal from "sweetalert2";
-export default function PatientDeleteCard({ patient, refresh, setRefresh }) {
+export default function PatientDeleteCard({ patient, deleted, setDeleted }) {
   const styleBody = {
     overflow: "auto",
-    width: "340px",
+    width: "390px",
     height: "80px",
     backgroundColor: "#9bd9e8",
     shadowOpacity: 3,
@@ -69,7 +69,7 @@ export default function PatientDeleteCard({ patient, refresh, setRefresh }) {
       confirmButtonColor: "#219EBC",
       cancelButtonColor: "#b0373f",
       confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
+    }).then((result) => {
       if (result.isConfirmed) {
         // Get a reference to the node you want to delete
         const dbRef = ref(
@@ -89,7 +89,7 @@ export default function PatientDeleteCard({ patient, refresh, setRefresh }) {
         //DELETE all recordings of that patient
         const listRef = refStorage(storage, "recordings/");
         // Find all the prefixes and items.
-        await listAll(listRef).then((res) => {
+        listAll(listRef).then((res) => {
           res.items.forEach((itemRef) => {
             var recordingName = itemRef.name;
 
@@ -109,8 +109,14 @@ export default function PatientDeleteCard({ patient, refresh, setRefresh }) {
           });
         });
 
-        Swal.fire("Deleted!", "Patient has been deleted.", "success");
-        refresh();
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "Patient has been deleted.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        setDeleted(!deleted);
       }
     });
   };
