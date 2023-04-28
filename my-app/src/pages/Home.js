@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import imghome from "../utils/homepic.png";
 import Image from "react-image-resizer";
 import { signOut } from "firebase/auth";
@@ -43,7 +43,17 @@ export default function Home() {
       })
       .catch((error) => alert(error.message));
   };
-
+  const [username, setUserName] = useState(null);
+  useEffect(() => {
+    const unsub = auth.onAuthStateChanged((authObj) => {
+      unsub();
+      if (authObj) {
+        setUserName(auth.currentUser?.displayName);
+      } else {
+        // not logged in
+      }
+    });
+  }, []);
   return (
     <div className="homediv">
       <div className="header">
@@ -51,7 +61,7 @@ export default function Home() {
       </div>
 
       <div style={welcomeText}>Welcome,</div>
-      <div style={nameText}>{auth.currentUser?.displayName}!</div>
+      <div style={nameText}>{username}!</div>
 
       <div className="image-container">
         <Image
