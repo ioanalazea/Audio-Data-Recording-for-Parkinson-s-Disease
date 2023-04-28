@@ -108,9 +108,12 @@ export default function AdminPatientData() {
       setPatients(patientsArray);
     });
   };
+
+  const [deleted, setDeleted] = useState(false);
+
   useEffect(() => {
     getPatientData();
-  }, []);
+  }, [deleted]);
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -123,10 +126,6 @@ export default function AdminPatientData() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
-  function handleRefreshClick() {
-    window.location.reload();
-  }
 
   return (
     <div style={{ background: "#FAFAFA", width: "100vw", height: "100vh" }}>
@@ -144,7 +143,8 @@ export default function AdminPatientData() {
                 <PatientDeleteCard
                   key={patient.key}
                   patient={patient}
-                  refresh={handleRefreshClick}
+                  deleted={deleted}
+                  setDeleted={setDeleted}
                 ></PatientDeleteCard>
               );
           })}
