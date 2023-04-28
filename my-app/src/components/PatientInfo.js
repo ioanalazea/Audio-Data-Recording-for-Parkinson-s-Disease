@@ -2,11 +2,14 @@ import React from "react";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { useNavigate } from "react-router-dom";
 import { encryptStorage } from "../encryption/Encrypt.js";
+import { database } from "../firebase/config.js";
+import { auth } from "../firebase/config.js";
+import { ref as refDatabase, update } from "firebase/database";
 import Swal from "sweetalert2";
-export default function PatientInfo({ patient }) {
+export default function PatientInfo({ patient, refresh, setRefresh }) {
   const styleBody = {
     minWidth: "310px",
-    height: "125px",
+    height: "160px",
     backgroundColor: "#F6E5D4",
     shadowOpacity: 3,
     shadowRadius: 10,
@@ -83,6 +86,69 @@ export default function PatientInfo({ patient }) {
     });
   };
 
+  const handleSendDeleteRequest = () => {
+    patient.value.forDeletion
+      ? Swal.fire({
+          title: "Do you want to revoke deletion for this patient?",
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: "Help",
+          denyButtonText: `Revoke`,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            Swal.fire(
+              "Help",
+              "This will revoke the delete request sent to the admin.",
+              "info"
+            );
+          } else if (result.isDenied) {
+            setRefresh(!refresh);
+            Swal.fire("Request sent!", "", "success");
+            update(
+              refDatabase(
+                database,
+                "users/" + auth.currentUser.uid + "/patients/" + patient.key
+              ),
+              {
+                forDeletion: 0,
+              }
+            ).catch((error) => {
+              console.log(error);
+            });
+          }
+        })
+      : Swal.fire({
+          title: "Do you want to request a deletion for this patient?",
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: "Help",
+          denyButtonText: `Delete`,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+            Swal.fire(
+              "Help",
+              "This will send a delete request to the admin. The admin will approve or deny it.",
+              "info"
+            );
+          } else if (result.isDenied) {
+            Swal.fire("Request sent!", "", "success");
+            setRefresh(!refresh);
+            update(
+              refDatabase(
+                database,
+                "users/" + auth.currentUser.uid + "/patients/" + patient.key
+              ),
+              {
+                forDeletion: 1,
+              }
+            ).catch((error) => {
+              console.log(error);
+            });
+          }
+        });
+  };
   const getDiagnosis = (diagnosis) => {
     const optionsD = {
       hc: "Healthy - no Parkinson's",
@@ -170,7 +236,6 @@ export default function PatientInfo({ patient }) {
       confirmButtonColor: "#219EBC",
       padding: "3em",
       color: "#323031",
-      fontFamily: "Metropolis",
       background: "#fff url(/images/trees.png)",
       backdrop: `
               rgba(0,0,0,0.6)
@@ -217,6 +282,19 @@ export default function PatientInfo({ patient }) {
             onClick={handleGoToEdit}
           >
             <div className="button-text-style2">Edit</div>
+          </button>
+          <button
+            style={{
+              marginTop: "15px",
+              backgroundColor: "#c95960",
+              border: "1px solid #c95960",
+            }}
+            className="button-style-ver3"
+            onClick={handleSendDeleteRequest}
+          >
+            <div className="button-text-style2">
+              {patient.value.forDeletion ? "Revoke" : "Delete"}
+            </div>
           </button>
         </div>
       </div>

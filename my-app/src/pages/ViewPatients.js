@@ -77,11 +77,24 @@ export default function ViewPatients() {
     });
   };
 
-  useEffect(() => {
-    setIsLoading(true);
+  /* useEffect(() => {
+    
+  }, [navigate]);*/
+  const [refresh, setRefresh] = useState(false);
 
-    getMyPatients();
-  }, [navigate]);
+  useEffect(() => {
+    const unsub = auth.onAuthStateChanged((authObj) => {
+      unsub();
+      if (authObj) {
+        // logged in, use authObj
+        setIsLoading(true);
+
+        getMyPatients();
+      } else {
+        // not logged in
+      }
+    });
+  }, [refresh]);
 
   return (
     <div className="homediv">
@@ -114,7 +127,12 @@ export default function ViewPatients() {
             />
 
             {filteredList.map((item, index) => (
-              <PatientInfo key={index} patient={item} />
+              <PatientInfo
+                key={index}
+                patient={item}
+                refresh={refresh}
+                setRefresh={setRefresh}
+              />
             ))}
           </div>
         )}

@@ -50,7 +50,6 @@ export default function AdminOverview() {
   };
 
   const extractVowel = (name) => {
-    console.log(name.split("~"))
     const str = name.split("~")[5];
     const vowel = str.split(".")[0];
     return vowel;
@@ -143,7 +142,6 @@ export default function AdminOverview() {
       },
     ];
     recordings.forEach((item) => {
-      console.log(item)
       const vowel = extractVowel(item);
 
       data.forEach((i) => {
@@ -214,7 +212,6 @@ export default function AdminOverview() {
 
   useEffect(() => {
     getRecordingsInfo();
-    console.log(recordings);
   }, []);
 
   return (

@@ -180,13 +180,11 @@ export default function EditPatient() {
 
   const [comorbidities, setComorbidities] = useState([]);
   const searchDisease = async (searchInput) => {
-    console.log(searchInput);
     try {
       const { data } = await axios.get(
         `https://clinicaltables.nlm.nih.gov/api/icd10cm/v3/search?sf=code,name&df=code,name&terms=${searchInput}&maxList=500`
       );
       setComorbidities(data[3]);
-      console.log(data);
     } catch (err) {
       console.error(err);
     }
@@ -238,6 +236,8 @@ export default function EditPatient() {
     postMedication: patientToEdit.value.postMedication,
     therapeuticProc: patientToEdit.value.therapeuticProc,
     batchCount: patientToEdit.value.batchCount,
+    forDeletion: patientToEdit.value.forDeletion,
+
   });
 
   const getSymptomsPatientEdit = () => {
@@ -307,6 +307,7 @@ export default function EditPatient() {
           postMedication: patient.postMedication,
           therapeuticProc: patient.therapeuticProc,
           batchCount: patientToEdit.value.batchCount,
+          forDeletion: patientToEdit.value.forDeletion,
         }
       )
         .then(() => {
@@ -317,7 +318,6 @@ export default function EditPatient() {
             timer: 1500,
           });
           navigate(-1);
-          console.log("Updated successfully!");
         })
         .catch((error) => {
           Swal.fire({
