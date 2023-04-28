@@ -41,13 +41,13 @@ export default function AdminSidebar() {
       })
       .catch((error) => alert(error.message));
   };
-
+  /*
   const handleGoToAll = () => {
     if (location.pathname.includes("overview")) navigate(-1);
     else if (location.pathname.includes("data")) navigate(-2);
   };
-
   const handleGoToOverview = () => {
+    console.log(location.pathname)
     if (location.pathname.includes("data")) {
       navigate(-1);
     } else if (!location.pathname.includes("overview")) navigate("overview");
@@ -58,6 +58,21 @@ export default function AdminSidebar() {
       if (location.pathname.includes("overview")) navigate("data");
       else navigate("overview/data");
     }
+  };
+*/
+
+  const handleGoToAll = () => {
+    if (!location.pathname.includes("dashboard"))
+      navigate("/admin/dashboard", { replace: true });
+  };
+  const handleGoToOverview = () => {
+    if (!location.pathname.includes("overview"))
+      navigate("/admin/overview", { replace: true });
+  };
+
+  const handleGoToData = () => {
+    if (!location.pathname.includes("data"))
+      navigate("/admin/data", { replace: true });
   };
 
   const list = (anchor) => (

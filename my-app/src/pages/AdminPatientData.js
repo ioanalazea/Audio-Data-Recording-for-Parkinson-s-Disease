@@ -15,20 +15,20 @@ import { encryptStorage } from "../encryption/Encrypt.js";
 import PatientDeleteCard from "../components/PatientDeleteCard.js";
 
 const columns = [
-  { id: "patientKey", label: "ID", minWidth: 100 },
+  { id: "patientKey", label: "ID", minWidth: 110 },
   { id: "bmi", label: "BMI", minWidth: 100 },
   { id: "sex", label: "Sex", minWidth: 100 },
   { id: "age", label: "Age", minWidth: 100 },
   { id: "symptoms", label: "Symptoms", minWidth: 170 },
   { id: "medication", label: "Medication", minWidth: 180 },
   { id: "comorbidities", label: "Comorbidities", minWidth: 200 },
-  { id: "postMedication", label: "Post\u00a0medication", minWidth: 100 },
+  { id: "postMedication", label: "Post\u00a0medication", minWidth: 150 },
   {
     id: "therapeuticProc",
     label: "Therapeutic\u00a0procedures",
-    minWidth: 100,
+    minWidth: 130,
   },
-  { id: "diagnosis", label: "Diagnosis", minWidth: 100 },
+  { id: "diagnosis", label: "Diagnosis", minWidth: 110 },
 ];
 
 export default function AdminPatientData() {

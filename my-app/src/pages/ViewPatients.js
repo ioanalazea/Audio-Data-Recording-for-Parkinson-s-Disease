@@ -77,9 +77,6 @@ export default function ViewPatients() {
     });
   };
 
-  /* useEffect(() => {
-    
-  }, [navigate]);*/
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
@@ -88,7 +85,6 @@ export default function ViewPatients() {
       if (authObj) {
         // logged in, use authObj
         setIsLoading(true);
-
         getMyPatients();
       } else {
         // not logged in
