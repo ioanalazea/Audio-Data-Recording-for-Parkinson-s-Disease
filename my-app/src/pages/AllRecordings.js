@@ -157,7 +157,7 @@ export default function AllRecordings() {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - recordingRefs.length) : 0;
 
-  const handleChangePage = (newPage) => {
+  const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
@@ -165,7 +165,7 @@ export default function AllRecordings() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
+console.log(page);
   return (
     <div>
       <div style={title}> All recordings </div>
