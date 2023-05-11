@@ -27,7 +27,7 @@ export default function AdminOverview() {
 
   const [recordings, setRecordings] = useState([]);
   const extractMonthRecName = (name) => {
-    const date = name.split("~")[3];
+    const date = name.split("~")[2];
     const month = date.split(".")[0];
     if (month === "01") return "Jan";
     else if (month === "02") return "Feb";
