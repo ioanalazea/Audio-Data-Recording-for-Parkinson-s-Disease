@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 import { database } from "../firebase/config.js";
@@ -141,6 +142,11 @@ export default function AddPatient() {
     borderRadius: "5%",
     p: 4,
   };
+
+  const [openInfo, setOpenInfo] = React.useState(false);
+  const handleOpenInfo = () => setOpenInfo(true);
+  const handleCloseInfo = () => setOpenInfo(false);
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -311,6 +317,42 @@ export default function AddPatient() {
         <div></div>
       )}
       <div style={containerStyle}>
+
+      <Button style={{ marginTop: "15px" }} onClick={handleOpenInfo}>
+            <InfoOutlinedIcon
+              sx={{ color: "#323031", fontSize: "25px" }}
+            ></InfoOutlinedIcon>
+            <div
+              style={{
+                fontFamily: "Metropolis",
+                fontWeight: "600",
+                fontSize: "14px",
+                color: "#323031",
+                marginLeft: "10px",
+              }}
+            >
+              Info
+            </div>
+          </Button>
+
+          <Modal open={openInfo} onClose={handleCloseInfo}>
+            <Box sx={styleModal}>
+              <Typography
+                variant="h6"
+                component="h2"
+                sx={{ fontFamily: "Metropolis", fontWeight: "600" }}
+              >
+                How do I add a patient?
+              </Typography>
+              <Typography sx={{ mt: 2, fontFamily: "Metropolis" }}>
+                To search add a patient you have to complete the fields. It's <b>obligatory</b> that you
+                add the <b>Full name, Telephone number, Age, Sex, Height, Weight and Diagnosis.</b>
+                The rest of the text fields <i>(Symptoms, Comorbidities, Medication, Post-medication 
+                and Therapeutic procedures)</i> can be left blank if the patient does not have them.
+              </Typography>
+            </Box>
+          </Modal>
+
         <div style={{ marginTop: "20px" }}>
           <label>Full name:</label>
           <TextField
