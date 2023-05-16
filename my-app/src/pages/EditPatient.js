@@ -226,9 +226,9 @@ export default function EditPatient() {
     weight: patientToEdit.value.weight,
     bmi: patientToEdit.value.bmi,
     diagnosis: patientToEdit.value.diagnosis,
-    symptoms:  isEmpty(patientToEdit.value.symptoms)
+    symptoms: isEmpty(patientToEdit.value.symptoms)
       ? []
-      :patientToEdit.value.symptoms,
+      : patientToEdit.value.symptoms,
     comorbidities: isEmpty(patientToEdit.value.comorbidities)
       ? []
       : patientToEdit.value.comorbidities,
@@ -239,7 +239,6 @@ export default function EditPatient() {
     therapeuticProc: patientToEdit.value.therapeuticProc,
     batchCount: patientToEdit.value.batchCount,
     forDeletion: patientToEdit.value.forDeletion,
-
   });
 
   const getSymptomsPatientEdit = () => {
