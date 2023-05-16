@@ -16,11 +16,11 @@ import axios from "axios";
 export default function Register() {
   const registerBackground = {
     backgroundImage: "url(" + Background + ")",
-   backgroundSize: "cover",
-  backgroundPosition: "center",
-  width: "100%",
-  height:"100%",
-  overflow:"auto" 
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    width: "100%",
+    height: "100%",
+    overflow: "auto",
   };
   const title = {
     fontFamily: "Metropolis",
@@ -65,17 +65,14 @@ export default function Register() {
   const styleSelect = {
     control: (base) => ({
       ...base,
-      width: "250px",
-
+      width: "271px",
       marginTop: "5px",
-      filter: "drop-shadow(0px 0px 4px #219EBC)",
       boxShadow: "none",
       border: "1px solid #323031",
       borderRadius: "30px",
       paddingRight: "10px",
       paddingLeft: "10px",
       filter: "drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))",
-      width: "250px",
       align: "center",
     }),
   };
@@ -227,46 +224,65 @@ export default function Register() {
 
   const verifyInputs = (user) => {
     var ok = 1;
+    var countEmptyFields = 0;
     let errorMessage = "";
 
     //Full name can't be empty
     if (user.firstName === "") {
       ok = 0;
       errorMessage = "Please enter first name!";
+      countEmptyFields = countEmptyFields + 1;
     }
 
     //Full name can't be empty
     if (user.lastName === "") {
       ok = 0;
       errorMessage = "Please enter last name!";
+      countEmptyFields = countEmptyFields + 1;
+    }
+
+    //Email can't be empty
+    if (user.email === "") {
+      ok = 0;
+      errorMessage = "Please enter your email!";
+      countEmptyFields = countEmptyFields + 1;
     }
 
     //Phone number can't be empty
     if (user.phoneNumber === "") {
       ok = 0;
       errorMessage = "Please enter your phone number!";
+      countEmptyFields = countEmptyFields + 1;
     }
 
     //Spec can't be empty
     if (user.specialization === "") {
       ok = 0;
       errorMessage = "Please enter specialization!";
+      countEmptyFields = countEmptyFields + 1;
     }
 
     //County can't be empty
     if (user.county === "") {
       ok = 0;
       errorMessage = "Please enter county!";
+      countEmptyFields = countEmptyFields + 1;
     }
 
+    //Password can't be empty
+    if (user.password === "") {
+      ok = 0;
+      errorMessage = "Please enter password!";
+      countEmptyFields = countEmptyFields + 1;
+    }
     //Confirm password can't be empty
-    if (user.confirmPassword === "") {
+    else if (user.confirmPassword === "") {
       ok = 0;
       errorMessage = "Please enter confirm password!";
+      countEmptyFields = countEmptyFields + 1;
     }
-
     //Password and confirm password do not match
-    if (user.password !== user.confirmPassword) {
+    else if (user.password !== user.confirmPassword) {
       ok = 0;
       errorMessage = "Password and confirm password do not match!";
     }
@@ -283,10 +299,9 @@ export default function Register() {
       errorMessage = "Please provide a valid email!";
     }
 
-    //User did not enter email and password
-    if (user.email === "" || user.password === "") {
+    if (countEmptyFields > 1) {
       ok = 0;
-      errorMessage = "Enter details to register!";
+      errorMessage = "Multiple empty fields!";
     }
 
     if (ok === 0) {
@@ -413,17 +428,17 @@ export default function Register() {
           <div style={title}> Recording App </div>
           <div style={registerHeader}> Register </div>
           {error !== "" ? (
-        <div style={{ marginTop: "5px", marginLeft: "-3px" }}>
-          <div
-            className="error"
-            style={{ fontFamily: "Metropolis", fontWeight: "700" }}
-          >
-            {error}
-          </div>
-        </div>
-      ) : (
-        <div></div>
-      )}
+            <div style={{ marginTop: "5px", marginLeft: "-3px" }}>
+              <div
+                className="error"
+                style={{ fontFamily: "Metropolis", fontWeight: "700" }}
+              >
+                {error}
+              </div>
+            </div>
+          ) : (
+            <div></div>
+          )}
           <div style={{ marginTop: "20px" }}>
             <label>First name:</label>
             <TextField
@@ -511,7 +526,6 @@ export default function Register() {
           </div>
         </div>
       </div>
-   
     </div>
   );
 }
