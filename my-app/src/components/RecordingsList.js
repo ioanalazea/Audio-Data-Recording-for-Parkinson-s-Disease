@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useRecordingsList from "../hooks/use-recordings-list";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Swal from "sweetalert2";
@@ -7,7 +7,6 @@ import { ref, uploadBytes } from "firebase/storage";
 import { auth } from "../firebase/config.js";
 import { ref as refDatabase, update } from "firebase/database";
 import { useNavigate } from "react-router-dom";
-
 export default function RecordingsList({
   patientKey,
   batchCount,
@@ -67,6 +66,16 @@ export default function RecordingsList({
   );
 
   const [uploadStatus, setUploadStatus] = useState({ message: "", status: 1 });
+  useEffect(() => {
+    if (recordings.length === 5) {
+      Swal.fire({
+        title: "Great, thank you for recording!",
+        text: " Now press SAVE to upload recordings to the database.",
+        icon: "success",
+      });
+    }
+  });
+
   const handleSaveRecordings = () => {
     if (recordings.length < 5) {
       Swal.fire({
