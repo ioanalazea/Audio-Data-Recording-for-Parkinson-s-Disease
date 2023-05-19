@@ -159,10 +159,6 @@ export default function AddPatient() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [openInfo, setOpenInfo] = React.useState(false);
-  const handleOpenInfo = () => setOpenInfo(true);
-  const handleCloseInfo = () => setOpenInfo(false);
-
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
 
