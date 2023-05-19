@@ -12,6 +12,7 @@ import {
 import { auth } from "../firebase/config.js";
 import Swal from "sweetalert2";
 import axios from "axios";
+import ReactLoading from "react-loading";
 
 export default function Register() {
   const registerBackground = {
@@ -221,6 +222,7 @@ export default function Register() {
   });
 
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const verifyInputs = (user) => {
     var ok = 1;
@@ -336,7 +338,7 @@ export default function Register() {
       }
     }
     if (errorMessage === "")
-      errorMessage = "Doctor is from wrong county or has wrong specialization.";
+      errorMessage = "Wrong county/specialization.";
     if (errorMessage === "Found.") errorMessage = "";
 
     setError(errorMessage);
@@ -356,6 +358,7 @@ export default function Register() {
           const results = response.data.data.results;
           //verifying inputs
           if (verifyRegMed(results) === 1) {
+            setIsLoading(true);
             createUserWithEmailAndPassword(auth, user.email, user.password)
               .then((userCredential) => {
                 Swal.fire({
@@ -513,12 +516,23 @@ export default function Register() {
               }
             />
           </div>
-          <div style={{ marginTop: "40px" }}>
+          {isLoading ? (
+            <div style={{ paddingLeft: "80px" }}>
+              <ReactLoading
+                type="bubbles"
+                color="#219EBC"
+                height={70}
+                width={100}
+              />{" "}
+            </div>
+          ) : (
+            <></>
+          )}
+          <div style={{ marginTop: "30px" }}>
             <button className="button-style-blk" onClick={() => registerUser()}>
               <div className="button-text-style1">Create account</div>
             </button>
           </div>
-
           <div style={{ marginTop: "15px", marginLeft: "20px" }}>
             <Link style={{ color: "#323931" }} to="/">
               Already have an account? <b>Sign in.</b>
