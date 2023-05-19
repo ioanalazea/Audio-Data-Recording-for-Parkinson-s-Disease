@@ -150,6 +150,11 @@ export default function AddPatient() {
   I acknowledge that I have the right to access, rectify, erase, restrict, or object to the processing of my personal data as provided under applicable data protection laws. I also understand that I have the right to withdraw my consent at any time, without affecting the lawfulness of processing based on consent before its withdrawal.
   This consent shall remain valid until the purposes for which the personal data were collected and processed have been fulfilled or until I withdraw consent.
   `;
+
+  const [openInfo, setOpenInfo] = React.useState(false);
+  const handleOpenInfo = () => setOpenInfo(true);
+  const handleCloseInfo = () => setOpenInfo(false);
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -381,7 +386,40 @@ export default function AddPatient() {
             </Typography>
           </Box>
         </Modal>
+      <Button style={{ marginTop: "15px" }} onClick={handleOpenInfo}>
+            <InfoOutlinedIcon
+              sx={{ color: "#323031", fontSize: "25px" }}
+            ></InfoOutlinedIcon>
+            <div
+              style={{
+                fontFamily: "Metropolis",
+                fontWeight: "600",
+                fontSize: "14px",
+                color: "#323031",
+                marginLeft: "10px",
+              }}
+            >
+              Info
+            </div>
+          </Button>
 
+          <Modal open={openInfo} onClose={handleCloseInfo}>
+            <Box sx={styleModal}>
+              <Typography
+                variant="h6"
+                component="h2"
+                sx={{ fontFamily: "Metropolis", fontWeight: "600" }}
+              >
+                How do I add a patient?
+              </Typography>
+              <Typography sx={{ mt: 2, fontFamily: "Metropolis" }}>
+                To search add a patient you have to complete the fields. It's <b>obligatory</b> that you
+                add the <b>Full name, Telephone number, Age, Sex, Height, Weight and Diagnosis.</b>
+                The rest of the text fields <i>(Symptoms, Comorbidities, Medication, Post-medication 
+                and Therapeutic procedures)</i> can be left blank if the patient does not have them.
+              </Typography>
+            </Box>
+          </Modal>
         <div style={{ marginTop: "20px" }}>
           <label>Full name:</label>
           <TextField

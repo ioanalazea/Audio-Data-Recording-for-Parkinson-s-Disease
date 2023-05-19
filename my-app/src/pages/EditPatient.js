@@ -226,7 +226,9 @@ export default function EditPatient() {
     weight: patientToEdit.value.weight,
     bmi: patientToEdit.value.bmi,
     diagnosis: patientToEdit.value.diagnosis,
-    symptoms: patientToEdit.value.symptoms,
+    symptoms: isEmpty(patientToEdit.value.symptoms)
+      ? []
+      : patientToEdit.value.symptoms,
     comorbidities: isEmpty(patientToEdit.value.comorbidities)
       ? []
       : patientToEdit.value.comorbidities,
@@ -237,7 +239,6 @@ export default function EditPatient() {
     therapeuticProc: patientToEdit.value.therapeuticProc,
     batchCount: patientToEdit.value.batchCount,
     forDeletion: patientToEdit.value.forDeletion,
-
   });
 
   const getSymptomsPatientEdit = () => {
@@ -285,6 +286,7 @@ export default function EditPatient() {
       patient.bmi = num.toString().slice(0, 5);
       if (patient.medication.length === 0) patient.medication = [""];
       if (patient.comorbidities.length === 0) patient.comorbidities = [""];
+      if (patient.symptoms.length === 0) patient.symptoms = [""];
 
       //here handle edit the patient
       set(
