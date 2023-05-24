@@ -343,9 +343,9 @@ export default function AddPatient() {
 
       <div style={containerStyle}>
         <Button style={{ marginTop: "15px" }} onClick={handleOpenInfo}>
-          <HelpOutlineOutlinedIcon
+          <InfoOutlinedIcon
             sx={{ color: "#323031", fontSize: "25px" }}
-          ></HelpOutlineOutlinedIcon>
+          ></InfoOutlinedIcon>
           <div
             style={{
               fontFamily: "Metropolis",
@@ -382,40 +382,6 @@ export default function AddPatient() {
             </Typography>
           </Box>
         </Modal>
-      <Button style={{ marginTop: "15px" }} onClick={handleOpenInfo}>
-            <InfoOutlinedIcon
-              sx={{ color: "#323031", fontSize: "25px" }}
-            ></InfoOutlinedIcon>
-            <div
-              style={{
-                fontFamily: "Metropolis",
-                fontWeight: "600",
-                fontSize: "14px",
-                color: "#323031",
-                marginLeft: "10px",
-              }}
-            >
-              Info
-            </div>
-          </Button>
-
-          <Modal open={openInfo} onClose={handleCloseInfo}>
-            <Box sx={styleModal}>
-              <Typography
-                variant="h6"
-                component="h2"
-                sx={{ fontFamily: "Metropolis", fontWeight: "600" }}
-              >
-                How do I add a patient?
-              </Typography>
-              <Typography sx={{ mt: 2, fontFamily: "Metropolis" }}>
-                To search add a patient you have to complete the fields. It's <b>obligatory</b> that you
-                add the <b>Full name, Telephone number, Age, Sex, Height, Weight and Diagnosis.</b>
-                The rest of the text fields <i>(Symptoms, Comorbidities, Medication, Post-medication 
-                and Therapeutic procedures)</i> can be left blank if the patient does not have them.
-              </Typography>
-            </Box>
-          </Modal>
         <div style={{ marginTop: "20px" }}>
           <label>Full name:</label>
           <TextField
