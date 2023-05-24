@@ -27,8 +27,8 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
     position: "relative",
     backgroundColor: theme.palette.background.paper,
     border: "1px solid #323031",
-    fontSize: 16,
-    padding: "10px 26px 10px 12px",
+    fontSize: 25,
+    padding: "10px 26px 1px 12px",
     transition: theme.transitions.create(["border-color", "box-shadow"]),
     fontFamily: "Metropolis",
     "&:focus": {
@@ -169,34 +169,35 @@ export default function RecordPatient() {
             input={<BootstrapInput />}
             value={vowel}
             onChange={handleSelectVowel}
+            sx={{fontSize:'large', fontWeight:"700"}}
           >
             <MenuItem
               value={"A"}
-              style={{ fontFamily: "Metropolis", fontWeight: "400" }}
+              style={{fontSize: "20px", fontFamily: "Metropolis", fontWeight: "700" }}
             >
               A
             </MenuItem>
             <MenuItem
               value={"E"}
-              style={{ fontFamily: "Metropolis", fontWeight: "400" }}
+              style={{fontSize: "20px", fontFamily: "Metropolis", fontWeight: "700" }}
             >
               E
             </MenuItem>
             <MenuItem
               value={"I"}
-              style={{ fontFamily: "Metropolis", fontWeight: "400" }}
+              style={{ fontSize: "20px", fontFamily: "Metropolis", fontWeight: "700" }}
             >
               I
             </MenuItem>
             <MenuItem
               value={"O"}
-              style={{ fontFamily: "Metropolis", fontWeight: "400" }}
+              style={{ fontSize: "20px", fontFamily: "Metropolis", fontWeight: "700" }}
             >
               O
             </MenuItem>
             <MenuItem
               value={"U"}
-              style={{ fontFamily: "Metropolis", fontWeight: "400" }}
+              style={{ fontSize: "20px", fontFamily: "Metropolis", fontWeight: "700" }}
             >
               U
             </MenuItem>
