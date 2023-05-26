@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { startRecording, saveRecording } from "../handlers/recorder-controls";
-import { storage } from "../firebase/config.js";
-import { ref, uploadBytes } from "firebase/storage";
 
 const initialState = {
   recordingMinutes: 0,

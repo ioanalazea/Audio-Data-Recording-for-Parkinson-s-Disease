@@ -428,7 +428,7 @@ export default function Register() {
       >
         <div>
           <div style={title}> Parkinson's </div>
-          <div style={title}> Recording App </div>
+          <div style={title}> Database <br/> Creator</div>
           <div style={registerHeader}> Register </div>
           {error !== "" ? (
             <div style={{ marginTop: "5px", marginLeft: "-3px" }}>
@@ -516,7 +516,7 @@ export default function Register() {
               }
             />
           </div>
-          {isLoading ? (
+          {isLoading && error === "" ? (
             <div style={{ paddingLeft: "80px" }}>
               <ReactLoading
                 type="bubbles"
