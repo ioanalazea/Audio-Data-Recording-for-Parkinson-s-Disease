@@ -3,10 +3,13 @@ import { TextField, Typography } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import PasswordIcon from "@mui/icons-material/Password";
 import EmailIcon from "@mui/icons-material/Email";
+import TokenIcon from "@mui/icons-material/Token";
 import Link from "@mui/material/Link";
 import Background from "../utils/stacked-waves.svg";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config.js";
+import { database } from "../firebase/config.js";
+import { ref, get } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -53,20 +56,35 @@ export default function SignIn() {
 
   const navigate = useNavigate();
 
+  const adminUid = "hR48GeIObJONCigXNt0oAbo58no2";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [token, setToken] = useState("");
 
   const [error, setError] = useState("");
 
   const handleSignIn = () => {
-    if (email === "" || password === "") setError("Empty fields!");
+    if (email === "" || password === "" || token === "")
+      setError("Empty fields!");
     else {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           const user = userCredential.user;
           console.log("Signed in successfully!");
-          if (user.uid === "hR48GeIObJONCigXNt0oAbo58no2") navigate("/admin/dashboard");
-          else navigate("/home");
+
+          if (user.uid === adminUid) {
+            if (token === password) {
+              navigate("/admin/dashboard");
+            } else setError("Wrong token!");
+          } else {
+            var tokenRef = ref(database, "users/" + user.uid + "/token");
+            get(tokenRef).then(function (snapshot) {
+              const databaseToken = snapshot.val().token;
+              if (databaseToken.toString() === token) navigate("/home");
+              else setError("Wrong token!");
+            });
+          }
         })
         .catch((error) => {
           const errorMessage = error.message;
@@ -77,18 +95,14 @@ export default function SignIn() {
             setError("Wrong password!");
           else if (errorMessage === "Firebase: Error (auth/user-not-found).")
             setError("User not found!");
-          else if (errorMessage.includes("(auth/too-many-requests)"))
-          {
-            setError(
-              "Access temporarily disabled."
-            );
+          else if (errorMessage.includes("(auth/too-many-requests)")) {
+            setError("Access temporarily disabled.");
             Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later."
-            })
+              icon: "error",
+              title: "Oops...",
+              text: "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.",
+            });
           }
-            
 
           console.log(errorMessage);
         });
@@ -128,7 +142,7 @@ export default function SignIn() {
             />
           </div>
 
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "15px" }}>
             <label>Password:</label>
             <TextField
               type="password"
@@ -142,6 +156,23 @@ export default function SignIn() {
                 ),
               }}
               onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <div style={{ marginTop: "15px" }}>
+            <label>Token:</label>
+            <TextField
+              type="password"
+              style={styleTextField}
+              InputProps={{
+                disableUnderline: true,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <TokenIcon />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(e) => setToken(e.target.value)}
             />
           </div>
 

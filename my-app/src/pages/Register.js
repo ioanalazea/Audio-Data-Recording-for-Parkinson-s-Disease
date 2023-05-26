@@ -10,9 +10,13 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/config.js";
+import { database } from "../firebase/config.js";
+import { ref, set } from "firebase/database";
 import Swal from "sweetalert2";
 import axios from "axios";
 import ReactLoading from "react-loading";
+
+import emailjs from '@emailjs/browser';
 
 export default function Register() {
   const registerBackground = {
@@ -337,15 +341,13 @@ export default function Register() {
         if (errorMessage === "Found.") break;
       }
     }
-    if (errorMessage === "")
-      errorMessage = "Wrong county/specialization.";
+    if (errorMessage === "") errorMessage = "Wrong county/specialization.";
     if (errorMessage === "Found.") errorMessage = "";
 
     setError(errorMessage);
     if (errorMessage !== "") return 0;
     else return 1;
   };
-
   const registerUser = () => {
     if (verifyInputs(user))
       axios
@@ -360,27 +362,56 @@ export default function Register() {
           if (verifyRegMed(results) === 1) {
             setIsLoading(true);
             createUserWithEmailAndPassword(auth, user.email, user.password)
-              .then((userCredential) => {
+              .then(async (userCredential) => {
                 Swal.fire({
                   icon: "success",
-                  title: "Account created successfully!",
-                  showConfirmButton: false,
-                  timer: 2500,
+                  title: "Account created successfully! Please check your email to get your access token.",
+                  showConfirmButton: true,
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    navigate(-1);
+                  }
                 });
-                setTimeout(() => {
-                  navigate(-1);
-                }, 2500);
-                updateProfile(auth.currentUser, {
-                  displayName: user.firstName + " " + user.lastName,
-                  phoneNumber: user.phoneNumber,
+                const accessToken = Date.now();
+
+
+               await set(ref(database, "users/" + auth.currentUser.uid + "/token"), {
+                  token: accessToken,
                 })
                   .then(() => {
-                    console.log("Profile updated successfully!");
+
+/*
+                    emailjs.send('service_b5d39lg', 'template_75wk0ng', {name:auth.currentUser.displayName, token:accessToken.toString(), email:auth.currentUser.email}, '0Fwwg2pNCwo6zOeXJ')
+    .then(function(response) {
+       console.log('SUCCESS!', response.status, response.text);
+    }, function(error) {
+       console.log('FAILED...', error);
+    });*/
+
+
+                    
                   })
-                  .catch((error) => {
-                    console.log(error);
-                    setError("Error updating profile!");
-                  });
+                  .catch((error) => {});
+                await  updateProfile(auth.currentUser, {
+                    displayName: user.firstName + " " + user.lastName,
+                    phoneNumber: user.phoneNumber,
+                  })
+                    .then(() => {
+                      console.log("Profile updated successfully!");
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                      setError("Error updating profile!");
+                    });
+
+                 await signOut(auth)
+                    .then(() => {
+                      // Sign-out successful.
+                    })
+                    .catch((error) => {
+                      // An error happened.
+                      console.log(error);
+                    });
 
                 setUser({
                   firstName: "",
@@ -391,23 +422,15 @@ export default function Register() {
                   confirmPassword: "",
                 });
                 setError("");
-                signOut(auth)
-                  .then(() => {
-                    // Sign-out successful.
-                  })
-                  .catch((error) => {
-                    // An error happened.
-                    console.log(error);
-                  });
               })
               .catch((err) => {
                 if (
                   err.message === "Firebase: Error (auth/email-already-in-use)."
-                )
+                ) {
                   setError("E-mail already in use!");
-                else if (err.message.includes("auth/weak-password"))
+                } else if (err.message.includes("auth/weak-password")) {
                   setError("Password should be at least 6 characters!");
-                else setError(err.message);
+                } else setError(err.message);
               });
             console.log(error);
           }
@@ -422,7 +445,7 @@ export default function Register() {
           align: "center",
           display: "flex",
           justifyContent: "center",
-          paddingTop: "20px",
+          paddingTop: "15px",
           paddingBottom: "10px",
         }}
       >
