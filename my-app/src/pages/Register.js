@@ -16,7 +16,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import ReactLoading from "react-loading";
 
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
 
 export default function Register() {
   const registerBackground = {
@@ -93,6 +93,7 @@ export default function Register() {
     { value: "Brașov", label: "Brașov" },
     { value: "Brăila", label: "Brăila" },
     { value: "Buzău", label: "Buzău" },
+    { value: "București", label: "București" },
     { value: "Caraș-Severin", label: "Caraș-Severin" },
     { value: "Călărași", label: "Călărași" },
     { value: "Cluj", label: "Cluj" },
@@ -149,7 +150,7 @@ export default function Register() {
     { value: "Chirurgie toracică", label: "Thoracic Surgery" },
     { value: "Chirurgie vasculară", label: "Vascular Surgery" },
     {
-      value: "Dermatologie și venerologie",
+      value: "Dermatovenerologie",
       label: "Dermatology and Venereology",
     },
     {
@@ -159,6 +160,10 @@ export default function Register() {
     { value: "Endocrinologie", label: "Endocrinology" },
     { value: "Epidemiologie", label: "Epidemiology" },
     { value: "Farmacologie clinică", label: "Clinical Pharmacology" },
+    {
+      value: "Gastroenterologie",
+      label: "Gastroenterology",
+    },
     {
       value: "Gastroenterologie și hepatologie",
       label: "Gastroenterology and Hepatology",
@@ -171,26 +176,31 @@ export default function Register() {
       value: "Infecțioase și medicină tropicală",
       label: "Infectious and Tropical Medicine",
     },
-    { value: "Medicina de familie", label: "Family Medicine" },
-    { value: "Medicina de laborator", label: "Laboratory Medicine" },
-    { value: "Medicina de urgență", label: "Emergency Medicine" },
+    { value: "Medicină de familie", label: "Family Medicine" },
+    { value: "Medicină de laborator", label: "Laboratory Medicine" },
+    { value: "Medicină de urgență", label: "Emergency Medicine" },
     {
-      value: "Medicina fizică și de reabilitare",
+      value: "Medicină fizică și de reabilitare",
       label: "Physical Medicine and Rehabilitation",
     },
-    { value: "Medicina generală", label: "General Medicine" },
-    { value: "Medicina internă", label: "Internal Medicine" },
-    { value: "Medicina legală", label: "Forensic Medicine" },
-    { value: "Medicina nucleară", label: "Nuclear Medicine" },
-    { value: "Medicina ocupatională", label: "Occupational Medicine" },
-    { value: "Medicina sportivă", label: "Sports Medicine" },
+    { value: "Medicină generală", label: "General Medicine" },
+    { value: "Medicină internă", label: "Internal Medicine" },
+    { value: "Medicină legală", label: "Forensic Medicine" },
+    { value: "Medicină nucleară", label: "Nuclear Medicine" },
+    { value: "Medicină ocupatională", label: "Occupational Medicine" },
+    { value: "Medicină sportivă", label: "Sports Medicine" },
     { value: "Neonatologie", label: "Neonatology" },
     { value: "Nefrologie", label: "Nefrology" },
     { value: "Neurochirurgie", label: "Neurosurgery" },
     { value: "Neurologie", label: "Neurology" },
-    { value: "Obstetrică și ginecologie", label: "Obstetrics and Gynecology" },
+    { value: "Obstetrică-ginecologie", label: "Obstetrics and Gynecology" },
     { value: "Oftalmologie", label: "Ophthalmology" },
     { value: "Oncologie medicală", label: "Medical Oncology" },
+    {
+      value: "Oncologie și hematologie pediatrică",
+      label: "Oncology and Pediatric Hematology",
+    },
+
     {
       value: "Ortopedie și traumatologie",
       label: "Orthopedics and Traumatology",
@@ -201,7 +211,7 @@ export default function Register() {
     { value: "Psihiatrie", label: "Psychiatry" },
     { value: "Psihiatrie pediatrică", label: "Child Psychiatry" },
     {
-      value: "Radiologie și imagistică medicală",
+      value: "Radiologie - imagistică medicală",
       label: "Radiology and Medical Imaging",
     },
     { value: "Recuperare medicală", label: "Medical Recovery" },
@@ -356,16 +366,21 @@ export default function Register() {
             user.firstName +
             user.lastName
         )
-        .then((response) => {
+        .then(async (response) => {
           const results = response.data.data.results;
           //verifying inputs
           if (verifyRegMed(results) === 1) {
             setIsLoading(true);
-            createUserWithEmailAndPassword(auth, user.email, user.password)
+            await createUserWithEmailAndPassword(
+              auth,
+              user.email,
+              user.password
+            )
               .then(async (userCredential) => {
                 Swal.fire({
                   icon: "success",
-                  title: "Account created successfully! Please check your email to get your access token.",
+                  title:
+                    "Account created successfully! Please check your email to get your access token.",
                   showConfirmButton: true,
                 }).then((result) => {
                   if (result.isConfirmed) {
@@ -374,44 +389,42 @@ export default function Register() {
                 });
                 const accessToken = Date.now();
 
-
-               await set(ref(database, "users/" + auth.currentUser.uid + "/token"), {
-                  token: accessToken,
-                })
+                await set(
+                  ref(database, "users/" + auth.currentUser.uid + "/token"),
+                  {
+                    token: accessToken,
+                  }
+                )
                   .then(() => {
-
-/*
+                    /*
                     emailjs.send('service_b5d39lg', 'template_75wk0ng', {name:auth.currentUser.displayName, token:accessToken.toString(), email:auth.currentUser.email}, '0Fwwg2pNCwo6zOeXJ')
     .then(function(response) {
        console.log('SUCCESS!', response.status, response.text);
     }, function(error) {
        console.log('FAILED...', error);
     });*/
-
-
-                    
                   })
                   .catch((error) => {});
-                await  updateProfile(auth.currentUser, {
-                    displayName: user.firstName + " " + user.lastName,
-                    phoneNumber: user.phoneNumber,
+                await updateProfile(auth.currentUser, {
+                  displayName: user.firstName + " " + user.lastName,
+                  phoneNumber: user.phoneNumber,
+                })
+                  .then(() => {
+                    console.log("Profile updated successfully!");
                   })
-                    .then(() => {
-                      console.log("Profile updated successfully!");
-                    })
-                    .catch((error) => {
-                      console.log(error);
-                      setError("Error updating profile!");
-                    });
+                  .catch((error) => {
+                    console.log(error);
+                    setError("Error updating profile!");
+                  });
 
-                 await signOut(auth)
-                    .then(() => {
-                      // Sign-out successful.
-                    })
-                    .catch((error) => {
-                      // An error happened.
-                      console.log(error);
-                    });
+                await signOut(auth)
+                  .then(() => {
+                    // Sign-out successful.
+                  })
+                  .catch((error) => {
+                    // An error happened.
+                    console.log(error);
+                  });
 
                 setUser({
                   firstName: "",
@@ -504,7 +517,7 @@ export default function Register() {
             <Select
               styles={styleSelect}
               classNamePrefix="select"
-              isSearchable={false}
+              isSearchable={true}
               options={medicalSpecialties}
               onChange={(e) => setUser({ ...user, specialization: e.value })}
             />
@@ -514,7 +527,7 @@ export default function Register() {
             <Select
               styles={styleSelect}
               classNamePrefix="select"
-              isSearchable={false}
+              isSearchable={true}
               options={counties}
               onChange={(e) => setUser({ ...user, county: e.value })}
             />

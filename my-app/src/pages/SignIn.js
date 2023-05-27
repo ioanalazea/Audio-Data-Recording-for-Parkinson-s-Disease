@@ -16,11 +16,11 @@ import Swal from "sweetalert2";
 export default function SignIn() {
   const signInBackground = {
     backgroundImage: "url(" + Background + ")",
-    backgroundPosition: "center",
     backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    width: "100vw",
-    height: "100vh",
+    backgroundPosition: "center",
+    width: "100%",
+    height: "100%",
+    overflow: "auto",
   };
 
   const title = {
@@ -76,13 +76,27 @@ export default function SignIn() {
           if (user.uid === adminUid) {
             if (token === password) {
               navigate("/admin/dashboard");
-            } else setError("Wrong token!");
+            } else {
+              setError("Wrong token!");
+              Swal.fire({
+                icon: "error",
+                title: "Oops...Wrong token!",
+                text: "Check your email for the token you recieved or email parkinsondatabasecreator@gmail.com to get another one.",
+              });
+            }
           } else {
             var tokenRef = ref(database, "users/" + user.uid + "/token");
             get(tokenRef).then(function (snapshot) {
               const databaseToken = snapshot.val().token;
               if (databaseToken.toString() === token) navigate("/home");
-              else setError("Wrong token!");
+              else {
+                setError("Wrong token!");
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...Wrong token!",
+                  text: "Check your email for the token you recieved or email parkinsondatabasecreator@gmail.com to get another one.",
+                });
+              }
             });
           }
         })
