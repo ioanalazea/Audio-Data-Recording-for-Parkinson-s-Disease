@@ -87,6 +87,7 @@ export default function AdminPatientData() {
 
       snapshot.forEach(function (item) {
         var itemVal = item.val();
+        if(itemVal["patients"])
         for (const [key, value] of Object.entries(itemVal["patients"])) {
           patientsArray.push({
             bmi: value["bmi"],

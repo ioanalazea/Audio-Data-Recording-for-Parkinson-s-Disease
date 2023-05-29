@@ -143,7 +143,7 @@ export default function AddPatient() {
     p: 4,
   };
 
-  const consentText = `I hereby provide my consent for the collecting and processing of my personal data by Parkinson's Recording App Recording App (hereinafter referred to as the "Data Controller"), in accordance with applicable data protection laws and regulations. 
+  const consentText = `I hereby provide my consent for the collecting and processing of my personal data by Parkinson Database Creator (hereinafter referred to as the "Data Controller"), in accordance with applicable data protection laws and regulations. 
   The purpose of collecting and processing my personal data is as follows: research purposes for Parkinson's disease. 
   I understand that my personal data may be stored, used, and transferred by the Data Controller or any third parties acting on their behalf, solely for the purposes specified above. 
   The Data Controller shall take all reasonable steps to ensure the security and confidentiality of my personal data in accordance with applicable data protection laws.

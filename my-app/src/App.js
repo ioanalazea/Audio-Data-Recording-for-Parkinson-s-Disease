@@ -24,13 +24,9 @@ export default function App() {
         <Route path="home/viewpatients" element={<ViewPatients />}></Route>
         <Route path="home/viewpatients/recordpatient" element={<RecordPatient />}></Route>
         <Route path="home/viewpatients/editpatient" element={<EditPatient />}></Route>
-
         <Route path="admin/dashboard" element={<AdminDashboard />}></Route>
         <Route path="admin/overview" element={<AdminOverview />}></Route>
         <Route path="admin/data" element={<AdminPatientData />}></Route>
-
-
-
       </Routes>
     </div>
   );

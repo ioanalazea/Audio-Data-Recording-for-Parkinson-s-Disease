@@ -223,7 +223,7 @@ export default function SignIn() {
               {error}
             </Typography>
           </div>
-          <div style={{ marginTop: "70px", marginLeft: "5px" }}>
+          <div style={{ marginTop: "40px", marginLeft: "5px" }}>
             <Link style={{ color: "#323931" }} href="/register">
               Don't have an account? <b>Register here.</b>
             </Link>

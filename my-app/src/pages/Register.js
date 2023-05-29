@@ -300,13 +300,13 @@ export default function Register() {
     //Password and confirm password do not match
     else if (user.password !== user.confirmPassword) {
       ok = 0;
-      errorMessage = "Password and confirm password do not match!";
+      errorMessage = "Password and confirm" + '\n' + " password do not match!";
     }
 
     //Phone number is not valid
     if (!user.phoneNumber.match("[0-9]{10}")) {
       ok = 0;
-      errorMessage = "Please provide a valid phone number!";
+      errorMessage = "Please provide a valid" + '\n' + " phone number!";
     }
 
     //Email is not valid
@@ -346,7 +346,7 @@ export default function Register() {
           }
           if (ok === 1) errorMessage = "Found.";
           else if (ok === 0)
-            errorMessage = "Doctor does not have this specialization.";
+            errorMessage = "Wrong specialization.";
         }
         if (errorMessage === "Found.") break;
       }
@@ -467,7 +467,7 @@ export default function Register() {
           <div style={title}> Recording App </div>
           <div style={registerHeader}> Register </div>
           {error !== "" ? (
-            <div style={{ marginTop: "5px", marginLeft: "-3px" }}>
+            <div style={{ marginTop: "5px" }}>
               <div
                 className="error"
                 style={{ fontFamily: "Metropolis", fontWeight: "700" }}
