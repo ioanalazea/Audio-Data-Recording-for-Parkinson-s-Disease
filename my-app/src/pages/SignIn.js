@@ -3,15 +3,13 @@ import { TextField, Typography } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import PasswordIcon from "@mui/icons-material/Password";
 import EmailIcon from "@mui/icons-material/Email";
-import TokenIcon from "@mui/icons-material/Token";
 import Link from "@mui/material/Link";
 import Background from "../utils/stacked-waves.svg";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config.js";
-import { database } from "../firebase/config.js";
-import { ref, get } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+
 
 export default function SignIn() {
   const signInBackground = {
@@ -60,45 +58,18 @@ export default function SignIn() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
 
   const [error, setError] = useState("");
 
   const handleSignIn = () => {
-    if (email === "" || password === "" || token === "")
-      setError("Empty fields!");
+    if (email === "" || password === "") setError("Empty fields!");
     else {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           const user = userCredential.user;
           console.log("Signed in successfully!");
-
-          if (user.uid === adminUid) {
-            if (token === password) {
-              navigate("/admin/dashboard");
-            } else {
-              setError("Wrong token!");
-              Swal.fire({
-                icon: "error",
-                title: "Oops...Wrong token!",
-                text: "Check your email for the token you recieved or email parkinsondatabasecreator@gmail.com to get another one.",
-              });
-            }
-          } else {
-            var tokenRef = ref(database, "users/" + user.uid + "/token");
-            get(tokenRef).then(function (snapshot) {
-              const databaseToken = snapshot.val().token;
-              if (databaseToken.toString() === token) navigate("/home");
-              else {
-                setError("Wrong token!");
-                Swal.fire({
-                  icon: "error",
-                  title: "Oops...Wrong token!",
-                  text: "Check your email for the token you recieved or email parkinsondatabasecreator@gmail.com to get another one.",
-                });
-              }
-            });
-          }
+          if (user.uid === adminUid) navigate("/admin/dashboard");
+          else navigate("/home");
         })
         .catch((error) => {
           const errorMessage = error.message;
@@ -109,14 +80,18 @@ export default function SignIn() {
             setError("Wrong password!");
           else if (errorMessage === "Firebase: Error (auth/user-not-found).")
             setError("User not found!");
-          else if (errorMessage.includes("(auth/too-many-requests)")) {
-            setError("Access temporarily disabled.");
+          else if (errorMessage.includes("(auth/too-many-requests)"))
+          {
+            setError(
+              "Access temporarily disabled."
+            );
             Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.",
-            });
+              icon: 'error',
+              title: 'Oops...',
+              text: "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later."
+            })
           }
+            
 
           console.log(errorMessage);
         });
@@ -172,25 +147,7 @@ export default function SignIn() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-
-          <div style={{ marginTop: "15px" }}>
-            <label>Token:</label>
-            <TextField
-              type="password"
-              style={styleTextField}
-              InputProps={{
-                disableUnderline: true,
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <TokenIcon />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={(e) => setToken(e.target.value)}
-            />
-          </div>
-
-          <div style={{ marginTop: "15px", marginLeft: "5px" }}>
+          <div style={{ marginTop: "20px", marginLeft: "5px" }}>
             <Link
               underline="hover"
               style={{ color: "#323931", fontWeight: 700 }}
@@ -200,14 +157,15 @@ export default function SignIn() {
             </Link>
           </div>
 
-          <div style={{ marginTop: "25px" }}>
-            <button
-              className="button-style-blk"
-              to="/home"
-              onClick={handleSignIn}
-            >
-              <div className="button-text-style1">Sign in</div>
-            </button>
+          <div style={{ marginTop: "30px" }}>
+              <button
+                className="button-style-blk"
+                to="/home"
+                onClick={handleSignIn}
+              >
+                <div className="button-text-style1">Sign in</div>
+              </button>
+           
           </div>
 
           <div style={{ marginTop: "10px", marginLeft: "10px" }}>

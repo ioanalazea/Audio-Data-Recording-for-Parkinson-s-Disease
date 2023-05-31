@@ -252,9 +252,9 @@ export default function AddPatient() {
       message = "Please provide a valid phone number!";
     else if (patient.age.length > 3 || /^\d+$/.test(patient.age) === false)
       message = "Please provide a valid age!";
-    else if (/^[+-]?\d+(\.\d+)?$/.test(patient.height) === false)
+    else if (/^\d+(\.\d+)?$/.test(patient.height) === false)
       message = "Please provide a valid height! Example: 170.5";
-    else if (/^[+-]?\d+(\.\d+)?$/.test(patient.weight) === false)
+    else if (/^\d+(\.\d+)?$/.test(patient.weight) === false)
       message = "Please provide a valid weight! Example: 65.3";
     else if (patient.sex === "") message = "Please provide patient's sex!";
     else if (patient.diagnosis === "")

@@ -10,13 +10,11 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/config.js";
-import { database } from "../firebase/config.js";
-import { ref, set } from "firebase/database";
 import Swal from "sweetalert2";
 import axios from "axios";
 import ReactLoading from "react-loading";
 
-import emailjs from "@emailjs/browser";
+
 
 export default function Register() {
   const registerBackground = {
@@ -300,13 +298,13 @@ export default function Register() {
     //Password and confirm password do not match
     else if (user.password !== user.confirmPassword) {
       ok = 0;
-      errorMessage = "Password and confirm" + '\n' + " password do not match!";
+      errorMessage = "Password and confirm password do not match!";
     }
 
     //Phone number is not valid
     if (!user.phoneNumber.match("[0-9]{10}")) {
       ok = 0;
-      errorMessage = "Please provide a valid" + '\n' + " phone number!";
+      errorMessage = "Please provide a valid phone number!";
     }
 
     //Email is not valid
@@ -345,8 +343,7 @@ export default function Register() {
               ok = 1;
           }
           if (ok === 1) errorMessage = "Found.";
-          else if (ok === 0)
-            errorMessage = "Wrong specialization.";
+          else if (ok === 0) errorMessage = "Wrong specialization.";
         }
         if (errorMessage === "Found.") break;
       }
@@ -358,6 +355,9 @@ export default function Register() {
     if (errorMessage !== "") return 0;
     else return 1;
   };
+
+
+
   const registerUser = () => {
     if (verifyInputs(user))
       axios
@@ -366,46 +366,23 @@ export default function Register() {
             user.firstName +
             user.lastName
         )
-        .then(async (response) => {
+        .then((response) => {
           const results = response.data.data.results;
           //verifying inputs
           if (verifyRegMed(results) === 1) {
             setIsLoading(true);
-            await createUserWithEmailAndPassword(
-              auth,
-              user.email,
-              user.password
-            )
-              .then(async (userCredential) => {
+            createUserWithEmailAndPassword(auth, user.email, user.password)
+              .then((userCredential) => {
                 Swal.fire({
                   icon: "success",
-                  title:
-                    "Account created successfully! Please check your email to get your access token.",
-                  showConfirmButton: true,
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    navigate(-1);
-                  }
+                  title: "Account created successfully!",
+                  showConfirmButton: false,
+                  timer: 2500,
                 });
-                const accessToken = Date.now();
-
-                await set(
-                  ref(database, "users/" + auth.currentUser.uid + "/token"),
-                  {
-                    token: accessToken,
-                  }
-                )
-                  .then(() => {
-                    /*
-                    emailjs.send('service_b5d39lg', 'template_75wk0ng', {name:auth.currentUser.displayName, token:accessToken.toString(), email:auth.currentUser.email}, '0Fwwg2pNCwo6zOeXJ')
-    .then(function(response) {
-       console.log('SUCCESS!', response.status, response.text);
-    }, function(error) {
-       console.log('FAILED...', error);
-    });*/
-                  })
-                  .catch((error) => {});
-                await updateProfile(auth.currentUser, {
+                setTimeout(() => {
+                  navigate(-1);
+                }, 2500);
+                updateProfile(auth.currentUser, {
                   displayName: user.firstName + " " + user.lastName,
                   phoneNumber: user.phoneNumber,
                 })
@@ -417,15 +394,6 @@ export default function Register() {
                     setError("Error updating profile!");
                   });
 
-                await signOut(auth)
-                  .then(() => {
-                    // Sign-out successful.
-                  })
-                  .catch((error) => {
-                    // An error happened.
-                    console.log(error);
-                  });
-
                 setUser({
                   firstName: "",
                   lastName: "",
@@ -435,21 +403,30 @@ export default function Register() {
                   confirmPassword: "",
                 });
                 setError("");
+                signOut(auth)
+                  .then(() => {
+                    // Sign-out successful.
+                  })
+                  .catch((error) => {
+                    // An error happened.
+                    console.log(error);
+                  });
               })
               .catch((err) => {
                 if (
                   err.message === "Firebase: Error (auth/email-already-in-use)."
-                ) {
+                )
                   setError("E-mail already in use!");
-                } else if (err.message.includes("auth/weak-password")) {
+                else if (err.message.includes("auth/weak-password"))
                   setError("Password should be at least 6 characters!");
-                } else setError(err.message);
+                else setError(err.message);
               });
             console.log(error);
           }
         })
         .catch((err) => console.log(err));
   };
+
 
   return (
     <div style={registerBackground}>
@@ -483,7 +460,7 @@ export default function Register() {
             <TextField
               style={styleTextField}
               InputProps={styleInputProps}
-              onChange={(e) => setUser({ ...user, firstName: e.target.value })}
+              onChange={(e) => setUser({ ...user, firstName: e.target.value.trim() })}
             />
           </div>
           <div style={{ marginTop: "20px" }}>
@@ -491,7 +468,7 @@ export default function Register() {
             <TextField
               style={styleTextField}
               InputProps={styleInputProps}
-              onChange={(e) => setUser({ ...user, lastName: e.target.value })}
+              onChange={(e) => setUser({ ...user, lastName: e.target.value.trim() })}
             />
           </div>
           <div style={{ marginTop: "20px" }}>
@@ -499,7 +476,7 @@ export default function Register() {
             <TextField
               style={styleTextField}
               InputProps={styleInputProps}
-              onChange={(e) => setUser({ ...user, email: e.target.value })}
+              onChange={(e) => setUser({ ...user, email: e.target.value.trim() })}
             />
           </div>
           <div style={{ marginTop: "20px" }}>
@@ -508,7 +485,7 @@ export default function Register() {
               style={styleTextField}
               InputProps={styleInputProps}
               onChange={(e) =>
-                setUser({ ...user, phoneNumber: e.target.value })
+                setUser({ ...user, phoneNumber: e.target.value.trim() })
               }
             />
           </div>
@@ -550,6 +527,17 @@ export default function Register() {
               onChange={(e) =>
                 setUser({ ...user, confirmPassword: e.target.value })
               }
+            />
+          </div>
+          <div style={{ marginTop: "20px" }}>
+            <label>Token:</label>
+            <TextField
+              type="password"
+              style={styleTextField}
+              InputProps={styleInputProps}
+              //onChange={(e) =>
+               // setUser({ ...user, confirmPassword: e.target.value })
+             // }
             />
           </div>
           {isLoading ? (
