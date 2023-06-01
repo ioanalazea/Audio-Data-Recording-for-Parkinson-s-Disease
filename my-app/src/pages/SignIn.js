@@ -127,7 +127,7 @@ export default function SignIn() {
                   </InputAdornment>
                 ),
               }}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value.trim())}
             />
           </div>
 

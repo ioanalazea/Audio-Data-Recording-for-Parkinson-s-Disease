@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import { TextField } from "@material-ui/core";
+import { TextField, InputAdornment, IconButton } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import Background from "../utils/blob-scene-haikei.svg";
 import {
   createUserWithEmailAndPassword,
@@ -10,12 +12,14 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/config.js";
+import { database } from "../firebase/config.js";
+import { ref, get, update } from "firebase/database";
 import Swal from "sweetalert2";
 import axios from "axios";
 import ReactLoading from "react-loading";
-
-
-
+import { counties } from "../utils/counties";
+import { medicalSpecialties } from "../utils/medicalSpecialties";
+import { countries } from "../utils/countries";
 export default function Register() {
   const registerBackground = {
     backgroundImage: "url(" + Background + ")",
@@ -80,145 +84,6 @@ export default function Register() {
     }),
   };
 
-  const counties = [
-    { value: "Alba", label: "Alba" },
-    { value: "Arad", label: "Arad" },
-    { value: "Argeș", label: "Argeș" },
-    { value: "Bacău", label: "Bacău" },
-    { value: "Bihor", label: "Bihor" },
-    { value: "Bistrița-Năsăud", label: "Bistrița-Năsăud" },
-    { value: "Botoșani", label: "Botoșani" },
-    { value: "Brașov", label: "Brașov" },
-    { value: "Brăila", label: "Brăila" },
-    { value: "Buzău", label: "Buzău" },
-    { value: "București", label: "București" },
-    { value: "Caraș-Severin", label: "Caraș-Severin" },
-    { value: "Călărași", label: "Călărași" },
-    { value: "Cluj", label: "Cluj" },
-    { value: "Constanța", label: "Constanța" },
-    { value: "Covasna", label: "Covasna" },
-    { value: "Dâmbovița", label: "Dâmbovița" },
-    { value: "Dolj", label: "Dolj" },
-    { value: "Galați", label: "Galați" },
-    { value: "Giurgiu", label: "Giurgiu" },
-    { value: "Gorj", label: "Gorj" },
-    { value: "Harghita", label: "Harghita" },
-    { value: "Hunedoara", label: "Hunedoara" },
-    { value: "Ialomița", label: "Ialomița" },
-    { value: "Iași", label: "Iași" },
-    { value: "Ilfov", label: "Ilfov" },
-    { value: "Maramureș", label: "Maramureș" },
-    { value: "Mehedinți", label: "Mehedinți" },
-    { value: "Mureș", label: "Mureș" },
-    { value: "Neamț", label: "Neamț" },
-    { value: "Olt", label: "Olt" },
-    { value: "Prahova", label: "Prahova" },
-    { value: "Sate Mare", label: "Satu Mare" },
-    { value: "Sălaj", label: "Sălaj" },
-    { value: "Sibiu", label: "Sibiu" },
-    { value: "Suceava", label: "Suceava" },
-    { value: "Teleorman", label: "Teleorman" },
-    { value: "Timiș", label: "Timiș" },
-    { value: "Tulcea", label: "Tulcea" },
-    { value: "Vaslui", label: "Vaslui" },
-    { value: "Vâlcea", label: "Vâlcea" },
-    { value: "Vrancea", label: "Vrancea" },
-  ];
-
-  const medicalSpecialties = [
-    {
-      value: "Alergologie și imunologie clinică",
-      label: "Allergology and Clinical Immunology",
-    },
-    { value: "Anatomie patologică", label: "Pathological Anatomy" },
-    {
-      value: "Anestezie și terapie intensivă",
-      label: "Anesthesia and Intensive Care",
-    },
-    { value: "Boli infecțioase", label: "Infectious Diseases" },
-    { value: "Cardiologie", label: "Cardiology" },
-    { value: "Chirurgie cardiovasculară", label: "Cardiovascular Surgery" },
-    { value: "Chirurgie generală", label: "General Surgery" },
-    { value: "Chirurgie maxilo-facială", label: "Maxillofacial Surgery" },
-    { value: "Chirurgie pediatrică", label: "Pediatric Surgery" },
-    {
-      value: "Chirurgie plastică, estetică și reconstructivă",
-      label: "Plastic, Aesthetic and Reconstructive Surgery",
-    },
-    { value: "Chirurgie toracică", label: "Thoracic Surgery" },
-    { value: "Chirurgie vasculară", label: "Vascular Surgery" },
-    {
-      value: "Dermatovenerologie",
-      label: "Dermatology and Venereology",
-    },
-    {
-      value: "Diabet, nutriție și boli metabolice",
-      label: "Diabetes, Nutrition and Metabolic Diseases",
-    },
-    { value: "Endocrinologie", label: "Endocrinology" },
-    { value: "Epidemiologie", label: "Epidemiology" },
-    { value: "Farmacologie clinică", label: "Clinical Pharmacology" },
-    {
-      value: "Gastroenterologie",
-      label: "Gastroenterology",
-    },
-    {
-      value: "Gastroenterologie și hepatologie",
-      label: "Gastroenterology and Hepatology",
-    },
-    { value: "Genetică medicală", label: "Medical Genetics" },
-    { value: "Geriatrie și gerontologie", label: "Geriatrics and Gerontology" },
-    { value: "Hematologie", label: "Hematology" },
-    { value: "Igienă", label: "Hygiene" },
-    {
-      value: "Infecțioase și medicină tropicală",
-      label: "Infectious and Tropical Medicine",
-    },
-    { value: "Medicină de familie", label: "Family Medicine" },
-    { value: "Medicină de laborator", label: "Laboratory Medicine" },
-    { value: "Medicină de urgență", label: "Emergency Medicine" },
-    {
-      value: "Medicină fizică și de reabilitare",
-      label: "Physical Medicine and Rehabilitation",
-    },
-    { value: "Medicină generală", label: "General Medicine" },
-    { value: "Medicină internă", label: "Internal Medicine" },
-    { value: "Medicină legală", label: "Forensic Medicine" },
-    { value: "Medicină nucleară", label: "Nuclear Medicine" },
-    { value: "Medicină ocupatională", label: "Occupational Medicine" },
-    { value: "Medicină sportivă", label: "Sports Medicine" },
-    { value: "Neonatologie", label: "Neonatology" },
-    { value: "Nefrologie", label: "Nefrology" },
-    { value: "Neurochirurgie", label: "Neurosurgery" },
-    { value: "Neurologie", label: "Neurology" },
-    { value: "Obstetrică-ginecologie", label: "Obstetrics and Gynecology" },
-    { value: "Oftalmologie", label: "Ophthalmology" },
-    { value: "Oncologie medicală", label: "Medical Oncology" },
-    {
-      value: "Oncologie și hematologie pediatrică",
-      label: "Oncology and Pediatric Hematology",
-    },
-
-    {
-      value: "Ortopedie și traumatologie",
-      label: "Orthopedics and Traumatology",
-    },
-    { value: "Otorinolaringologie", label: "Otorhinolaryngology" },
-    { value: "Pediatrie", label: "Pediatrics" },
-    { value: "Pneumologie", label: "Pulmonology" },
-    { value: "Psihiatrie", label: "Psychiatry" },
-    { value: "Psihiatrie pediatrică", label: "Child Psychiatry" },
-    {
-      value: "Radiologie - imagistică medicală",
-      label: "Radiology and Medical Imaging",
-    },
-    { value: "Recuperare medicală", label: "Medical Recovery" },
-    { value: "Reumatologie", label: "Rheumatology" },
-    { value: "Sănătate publică", label: "Public Health" },
-    { value: "Transfuzii sanguine", label: "Blood Transfusions" },
-    { value: "Urolog", label: "Urology" },
-  ];
-
   const navigate = useNavigate();
   const isEmail = (email) =>
     /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
@@ -229,13 +94,19 @@ export default function Register() {
     password: "",
     phoneNumber: "",
     confirmPassword: "",
+    country: "",
     specialization: "",
     county: "",
+    token: "",
   });
 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  // Add these variables to your component to track the state
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
   const verifyInputs = (user) => {
     var ok = 1;
     var countEmptyFields = 0;
@@ -269,18 +140,20 @@ export default function Register() {
       countEmptyFields = countEmptyFields + 1;
     }
 
-    //Spec can't be empty
-    if (user.specialization === "") {
-      ok = 0;
-      errorMessage = "Please enter specialization!";
-      countEmptyFields = countEmptyFields + 1;
-    }
+    if (user.country === "RO") {
+      //Spec can't be empty
+      if (user.specialization === "") {
+        ok = 0;
+        errorMessage = "Please enter specialization!";
+        countEmptyFields = countEmptyFields + 1;
+      }
 
-    //County can't be empty
-    if (user.county === "") {
-      ok = 0;
-      errorMessage = "Please enter county!";
-      countEmptyFields = countEmptyFields + 1;
+      //County can't be empty
+      if (user.county === "") {
+        ok = 0;
+        errorMessage = "Please enter county!";
+        countEmptyFields = countEmptyFields + 1;
+      }
     }
 
     //Password can't be empty
@@ -295,6 +168,12 @@ export default function Register() {
       errorMessage = "Please enter confirm password!";
       countEmptyFields = countEmptyFields + 1;
     }
+    //Token can't be empty
+    else if (user.token === "") {
+      ok = 0;
+      errorMessage = "Please enter token!";
+      countEmptyFields = countEmptyFields + 1;
+    }
     //Password and confirm password do not match
     else if (user.password !== user.confirmPassword) {
       ok = 0;
@@ -302,7 +181,11 @@ export default function Register() {
     }
 
     //Phone number is not valid
-    if (!user.phoneNumber.match("[0-9]{10}")) {
+    if (
+      !user.phoneNumber.match(
+        "^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$"
+      )
+    ) {
       ok = 0;
       errorMessage = "Please provide a valid phone number!";
     }
@@ -325,38 +208,90 @@ export default function Register() {
     return ok;
   };
 
-  const verifyRegMed = (results) => {
+  const verifyToken = (token) => {
     var errorMessage = "";
+    var tokenUid = "";
 
-    if (results.length === 0) errorMessage = "Doctor does not exist.";
-    else {
-      for (var i = 0; i < results.length; i++) {
-        if (user.county === results[i].judet) {
-          var ok = 0;
-          const specialitati = results[i].specialitati;
-
-          for (var j = 0; j < specialitati.length; j++) {
-            if (
-              user.specialization.toLowerCase() ===
-              specialitati[j].nume.toLowerCase()
-            )
-              ok = 1;
+    //verifying and finding the token
+    for (const key in tokens) {
+      if (tokens.hasOwnProperty(key)) {
+        const value = tokens[key];
+        if (token !== value.token) {
+          errorMessage = "Wrong token!";
+        } else {
+          if (value.used === 1) errorMessage = "Token used already!";
+          else {
+            tokenUid = key;
+            errorMessage = "";
           }
-          if (ok === 1) errorMessage = "Found.";
-          else if (ok === 0) errorMessage = "Wrong specialization.";
+          break;
         }
-        if (errorMessage === "Found.") break;
       }
     }
-    if (errorMessage === "") errorMessage = "Wrong county/specialization.";
-    if (errorMessage === "Found.") errorMessage = "";
+
+    if (tokenUid != "") {
+      update(ref(database, "tokens/" + tokenUid), {
+        used: 1,
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+
+    return errorMessage;
+  };
+
+  const verifyRegMedAndToken = (results, token) => {
+    var errorMessage = "";
+
+    //verifying the medic if it is from romania
+    if (user.country === "RO") {
+      if (results.length === 0) errorMessage = "Doctor does not exist.";
+      else {
+        for (var i = 0; i < results.length; i++) {
+          if (user.county === results[i].judet) {
+            var ok = 0;
+            const specialitati = results[i].specialitati;
+
+            for (var j = 0; j < specialitati.length; j++) {
+              if (
+                user.specialization.toLowerCase() ===
+                specialitati[j].nume.toLowerCase()
+              )
+                ok = 1;
+            }
+            if (ok === 1) errorMessage = "Found.";
+            else if (ok === 0) errorMessage = "Wrong specialization.";
+          }
+          if (errorMessage === "Found.") break;
+        }
+      }
+      if (errorMessage === "")
+        errorMessage = "Wrong county, specialization or name is incomplete.";
+      if (errorMessage === "Found.") {
+        const errToken = verifyToken(token);
+        if (errToken === "") errorMessage = "";
+        else errorMessage = errToken;
+      }
+    } else errorMessage = verifyToken(token);
 
     setError(errorMessage);
     if (errorMessage !== "") return 0;
     else return 1;
   };
 
+  //Get the tokens
+  const [tokens, setTokens] = useState([]);
 
+  useEffect(() => {
+    // Retrieve the token data from Firebase
+    const fetchData = async () => {
+      const dbRef = ref(database, "tokens/");
+      const snapshot = await get(dbRef);
+      setTokens(snapshot.val());
+    };
+
+    fetchData();
+  }, []);
 
   const registerUser = () => {
     if (verifyInputs(user))
@@ -369,7 +304,8 @@ export default function Register() {
         .then((response) => {
           const results = response.data.data.results;
           //verifying inputs
-          if (verifyRegMed(results) === 1) {
+          const regMed = verifyRegMedAndToken(results, user.token);
+          if (regMed === 1) {
             setIsLoading(true);
             createUserWithEmailAndPassword(auth, user.email, user.password)
               .then((userCredential) => {
@@ -401,6 +337,7 @@ export default function Register() {
                   password: "",
                   phoneNumber: "",
                   confirmPassword: "",
+                  token: "",
                 });
                 setError("");
                 signOut(auth)
@@ -426,7 +363,6 @@ export default function Register() {
         })
         .catch((err) => console.log(err));
   };
-
 
   return (
     <div style={registerBackground}>
@@ -460,7 +396,9 @@ export default function Register() {
             <TextField
               style={styleTextField}
               InputProps={styleInputProps}
-              onChange={(e) => setUser({ ...user, firstName: e.target.value.trim() })}
+              onChange={(e) =>
+                setUser({ ...user, firstName: e.target.value.trim() })
+              }
             />
           </div>
           <div style={{ marginTop: "20px" }}>
@@ -468,7 +406,9 @@ export default function Register() {
             <TextField
               style={styleTextField}
               InputProps={styleInputProps}
-              onChange={(e) => setUser({ ...user, lastName: e.target.value.trim() })}
+              onChange={(e) =>
+                setUser({ ...user, lastName: e.target.value.trim() })
+              }
             />
           </div>
           <div style={{ marginTop: "20px" }}>
@@ -476,7 +416,9 @@ export default function Register() {
             <TextField
               style={styleTextField}
               InputProps={styleInputProps}
-              onChange={(e) => setUser({ ...user, email: e.target.value.trim() })}
+              onChange={(e) =>
+                setUser({ ...user, email: e.target.value.trim() })
+              }
             />
           </div>
           <div style={{ marginTop: "20px" }}>
@@ -490,8 +432,19 @@ export default function Register() {
             />
           </div>
           <div style={{ marginTop: "20px" }}>
+            <label>Country:</label>
+            <Select
+              styles={styleSelect}
+              classNamePrefix="select"
+              isSearchable={true}
+              options={countries}
+              onChange={(e) => setUser({ ...user, country: e.value })}
+            />
+          </div>
+          <div style={{ marginTop: "20px" }}>
             <label>Specialization:</label>
             <Select
+              isDisabled={user.country !== "RO"}
               styles={styleSelect}
               classNamePrefix="select"
               isSearchable={true}
@@ -502,6 +455,7 @@ export default function Register() {
           <div style={{ marginTop: "20px" }}>
             <label>County:</label>
             <Select
+              isDisabled={user.country !== "RO"}
               styles={styleSelect}
               classNamePrefix="select"
               isSearchable={true}
@@ -532,12 +486,31 @@ export default function Register() {
           <div style={{ marginTop: "20px" }}>
             <label>Token:</label>
             <TextField
-              type="password"
+              type={showPassword ? "text" : "password"} // <-- This is where the magic happens
               style={styleTextField}
-              InputProps={styleInputProps}
-              //onChange={(e) =>
-               // setUser({ ...user, confirmPassword: e.target.value })
-             // }
+              InputProps={{
+                ...styleInputProps,
+                ...{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {showPassword ? (
+                          <VisibilityIcon />
+                        ) : (
+                          <VisibilityOffIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              onChange={(e) =>
+                setUser({ ...user, token: e.target.value.trim() })
+              }
             />
           </div>
           {isLoading ? (
