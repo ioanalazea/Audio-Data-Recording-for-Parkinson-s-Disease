@@ -124,7 +124,7 @@ export default function AdminPatientData() {
 
         var text = "";
         for (let i = 0; i < tokens.length; i++) {
-          text = text + tokens[i] + "\n";
+          text = text + tokens[i] + "\n\n\n";
         }
 
         setIsLoading(true);
