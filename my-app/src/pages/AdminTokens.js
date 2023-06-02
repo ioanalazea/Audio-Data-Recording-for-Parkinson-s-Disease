@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { v4 as uuid } from "uuid";
 import AdminSidebar from "../components/AdminSidebar.js";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -7,8 +7,9 @@ import EmailIcon from "@mui/icons-material/Email";
 import emailjs from "@emailjs/browser";
 import { TextField, Typography } from "@material-ui/core";
 import { database } from "../firebase/config.js";
-import { ref, push, set } from "firebase/database";
+import { ref, push, get } from "firebase/database";
 import Swal from "sweetalert2";
+import ReactLoading from "react-loading";
 
 export default function AdminPatientData() {
   const title = {
@@ -45,9 +46,33 @@ export default function AdminPatientData() {
     marginBottom: "15px",
     marginTop: "10px",
   };
+
   const [numTokens, setNumTokens] = React.useState(1);
   const [generatedTokens, setGeneratedTokens] = React.useState([]);
   const [error, setError] = React.useState("");
+  const [tokenCount, setTokenCount] = useState({ available: 0, total: 0 });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getTokens = () => {
+    var tokensRef = ref(database, "tokens/");
+    get(tokensRef).then(function (snapshot) {
+      var available = 0;
+      var total = 0;
+      snapshot.forEach(function (item) {
+        total = total + 1;
+        if (item.val().used === 0) available = available + 1;
+      });
+      console.log(available, total);
+      setTokenCount({ available: available, total: total });
+    });
+  };
+
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    getTokens();
+    console.log(tokenCount);
+  }, [refresh]);
 
   const handleChange = (e) => {
     const regex = /^[0-9\b]+$/;
@@ -68,9 +93,8 @@ export default function AdminPatientData() {
     }
   };
 
-
   const [email, setEmail] = useState("");
-  const saveTokens = (tokens, send) => {
+  const saveTokens = async (tokens, send) => {
     if (send === 0) {
       for (let i = 0; i < tokens.length; i++) {
         push(ref(database, "tokens/"), {
@@ -85,6 +109,7 @@ export default function AdminPatientData() {
       setError("");
       setEmail("");
       setNumTokens(1);
+      setRefresh(!refresh);
     } else if (send === 1) {
       const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
       if (emailPattern.test(email)) {
@@ -101,9 +126,9 @@ export default function AdminPatientData() {
         for (let i = 0; i < tokens.length; i++) {
           text = text + tokens[i] + "\n";
         }
-        console.log(text);
-        //HERE TO SEND EMAIL console.log("Send email");
-       emailjs
+
+        setIsLoading(true);
+        await emailjs
           .send(
             "service_b5d39lg",
             "template_75wk0ng",
@@ -115,12 +140,13 @@ export default function AdminPatientData() {
           )
           .then(
             function (response) {
+              setIsLoading(false);
               Swal.fire({
-                icon: 'success',
-                title: 'Email has been sent!',
+                icon: "success",
+                title: "Email has been sent!",
                 showConfirmButton: false,
-                timer: 1500
-              })
+                timer: 1500,
+              });
             },
             function (error) {
               console.log(error);
@@ -130,6 +156,7 @@ export default function AdminPatientData() {
         setError("");
         setEmail("");
         setNumTokens(1);
+        setRefresh(!refresh);
       } else {
         Swal.fire({
           icon: "error",
@@ -152,19 +179,34 @@ export default function AdminPatientData() {
         <div
           style={{
             paddingLeft: "100px",
-            display: "flex",
-            flexDirection: "row",
           }}
         >
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <label>Total</label>
-            {}
-          </div>
-
-          <div>
-            <label>Available</label>
-            {}
-          </div>
+          <table
+            style={{
+              border: "5px solid #219ebc",
+              borderCollapse: "collapse",
+              marginBottom: "20px",
+            }}
+          >
+            <tbody>
+              <tr>
+                <td style={{ border: "3px solid #219ebc", padding: "10px" }}>
+                  Total
+                </td>
+                <td style={{ border: "3px solid #219ebc", padding: "10px" }}>
+                  Available
+                </td>
+              </tr>
+              <tr>
+                <td style={{ border: "1px solid black", padding: "10px" }}>
+                  {tokenCount.total}
+                </td>
+                <td style={{ border: "1px solid black", padding: "10px" }}>
+                  {tokenCount.available}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <div style={subTitle}> Generate token </div>
@@ -196,7 +238,7 @@ export default function AdminPatientData() {
           <div
             style={{ display: "flex", flexDirection: "row", marginTop: "30px" }}
           >
-            {generatedTokens.length != 0 ? (
+            {generatedTokens.length !== 0 ? (
               <div style={{ marginTop: "15px" }}>
                 <Typography
                   style={{
@@ -219,8 +261,21 @@ export default function AdminPatientData() {
             ) : (
               <></>
             )}
-            {generatedTokens.length != 0 ? (
+            {generatedTokens.length !== 0 ? (
               <div style={{ marginLeft: "100px" }}>
+                {isLoading ? (
+                  <div style={{ marginLeft: "140px", marginBottom: "20px" }}>
+                    {" "}
+                    <ReactLoading
+                      type="spokes"
+                      color="#219EBC"
+                      height={70}
+                      width={70}
+                    />
+                  </div>
+                ) : (
+                  <></>
+                )}
                 <TextField
                   style={{
                     ...styleTextField,
