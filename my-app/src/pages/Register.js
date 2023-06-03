@@ -140,6 +140,13 @@ export default function Register() {
       countEmptyFields = countEmptyFields + 1;
     }
 
+    //Country can't be empty
+    if (user.country === "") {
+      ok = 0;
+      errorMessage = "Please enter country!";
+      countEmptyFields = countEmptyFields + 1;
+    }
+
     if (user.country === "RO") {
       //Spec can't be empty
       if (user.specialization === "") {
@@ -401,7 +408,7 @@ export default function Register() {
               }
             />
           </div>
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "25px" }}>
             <label>Last name:</label>
             <TextField
               style={styleTextField}
@@ -411,7 +418,7 @@ export default function Register() {
               }
             />
           </div>
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "25px" }}>
             <label>Email Address:</label>
             <TextField
               style={styleTextField}
@@ -421,7 +428,7 @@ export default function Register() {
               }
             />
           </div>
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "25px" }}>
             <label>Phone number:</label>
             <TextField
               style={styleTextField}
@@ -431,7 +438,7 @@ export default function Register() {
               }
             />
           </div>
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "25px" }}>
             <label>Country:</label>
             <Select
               styles={styleSelect}
@@ -441,7 +448,7 @@ export default function Register() {
               onChange={(e) => setUser({ ...user, country: e.value })}
             />
           </div>
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "25px" }}>
             <label>Specialization:</label>
             <Select
               isDisabled={user.country !== "RO"}
@@ -452,7 +459,7 @@ export default function Register() {
               onChange={(e) => setUser({ ...user, specialization: e.value })}
             />
           </div>
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "25px" }}>
             <label>County:</label>
             <Select
               isDisabled={user.country !== "RO"}
@@ -463,7 +470,7 @@ export default function Register() {
               onChange={(e) => setUser({ ...user, county: e.value })}
             />
           </div>
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "25px" }}>
             <label>Password:</label>
             <TextField
               type="password"
@@ -472,7 +479,7 @@ export default function Register() {
               onChange={(e) => setUser({ ...user, password: e.target.value })}
             />
           </div>
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "25px" }}>
             <label>Confirm password:</label>
             <TextField
               type="password"
@@ -483,7 +490,7 @@ export default function Register() {
               }
             />
           </div>
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "25px" }}>
             <label>Token:</label>
             <TextField
               type={showPassword ? "text" : "password"} // <-- This is where the magic happens

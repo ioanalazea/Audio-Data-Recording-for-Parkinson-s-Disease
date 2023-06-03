@@ -54,7 +54,7 @@ export default function SignIn() {
 
   const navigate = useNavigate();
 
-  const adminUid = "hR48GeIObJONCigXNt0oAbo58no2";
+  const adminUid = "E4B8xFLoBMPw2uXIZPz7iEphhXV2";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
