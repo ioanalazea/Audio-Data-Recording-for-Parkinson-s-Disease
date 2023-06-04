@@ -109,7 +109,7 @@ export default function Home() {
               Parkinson Database Creator (PDC)
             </Typography>
             <Typography sx={{ mt: 2, fontFamily: "Metropolis" }}>
-              PDC is an appplication developed to help and ease the gathering of data so that it
+              PDC is an appplication developed to help and ease the gathering of data so that it can
               used in Parkinson's disease research. The ultimate goal of this project is to help,
               even with just a little bit, the process of diagnosing Parkinson's.
             </Typography>

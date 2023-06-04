@@ -169,7 +169,16 @@ export default function AdminPatientData() {
   };
 
   return (
-    <div style={{ background: "#FAFAFA", width: "100vw", height: "100vh" }}>
+    <div
+      style={{
+        background: "#FAFAFA",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        width: "100%",
+        height: "100%",
+        overflow: "auto",
+      }}
+    >
       <AdminSidebar></AdminSidebar>
 
       <div style={title}> Tokens </div>
