@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import HomeIcon from "@mui/icons-material/Home";
-import { TextField } from "@material-ui/core";
+import { TextField, Typography } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,8 @@ import { ref, get } from "firebase/database";
 import { auth } from "../firebase/config.js";
 import { encryptStorage } from "../encryption/Encrypt.js";
 import ReactLoading from "react-loading";
+import imgsad from "../utils/sad.png";
+import Image from "react-image-resizer";
 
 export default function ViewPatients() {
   const navigate = useNavigate();
@@ -121,7 +123,33 @@ export default function ViewPatients() {
               InputProps={styleInputProps}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-
+            {myPatients.length === 0 ? (
+              <div>
+                <Typography
+                  style={{
+                    fontFamily: "Metropolis",
+                    fontStyle: "normal",
+                    fontWeight: "400",
+                    marginLeft: "50px",
+                    marginBottom: "10px",
+                  }}
+                >
+                  You do not have any patients!
+                  <br />
+                  Go to <b> Add patient </b> to add one.
+                </Typography>
+                <Image
+                  img
+                  src={imgsad}
+                  alt="img"
+                  class="center"
+                  width={320}
+                  height={150}
+                ></Image>
+              </div>
+            ) : (
+              <></>
+            )}
             {filteredList.map((item, index) => (
               <PatientInfo
                 key={index}

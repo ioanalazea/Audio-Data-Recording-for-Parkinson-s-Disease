@@ -215,7 +215,16 @@ export default function AdminOverview() {
   }, []);
 
   return (
-    <div style={{ background: "#FAFAFA", width: "100vw", height: "100vh" }}>
+    <div
+      style={{
+        background: "#FAFAFA",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        width: "100%",
+        height: "100%",
+        overflow: "auto",
+      }}
+    >
       <AdminSidebar></AdminSidebar>
       <div style={title}> Overview </div>
 

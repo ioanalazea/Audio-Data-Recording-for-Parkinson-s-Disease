@@ -10,14 +10,15 @@ import { auth } from "../firebase/config.js";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
+
 export default function SignIn() {
   const signInBackground = {
     backgroundImage: "url(" + Background + ")",
-    backgroundPosition: "center",
     backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    width: "100vw",
-    height: "100vh",
+    backgroundPosition: "center",
+    width: "100%",
+    height: "100%",
+    overflow: "auto",
   };
 
   const title = {
@@ -53,6 +54,8 @@ export default function SignIn() {
 
   const navigate = useNavigate();
 
+  const adminUid = "E4B8xFLoBMPw2uXIZPz7iEphhXV2";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -65,7 +68,7 @@ export default function SignIn() {
         .then((userCredential) => {
           const user = userCredential.user;
           console.log("Signed in successfully!");
-          if (user.uid === "hR48GeIObJONCigXNt0oAbo58no2") navigate("/admin/dashboard");
+          if (user.uid === adminUid) navigate("/admin/dashboard");
           else navigate("/home");
         })
         .catch((error) => {
@@ -124,11 +127,11 @@ export default function SignIn() {
                   </InputAdornment>
                 ),
               }}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value.trim())}
             />
           </div>
 
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "15px" }}>
             <label>Password:</label>
             <TextField
               type="password"
@@ -144,8 +147,7 @@ export default function SignIn() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-
-          <div style={{ marginTop: "15px", marginLeft: "5px" }}>
+          <div style={{ marginTop: "20px", marginLeft: "5px" }}>
             <Link
               underline="hover"
               style={{ color: "#323931", fontWeight: 700 }}
@@ -155,14 +157,15 @@ export default function SignIn() {
             </Link>
           </div>
 
-          <div style={{ marginTop: "25px" }}>
-            <button
-              className="button-style-blk"
-              to="/home"
-              onClick={handleSignIn}
-            >
-              <div className="button-text-style1">Sign in</div>
-            </button>
+          <div style={{ marginTop: "30px" }}>
+              <button
+                className="button-style-blk"
+                to="/home"
+                onClick={handleSignIn}
+              >
+                <div className="button-text-style1">Sign in</div>
+              </button>
+           
           </div>
 
           <div style={{ marginTop: "10px", marginLeft: "10px" }}>
@@ -178,7 +181,7 @@ export default function SignIn() {
               {error}
             </Typography>
           </div>
-          <div style={{ marginTop: "70px", marginLeft: "5px" }}>
+          <div style={{ marginTop: "40px", marginLeft: "5px" }}>
             <Link style={{ color: "#323931" }} href="/register">
               Don't have an account? <b>Register here.</b>
             </Link>

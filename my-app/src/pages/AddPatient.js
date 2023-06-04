@@ -143,7 +143,7 @@ export default function AddPatient() {
     p: 4,
   };
 
-  const consentText = `I hereby provide my consent for the collecting and processing of my personal data by Parkinson's Recording App Recording App (hereinafter referred to as the "Data Controller"), in accordance with applicable data protection laws and regulations. 
+  const consentText = `I hereby provide my consent for the collecting and processing of my personal data by Parkinson Database Creator (hereinafter referred to as the "Data Controller"), in accordance with applicable data protection laws and regulations. 
   The purpose of collecting and processing my personal data is as follows: research purposes for Parkinson's disease. 
   I understand that my personal data may be stored, used, and transferred by the Data Controller or any third parties acting on their behalf, solely for the purposes specified above. 
   The Data Controller shall take all reasonable steps to ensure the security and confidentiality of my personal data in accordance with applicable data protection laws.
@@ -252,9 +252,9 @@ export default function AddPatient() {
       message = "Please provide a valid phone number!";
     else if (patient.age.length > 3 || /^\d+$/.test(patient.age) === false)
       message = "Please provide a valid age!";
-    else if (/^[+-]?\d+(\.\d+)?$/.test(patient.height) === false)
+    else if (/^\d+(\.\d+)?$/.test(patient.height) === false)
       message = "Please provide a valid height! Example: 170.5";
-    else if (/^[+-]?\d+(\.\d+)?$/.test(patient.weight) === false)
+    else if (/^\d+(\.\d+)?$/.test(patient.weight) === false)
       message = "Please provide a valid weight! Example: 65.3";
     else if (patient.sex === "") message = "Please provide patient's sex!";
     else if (patient.diagnosis === "")
