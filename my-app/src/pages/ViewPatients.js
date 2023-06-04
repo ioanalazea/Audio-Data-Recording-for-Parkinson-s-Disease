@@ -65,8 +65,8 @@ export default function ViewPatients() {
   });
 
   const getMyPatients = () => {
-    var goalsRef = ref(database, "users/" + auth.currentUser.uid + "/patients");
-    get(goalsRef).then(function (snapshot) {
+    var patientsRef = ref(database, "users/" + auth.currentUser.uid + "/patients");
+    get(patientsRef).then(function (snapshot) {
       var myPatientsArray = [];
 
       snapshot.forEach(function (item) {

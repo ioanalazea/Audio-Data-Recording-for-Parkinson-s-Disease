@@ -105,13 +105,13 @@ export default function SignIn() {
           align: "center",
           display: "flex",
           justifyContent: "center",
-          paddingTop: "230px",
+          paddingTop: "225px",
           paddingBottom: "10px",
         }}
       >
         <div>
           <div style={title}> Parkinson's </div>
-          <div style={title}> Recording App </div>
+          <div style={title}> Database <br/> Creator </div>
 
           <div style={signInHeader}> Sign in </div>
 
