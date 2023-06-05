@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { storage } from "../firebase/config.js";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
-import fileDownload from "js-file-download";
+import { saveAs } from "file-saver";
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -145,9 +145,12 @@ export default function AllRecordings() {
   }, []);
 
   const downloadData = () => {
-    recordingRefs.map((item) => {
-      fileDownload(item.blob, item.name);
-      return 1;
+    const zip = require("jszip")();
+    const folder = zip.folder("PDC_recordings");
+
+    recordingRefs.forEach((blob) => folder.file(blob.name, blob.blob));
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      saveAs(content, "PDC_recordings.zip");
     });
   };
 
@@ -165,7 +168,7 @@ export default function AllRecordings() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-console.log(page);
+
   return (
     <div>
       <div style={title}> All recordings </div>
@@ -270,7 +273,7 @@ console.log(page);
           justifyContent: "center",
         }}
       >
-        <button onClick={downloadData} className="button-style-blue">
+        <button onClick={() => downloadData()} className="button-style-blue">
           <div className="button-text-style1">Download all data</div>
         </button>
       </div>
