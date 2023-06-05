@@ -252,9 +252,13 @@ export default function EditPatient() {
   };
   const handleValidation = () => {
     var message = "";
-    if (patient.fullName === "")
+    if (patient.fullName.trim() === "")
       message = "Please provide a full name for the patient!";
-    else if (!patient.telephone.match("[0-9]{10}"))
+    else if (
+      !patient.telephone.match(
+        "^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$"
+      )
+    )
       message = "Please provide a valid phone number!";
     else if (patient.age.length > 3 || /^\d+$/.test(patient.age) === false)
       message = "Please provide a valid age!";
@@ -340,18 +344,7 @@ export default function EditPatient() {
         </Link>
         <div style={text2}>Edit patient</div>
       </div>
-      {message !== "" ? (
-        <div style={{ marginTop: "40px", marginLeft: "15px" }}>
-          <div
-            className="error"
-            style={{ fontFamily: "Metropolis", fontWeight: "700" }}
-          >
-            {message}
-          </div>
-        </div>
-      ) : (
-        <div></div>
-      )}
+
       <div style={containerStyle}>
         <div style={{ marginTop: "20px" }}>
           <label>Full name:</label>
@@ -382,7 +375,7 @@ export default function EditPatient() {
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
-              setPatient({ ...patient, age: e.target.value });
+              setPatient({ ...patient, age: e.target.value.trim() });
             }}
           />
         </div>
@@ -408,7 +401,7 @@ export default function EditPatient() {
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
-              setPatient({ ...patient, height: e.target.value });
+              setPatient({ ...patient, height: e.target.value.trim() });
             }}
           />
         </div>
@@ -419,7 +412,7 @@ export default function EditPatient() {
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
-              setPatient({ ...patient, weight: e.target.value });
+              setPatient({ ...patient, weight: e.target.value.trim() });
             }}
           />
         </div>
@@ -590,8 +583,19 @@ export default function EditPatient() {
             }}
           />
         </div>
-
-        <div style={{ marginTop: "20px", marginBottom: "10px" }}>
+        {message !== "" ? (
+          <div style={{ marginTop: "20px", marginLeft: "15px" }}>
+            <div
+              className="error"
+              style={{ fontFamily: "Metropolis", fontWeight: "700" }}
+            >
+              {message}
+            </div>
+          </div>
+        ) : (
+          <div></div>
+        )}
+        <div style={{ marginTop: "20px", marginBottom: "20px" }}>
           <button
             className="button-style-blue"
             onClick={() => handleEditPatient()}

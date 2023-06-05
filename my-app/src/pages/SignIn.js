@@ -10,7 +10,6 @@ import { auth } from "../firebase/config.js";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-
 export default function SignIn() {
   const signInBackground = {
     backgroundImage: "url(" + Background + ")",
@@ -80,18 +79,14 @@ export default function SignIn() {
             setError("Wrong password!");
           else if (errorMessage === "Firebase: Error (auth/user-not-found).")
             setError("User not found!");
-          else if (errorMessage.includes("(auth/too-many-requests)"))
-          {
-            setError(
-              "Access temporarily disabled."
-            );
+          else if (errorMessage.includes("(auth/too-many-requests)")) {
+            setError("Access temporarily disabled.");
             Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later."
-            })
+              icon: "error",
+              title: "Oops...",
+              text: "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.",
+            });
           }
-            
 
           console.log(errorMessage);
         });
@@ -110,8 +105,11 @@ export default function SignIn() {
         }}
       >
         <div>
-          <div style={title}> Parkinson's </div>
-          <div style={title}> Database <br/> Creator </div>
+          <div style={title}> Parkinson </div>
+          <div style={title}>
+            {" "}
+            Database <br /> Creator{" "}
+          </div>
 
           <div style={signInHeader}> Sign in </div>
 
@@ -158,14 +156,13 @@ export default function SignIn() {
           </div>
 
           <div style={{ marginTop: "30px" }}>
-              <button
-                className="button-style-blk"
-                to="/home"
-                onClick={handleSignIn}
-              >
-                <div className="button-text-style1">Sign in</div>
-              </button>
-           
+            <button
+              className="button-style-blk"
+              to="/home"
+              onClick={handleSignIn}
+            >
+              <div className="button-text-style1">Sign in</div>
+            </button>
           </div>
 
           <div style={{ marginTop: "10px", marginLeft: "10px" }}>

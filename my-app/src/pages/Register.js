@@ -383,21 +383,12 @@ export default function Register() {
         }}
       >
         <div>
-          <div style={title}> Parkinson's </div>
-          <div style={title}> Database <br/> Creator</div>
+          <div style={title}> Parkinson </div>
+          <div style={title}>
+            {" "}
+            Database <br /> Creator
+          </div>
           <div style={registerHeader}> Register </div>
-          {error !== "" ? (
-            <div style={{ marginTop: "5px" }}>
-              <div
-                className="error"
-                style={{ fontFamily: "Metropolis", fontWeight: "700" }}
-              >
-                {error}
-              </div>
-            </div>
-          ) : (
-            <div></div>
-          )}
           <div style={{ marginTop: "20px" }}>
             <label>First name:</label>
             <TextField
@@ -531,6 +522,18 @@ export default function Register() {
             </div>
           ) : (
             <></>
+          )}
+          {error !== "" ? (
+            <div style={{ paddingTop: "15px" }}>
+              <div
+                className="error"
+                style={{ fontFamily: "Metropolis", fontWeight: "700" }}
+              >
+                {error}
+              </div>
+            </div>
+          ) : (
+            <div></div>
           )}
           <div style={{ marginTop: "30px" }}>
             <button className="button-style-blk" onClick={() => registerUser()}>

@@ -70,7 +70,7 @@ export default function RecordingsList({
     if (recordings.length === 5) {
       Swal.fire({
         title: "Great, thank you for recording!",
-        text: " Now press SAVE to upload recordings to the database.",
+        text: " Listen to the recordings again to make sure everything is alright and press SAVE to upload recordings to the database.",
         icon: "success",
       });
     }
