@@ -20,7 +20,7 @@ export default function PatientInfo({ patient, refresh, setRefresh }) {
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
-    marginBottom: "20px",
+    marginBottom: "30px",
   };
 
   const styleSquare = {
@@ -53,17 +53,21 @@ export default function PatientInfo({ patient, refresh, setRefresh }) {
     fontFamily: "Metropolis",
     fontStyle: "normal",
     fontWeight: 700,
-    fontSize: "14px",
+    fontSize: "16px",
     lineheight: "14px",
     color: "#323031",
     paddingLeft: "10px",
+    wordWrap: "break-word",
+    width:"100px"
+  
   };
 
   const phoneStyle = {
     fontFamily: "Metropolis",
-    fontSize: "14px",
+    fontSize: "15px",
     lineheight: "14px",
-    color: "#323031",
+    color: "rgba(50, 48, 49,0.5)",
+    fontWeight: 700,
     paddingLeft: "10px",
   };
 
@@ -175,55 +179,55 @@ export default function PatientInfo({ patient, refresh, setRefresh }) {
       dysphagia: "Swallowing difficulties (dysphagia)",
       insomnia: "Problems sleeping (insomnia)",
     };
-    if (symptoms[0] === "") return "\n";
-    else return symptoms.map((value) => "\n" + optionsSymptoms[value]);
+    if (symptoms[0] === "") return "<br/>";
+    else return symptoms.map((value) => "<br/>" + optionsSymptoms[value]);
   };
 
   const getComorbidities = (comorb) => {
-    if (comorb[0] === "") return "\n";
-    else return comorb.map((value) => "\n" + value[1]);
+    if (comorb[0] === "") return "<br/>";
+    else return comorb.map((value) => "<br/><br/>" + value[1]);
   };
 
   const getMedication = (medication) => {
-    if (medication[0] === "") return "\n";
-    else return medication.map((value) => "\n" + value.drugname);
+    if (medication[0] === "") return "<br/>";
+    else return medication.map((value) => "<br/>" + value.drugname);
   };
 
   const getDetails = () => {
     var str =
       "Age: ".bold() +
       encryptStorage.decryptValue(patient.value.age) +
-      "\n" +
+      "<br/>" +
       "Sex: ".bold() +
       patient.value.sex +
-      "\n" +
+      "<br/>" +
       "Height: ".bold() +
       patient.value.height +
-      " cm\n" +
+      " cm<br/>" +
       "Weight: ".bold() +
       patient.value.weight +
-      " kg\n" +
+      " kg<br/>" +
       "BMI: ".bold() +
       patient.value.bmi +
-      "\n" +
+      "<br/>" +
       "Diagnosis: ".bold() +
       getDiagnosis(patient.value.diagnosis) +
-      "\n" +
+      "<br/>" +
       "Symptoms: ".bold() +
       getSymptoms(patient.value.symptoms) +
-      "\n" +
+      "<br/>" +
       "Comorbidities:".bold() +
       getComorbidities(patient.value.comorbidities) +
-      "\n" +
+      "<br/>" +
       "Medication:".bold() +
       getMedication(patient.value.medication) +
-      "\n" +
-      "Post-medication effects: \n".bold() +
+      "<br/>" +
+      "Post-medication effects: <br/>".bold() +
       patient.value.postMedication +
-      "\n" +
-      "Therapeutic procedures: \n".bold() +
+      "<br/>" +
+      "Therapeutic procedures: <br/>".bold() +
       patient.value.therapeuticProc +
-      "\n";
+      "<br/>";
 
     return str;
   };
@@ -231,10 +235,11 @@ export default function PatientInfo({ patient, refresh, setRefresh }) {
     var str = getDetails();
     Swal.fire({
       title: encryptStorage.decryptValue(patient.value.fullName),
-      html: "<pre>" + str + "</pre>",
+     html: `<div style="overflow-x: scroll;   word-wrap: break-word;
+     ">`+ str+`
+     </div>`,
       width: 600,
       confirmButtonColor: "#219EBC",
-      padding: "3em",
       color: "#323031",
       background: "#fff url(/images/trees.png)",
       backdrop: `
@@ -259,7 +264,8 @@ export default function PatientInfo({ patient, refresh, setRefresh }) {
         </div>
         <div style={namePhoneContainer}>
           <div style={nameStyle}>
-            {encryptStorage.decryptValue(patient.value.fullName)}
+            {encryptStorage.decryptValue(patient.value.fullName).slice(0, 60)}
+            {encryptStorage.decryptValue(patient.value.fullName).length > 60 ? <>...</> :<></>}
           </div>
           <div style={phoneStyle}>
             {encryptStorage.decryptValue(patient.value.telephone)}

@@ -80,11 +80,11 @@ body {
 
 .button-style-ver3 {
   align-items: center;
-  width: 74px;
+  width: 77px;
   height: 22px;
   left: calc(50% - 216px / 2 + 3.5px);
   background-color: rgba(212, 163, 115, 0.7);
-  border: 3px solid #faedcd;
+  border: 3px solid rgba(212, 163, 115, 0.5);
   border-radius: 8px;
 }
 
@@ -131,8 +131,8 @@ body {
   font-family: "Metropolis";
   font-style: normal;
   font-weight: 700;
-  font-size: 14px;
-  line-height: 14px;
+  font-size: 16px;
+  line-height: 16px;
   /* identical to box height */
   text-align: center;
   color: #faedcd;
@@ -162,6 +162,18 @@ body {
   font-size: 40px;
   line-height: 40px;
   color: #fafafa;
+}
+
+.backText {
+  font-family: "Metropolis";
+  font-weight: 700;
+  font-size: 23px;
+  line-height: 23px;
+  color: #fafafa;
+  cursor: pointer;
+  padding-left:15px;
+  top:13px;
+  position: relative;
 }
 
 .homediv {

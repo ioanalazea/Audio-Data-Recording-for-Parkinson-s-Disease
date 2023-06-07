@@ -15,9 +15,10 @@ export default function SignIn() {
     backgroundImage: "url(" + Background + ")",
     backgroundSize: "cover",
     backgroundPosition: "center",
-    width: "100%",
-    height: "100%",
-    overflow: "auto",
+    backgroundAttachment: "fixed",
+    minHeight: "100%",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center center"
   };
 
   const title = {
@@ -100,7 +101,7 @@ export default function SignIn() {
           align: "center",
           display: "flex",
           justifyContent: "center",
-          paddingTop: "225px",
+          paddingTop: "180px",
           paddingBottom: "10px",
         }}
       >

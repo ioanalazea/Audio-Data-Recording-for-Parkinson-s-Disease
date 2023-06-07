@@ -25,9 +25,10 @@ export default function Register() {
     backgroundImage: "url(" + Background + ")",
     backgroundSize: "cover",
     backgroundPosition: "center",
-    width: "100%",
-    height: "100%",
-    overflow: "auto",
+    backgroundAttachment: "fixed",
+    minHeight: "100%",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center center"
   };
   const title = {
     fontFamily: "Metropolis",
@@ -378,7 +379,7 @@ export default function Register() {
           align: "center",
           display: "flex",
           justifyContent: "center",
-          paddingTop: "15px",
+          paddingTop: "25px",
           paddingBottom: "10px",
         }}
       >
@@ -540,7 +541,7 @@ export default function Register() {
               <div className="button-text-style1">Create account</div>
             </button>
           </div>
-          <div style={{ marginTop: "15px", marginLeft: "20px" }}>
+          <div style={{ marginTop: "25px", marginLeft: "20px", marginBottom:"20px" }}>
             <Link style={{ color: "#323931" }} to="/">
               Already have an account? <b>Sign in.</b>
             </Link>

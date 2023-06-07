@@ -117,7 +117,7 @@ export default function Home() {
         </Modal>
         <div style={{ marginTop: "20px" }}>
           <button className="button-style-blk" onClick={handleClickViewPatient}>
-            <div className="button-text-style1">View patients</div>
+            <div className="button-text-style1">See patients</div>
           </button>
         </div>
         <div style={{ marginTop: "20px" }}>

@@ -170,7 +170,7 @@ export default function RecordingsList({
               </div>
             ))}
           </div>
-          <button className="button-style-blk" onClick={handleSaveRecordings}>
+          <button style={{marginTop:"20px", marginBottom:"30px"}} className="button-style-blk" onClick={handleSaveRecordings}>
             <div className="button-text-style1">Save</div>
           </button>
         </>

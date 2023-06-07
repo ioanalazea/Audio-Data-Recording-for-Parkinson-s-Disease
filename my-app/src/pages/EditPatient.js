@@ -595,7 +595,7 @@ export default function EditPatient() {
         ) : (
           <div></div>
         )}
-        <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+        <div style={{ marginTop: "35px", marginBottom: "35px" }}>
           <button
             className="button-style-blue"
             onClick={() => handleEditPatient()}

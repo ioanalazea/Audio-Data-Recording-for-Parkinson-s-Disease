@@ -51,7 +51,7 @@ export default function ViewPatients() {
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "100px",
+    marginTop: "50px",
   };
   const [isLoading, setIsLoading] = useState(false);
 
@@ -97,14 +97,13 @@ export default function ViewPatients() {
   return (
     <div className="homediv">
       <div className="header">
-        <HomeIcon
-          className="a"
-          color="primary"
-          fontSize="large"
-          sx={{ paddingLeft: "10px", color: "#FFFFFF" }}
+        <text
+          className="backText"
           onClick={handleGoToHome}
-        ></HomeIcon>
-        <div className="headerText" style={{ paddingTop: "17px" }}>
+        >
+          Back
+        </text>
+        <div className="headerText" style={{ paddingTop: "29px" }}>
           Your patients
         </div>
       </div>
