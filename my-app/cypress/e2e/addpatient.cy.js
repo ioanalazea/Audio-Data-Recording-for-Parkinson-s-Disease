@@ -1,13 +1,14 @@
-const patientName = 'Maria Popescu';
+const patientName = 'Andrei Popescu';
+const link = 'https://free214.cs.upt.ro:6060/';
 
-describe('Log in', () => {
+describe('Successfully add a patient', () => {
     it('passes', () => {
-      cy.visit('http://localhost:3000/');
+      cy.visit(link);
       // Get an input, type e-mail
-      cy.get('.MuiFormControl-root').first().type('lazeaioanabianca@gmail.com');
+      cy.get('.MuiFormControl-root').first().type('test@yahoo.com');
   
       // Get an input, type password
-      cy.get('.MuiFormControl-root').eq(1).type('ioana20');
+      cy.get('.MuiFormControl-root').eq(1).type('test2023');
   
       cy.get('.button-style-blk').click();
   
@@ -49,9 +50,9 @@ describe('Log in', () => {
 
       cy.wait(1000);
 
-      cy.contains('View patients').click();
+      cy.contains('See patients').click();
 
       cy.contains(patientName);
       
-    })
-  })
+    });
+  });
