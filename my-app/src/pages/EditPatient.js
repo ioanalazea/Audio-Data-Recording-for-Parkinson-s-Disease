@@ -226,7 +226,9 @@ export default function EditPatient() {
     weight: patientToEdit.value.weight,
     bmi: patientToEdit.value.bmi,
     diagnosis: patientToEdit.value.diagnosis,
-    symptoms: patientToEdit.value.symptoms,
+    symptoms: isEmpty(patientToEdit.value.symptoms)
+      ? []
+      : patientToEdit.value.symptoms,
     comorbidities: isEmpty(patientToEdit.value.comorbidities)
       ? []
       : patientToEdit.value.comorbidities,
@@ -237,7 +239,6 @@ export default function EditPatient() {
     therapeuticProc: patientToEdit.value.therapeuticProc,
     batchCount: patientToEdit.value.batchCount,
     forDeletion: patientToEdit.value.forDeletion,
-
   });
 
   const getSymptomsPatientEdit = () => {
@@ -251,15 +252,19 @@ export default function EditPatient() {
   };
   const handleValidation = () => {
     var message = "";
-    if (patient.fullName === "")
+    if (patient.fullName.trim() === "")
       message = "Please provide a full name for the patient!";
-    else if (!patient.telephone.match("[0-9]{10}"))
+    else if (
+      !patient.telephone.match(
+        "^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$"
+      )
+    )
       message = "Please provide a valid phone number!";
     else if (patient.age.length > 3 || /^\d+$/.test(patient.age) === false)
       message = "Please provide a valid age!";
-    else if (/^[+-]?\d+(\.\d+)?$/.test(patient.height) === false)
+    else if (/^\d+(\.\d+)?$/.test(patient.height) === false)
       message = "Please provide a valid height! Example: 170.5";
-    else if (/^[+-]?\d+(\.\d+)?$/.test(patient.weight) === false)
+    else if (/^\d+(\.\d+)?$/.test(patient.weight) === false)
       message = "Please provide a valid weight! Example: 65.3";
     else if (patient.sex === "") message = "Please provide patient's sex!";
     else if (patient.diagnosis === "")
@@ -285,6 +290,7 @@ export default function EditPatient() {
       patient.bmi = num.toString().slice(0, 5);
       if (patient.medication.length === 0) patient.medication = [""];
       if (patient.comorbidities.length === 0) patient.comorbidities = [""];
+      if (patient.symptoms.length === 0) patient.symptoms = [""];
 
       //here handle edit the patient
       set(
@@ -338,18 +344,7 @@ export default function EditPatient() {
         </Link>
         <div style={text2}>Edit patient</div>
       </div>
-      {message !== "" ? (
-        <div style={{ marginTop: "40px", marginLeft: "15px" }}>
-          <div
-            className="error"
-            style={{ fontFamily: "Metropolis", fontWeight: "700" }}
-          >
-            {message}
-          </div>
-        </div>
-      ) : (
-        <div></div>
-      )}
+
       <div style={containerStyle}>
         <div style={{ marginTop: "20px" }}>
           <label>Full name:</label>
@@ -380,7 +375,7 @@ export default function EditPatient() {
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
-              setPatient({ ...patient, age: e.target.value });
+              setPatient({ ...patient, age: e.target.value.trim() });
             }}
           />
         </div>
@@ -406,7 +401,7 @@ export default function EditPatient() {
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
-              setPatient({ ...patient, height: e.target.value });
+              setPatient({ ...patient, height: e.target.value.trim() });
             }}
           />
         </div>
@@ -417,7 +412,7 @@ export default function EditPatient() {
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
-              setPatient({ ...patient, weight: e.target.value });
+              setPatient({ ...patient, weight: e.target.value.trim() });
             }}
           />
         </div>
@@ -588,8 +583,19 @@ export default function EditPatient() {
             }}
           />
         </div>
-
-        <div style={{ marginTop: "20px", marginBottom: "10px" }}>
+        {message !== "" ? (
+          <div style={{ marginTop: "20px", marginLeft: "15px" }}>
+            <div
+              className="error"
+              style={{ fontFamily: "Metropolis", fontWeight: "700" }}
+            >
+              {message}
+            </div>
+          </div>
+        ) : (
+          <div></div>
+        )}
+        <div style={{ marginTop: "35px", marginBottom: "35px" }}>
           <button
             className="button-style-blue"
             onClick={() => handleEditPatient()}

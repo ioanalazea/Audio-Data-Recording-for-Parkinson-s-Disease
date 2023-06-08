@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 import { database } from "../firebase/config.js";
@@ -141,6 +142,19 @@ export default function AddPatient() {
     borderRadius: "5%",
     p: 4,
   };
+
+  const consentText = `I hereby provide my consent for the collecting and processing of my personal data by Parkinson Database Creator (hereinafter referred to as the "Data Controller"), in accordance with applicable data protection laws and regulations. 
+  The purpose of collecting and processing my personal data is as follows: research purposes for Parkinson's disease. 
+  I understand that my personal data may be stored, used, and transferred by the Data Controller or any third parties acting on their behalf, solely for the purposes specified above. 
+  The Data Controller shall take all reasonable steps to ensure the security and confidentiality of my personal data in accordance with applicable data protection laws.
+  I acknowledge that I have the right to access, rectify, erase, restrict, or object to the processing of my personal data as provided under applicable data protection laws. I also understand that I have the right to withdraw my consent at any time, without affecting the lawfulness of processing based on consent before its withdrawal.
+  This consent shall remain valid until the purposes for which the personal data were collected and processed have been fulfilled or until I withdraw consent.
+  `;
+
+  const [openInfo, setOpenInfo] = React.useState(false);
+  const handleOpenInfo = () => setOpenInfo(true);
+  const handleCloseInfo = () => setOpenInfo(false);
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -230,17 +244,22 @@ export default function AddPatient() {
     let value = Array.from(data, (option) => option.value);
     setPatient({ ...patient, symptoms: value });
   };
+
   const handleValidation = () => {
     var message = "";
-    if (patient.fullName === "")
+    if (patient.fullName.trim() === "")
       message = "Please provide a full name for the patient!";
-    else if (!patient.telephone.match("[0-9]{10}"))
+    else if (
+      !patient.telephone.match(
+        "^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$"
+      )
+    )
       message = "Please provide a valid phone number!";
     else if (patient.age.length > 3 || /^\d+$/.test(patient.age) === false)
       message = "Please provide a valid age!";
-    else if (/^[+-]?\d+(\.\d+)?$/.test(patient.height) === false)
+    else if (/^\d+(\.\d+)?$/.test(patient.height) === false)
       message = "Please provide a valid height! Example: 170.5";
-    else if (/^[+-]?\d+(\.\d+)?$/.test(patient.weight) === false)
+    else if (/^\d+(\.\d+)?$/.test(patient.weight) === false)
       message = "Please provide a valid weight! Example: 65.3";
     else if (patient.sex === "") message = "Please provide patient's sex!";
     else if (patient.diagnosis === "")
@@ -250,43 +269,59 @@ export default function AddPatient() {
     else return 1;
   };
 
-  const handleAddPatient = () => {
-    if (handleValidation() === 1) {
-      //encrypting details
-      patient.fullName = encryptStorage.encryptValue(patient.fullName);
-      patient.telephone = encryptStorage.encryptValue(patient.telephone);
-      patient.age = encryptStorage.encryptValue(patient.age);
+  const addPatient = () => {
+    //encrypting details
+    patient.fullName = encryptStorage.encryptValue(patient.fullName);
+    patient.telephone = encryptStorage.encryptValue(patient.telephone);
+    patient.age = encryptStorage.encryptValue(patient.age);
 
-      //calculating the BMI
-      const num =
-        (parseFloat(patient.weight) /
-          parseFloat(patient.height) /
-          parseFloat(patient.height)) *
-        10000;
-      patient.bmi = num.toString().slice(0, 5);
-      if (patient.comorbidities.length === 0) patient.comorbidities = [""];
-      //here handle adding the patient
-      push(
-        ref(database, "users/" + auth.currentUser.uid + "/patients"),
-        patient
-      )
-        .then(() => {
-          Swal.fire({
-            icon: "success",
-            title: "Patient added successfully!",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          navigate(-1);
-        })
-        .catch((error) => {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Something went wrong! " + error,
-            confirmButtonColor: "#219EBC",
-          });
+    //calculating the BMI
+    const num =
+      (parseFloat(patient.weight) /
+        parseFloat(patient.height) /
+        parseFloat(patient.height)) *
+      10000;
+    patient.bmi = num.toString().slice(0, 5);
+    if (patient.comorbidities.length === 0) patient.comorbidities = [""];
+    //here handle adding the patient
+    push(ref(database, "users/" + auth.currentUser.uid + "/patients"), patient)
+      .then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "Patient added successfully!",
+          showConfirmButton: false,
+          timer: 1500,
         });
+        navigate(-1);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong! " + error,
+          confirmButtonColor: "#219EBC",
+        });
+      });
+  };
+
+  const handleAddPatient = () => {
+    console.log(patient.diagnosis);
+    if (handleValidation() === 1) {
+      if (patient.diagnosis === "hc") {
+        Swal.fire({
+          title: "Consent to the Collecting and Processing of Personal Data",
+          text: consentText,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, I agree!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            addPatient();
+          }
+        });
+      } else addPatient();
     }
   };
 
@@ -298,19 +333,48 @@ export default function AddPatient() {
         </Link>
         <div style={text2}>Add patient</div>
       </div>
-      {message !== "" ? (
-        <div style={{ marginTop: "40px", marginLeft: "15px" }}>
-          <div
-            className="error"
-            style={{ fontFamily: "Metropolis", fontWeight: "700" }}
-          >
-            {message}
-          </div>
-        </div>
-      ) : (
-        <div></div>
-      )}
+
       <div style={containerStyle}>
+        <Button style={{ marginTop: "15px" }} onClick={handleOpenInfo}>
+          <InfoOutlinedIcon
+            sx={{ color: "#323031", fontSize: "25px" }}
+          ></InfoOutlinedIcon>
+          <div
+            style={{
+              fontFamily: "Metropolis",
+              fontWeight: "600",
+              fontSize: "14px",
+              color: "#323031",
+              marginLeft: "10px",
+            }}
+          >
+            Info
+          </div>
+        </Button>
+        <Modal open={openInfo} onClose={handleCloseInfo}>
+          <Box sx={styleModal}>
+            <Typography
+              variant="h6"
+              component="h2"
+              sx={{ fontFamily: "Metropolis", fontWeight: "600" }}
+            >
+              How do I add a patient?
+            </Typography>
+            <Typography sx={{ mt: 2, fontFamily: "Metropolis" }}>
+              To add a patient you have to fill in the given form. It is{" "}
+              <b>obligatory</b> that you input the{" "}
+              <b>
+                Full name, Telephone, Age, Sex, Height, Weight and Diagnosis
+              </b>
+              . The rest of the fields{" "}
+              <i>
+                (Symptoms, Comorbidities, Medication, Post-medication effects
+                and therapeutic procedures
+              </i>{" "}
+              can be left blank if it is not the case for your patient.
+            </Typography>
+          </Box>
+        </Modal>
         <div style={{ marginTop: "20px" }}>
           <label>Full name:</label>
           <TextField
@@ -337,7 +401,7 @@ export default function AddPatient() {
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
-              setPatient({ ...patient, age: e.target.value });
+              setPatient({ ...patient, age: e.target.value.trim() });
             }}
           />
         </div>
@@ -359,7 +423,7 @@ export default function AddPatient() {
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
-              setPatient({ ...patient, height: e.target.value });
+              setPatient({ ...patient, height: e.target.value.trim() });
             }}
           />
         </div>
@@ -369,7 +433,7 @@ export default function AddPatient() {
             style={styleTextField}
             InputProps={styleInputProps}
             onChange={(e) => {
-              setPatient({ ...patient, weight: e.target.value });
+              setPatient({ ...patient, weight: e.target.value.trim() });
             }}
           />
         </div>
@@ -533,8 +597,19 @@ export default function AddPatient() {
             }}
           />
         </div>
-
-        <div style={{ marginTop: "20px", marginBottom: "10px" }}>
+        {message !== "" ? (
+          <div style={{ marginTop: "20px", marginLeft: "15px" }}>
+            <div
+              className="error"
+              style={{ fontFamily: "Metropolis", fontWeight: "700" }}
+            >
+              {message}
+            </div>
+          </div>
+        ) : (
+          <div></div>
+        )}
+        <div style={{ marginTop: "35px", marginBottom: "35px" }}>
           <button
             className="button-style-blue"
             onClick={() => handleAddPatient()}

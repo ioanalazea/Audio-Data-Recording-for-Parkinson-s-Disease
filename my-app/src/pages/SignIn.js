@@ -13,11 +13,12 @@ import Swal from "sweetalert2";
 export default function SignIn() {
   const signInBackground = {
     backgroundImage: "url(" + Background + ")",
-    backgroundPosition: "center",
     backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundAttachment: "fixed",
+    minHeight: "100%",
     backgroundRepeat: "no-repeat",
-    width: "100vw",
-    height: "100vh",
+    backgroundPosition: "center center"
   };
 
   const title = {
@@ -53,6 +54,8 @@ export default function SignIn() {
 
   const navigate = useNavigate();
 
+  const adminUid = "E4B8xFLoBMPw2uXIZPz7iEphhXV2";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -65,7 +68,7 @@ export default function SignIn() {
         .then((userCredential) => {
           const user = userCredential.user;
           console.log("Signed in successfully!");
-          if (user.uid === "hR48GeIObJONCigXNt0oAbo58no2") navigate("/admin/dashboard");
+          if (user.uid === adminUid) navigate("/admin/dashboard");
           else navigate("/home");
         })
         .catch((error) => {
@@ -77,18 +80,14 @@ export default function SignIn() {
             setError("Wrong password!");
           else if (errorMessage === "Firebase: Error (auth/user-not-found).")
             setError("User not found!");
-          else if (errorMessage.includes("(auth/too-many-requests)"))
-          {
-            setError(
-              "Access temporarily disabled."
-            );
+          else if (errorMessage.includes("(auth/too-many-requests)")) {
+            setError("Access temporarily disabled.");
             Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later."
-            })
+              icon: "error",
+              title: "Oops...",
+              text: "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.",
+            });
           }
-            
 
           console.log(errorMessage);
         });
@@ -102,13 +101,16 @@ export default function SignIn() {
           align: "center",
           display: "flex",
           justifyContent: "center",
-          paddingTop: "230px",
+          paddingTop: "180px",
           paddingBottom: "10px",
         }}
       >
         <div>
-          <div style={title}> Parkinson's </div>
-          <div style={title}> Recording App </div>
+          <div style={title}> Parkinson </div>
+          <div style={title}>
+            {" "}
+            Database <br /> Creator{" "}
+          </div>
 
           <div style={signInHeader}> Sign in </div>
 
@@ -124,11 +126,11 @@ export default function SignIn() {
                   </InputAdornment>
                 ),
               }}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value.trim())}
             />
           </div>
 
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: "15px" }}>
             <label>Password:</label>
             <TextField
               type="password"
@@ -144,8 +146,7 @@ export default function SignIn() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-
-          <div style={{ marginTop: "15px", marginLeft: "5px" }}>
+          <div style={{ marginTop: "20px", marginLeft: "5px" }}>
             <Link
               underline="hover"
               style={{ color: "#323931", fontWeight: 700 }}
@@ -155,7 +156,7 @@ export default function SignIn() {
             </Link>
           </div>
 
-          <div style={{ marginTop: "25px" }}>
+          <div style={{ marginTop: "30px" }}>
             <button
               className="button-style-blk"
               to="/home"
@@ -178,7 +179,7 @@ export default function SignIn() {
               {error}
             </Typography>
           </div>
-          <div style={{ marginTop: "70px", marginLeft: "5px" }}>
+          <div style={{ marginTop: "40px", marginLeft: "5px" }}>
             <Link style={{ color: "#323931" }} href="/register">
               Don't have an account? <b>Register here.</b>
             </Link>

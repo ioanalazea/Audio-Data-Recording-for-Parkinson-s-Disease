@@ -14,6 +14,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import DvrIcon from "@mui/icons-material/Dvr";
+import PeopleIcon from '@mui/icons-material/People';
 import LogoutIcon from "@mui/icons-material/Logout";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import TopicIcon from "@mui/icons-material/Topic";
@@ -75,6 +76,10 @@ export default function AdminSidebar() {
       navigate("/admin/data", { replace: true });
   };
 
+  const handleGoToTokens = () => {
+    if (!location.pathname.includes("tokens"))
+      navigate("/admin/tokens", { replace: true });
+  };
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
@@ -98,6 +103,23 @@ export default function AdminSidebar() {
               },
             }}
           />
+        </ListItem>
+        <ListItem key={"Tokens"} disablePadding>
+          <ListItemButton onClick={handleGoToTokens}>
+            <ListItemIcon>
+              <PeopleIcon sx={{ color: "#A4A6B3" }} />
+            </ListItemIcon>
+            <ListItemText
+              primary={"Tokens"}
+              sx={{
+                color: "#A4A6B3",
+                ".MuiListItemText-primary": {
+                  fontFamily: "Metropolis",
+                  fontWeight: "600",
+                },
+              }}
+            />
+          </ListItemButton>
         </ListItem>
         <ListItem key={"All1"} disablePadding>
           <ListItemButton onClick={handleGoToAll}>
@@ -140,7 +162,7 @@ export default function AdminSidebar() {
               <TopicIcon sx={{ color: "#A4A6B3" }} />
             </ListItemIcon>
             <ListItemText
-              primary={"Patient data"}
+              primary={"Patients"}
               sx={{
                 color: "#A4A6B3",
                 ".MuiListItemText-primary": {
@@ -151,6 +173,8 @@ export default function AdminSidebar() {
             />
           </ListItemButton>
         </ListItem>
+
+        
       </List>
       <Divider />
       <List>

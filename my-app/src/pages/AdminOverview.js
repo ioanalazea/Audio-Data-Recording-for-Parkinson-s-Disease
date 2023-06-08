@@ -27,7 +27,7 @@ export default function AdminOverview() {
 
   const [recordings, setRecordings] = useState([]);
   const extractMonthRecName = (name) => {
-    const date = name.split("~")[3];
+    const date = name.split("~")[2];
     const month = date.split(".")[0];
     if (month === "01") return "Jan";
     else if (month === "02") return "Feb";
@@ -215,7 +215,16 @@ export default function AdminOverview() {
   }, []);
 
   return (
-    <div style={{ background: "#FAFAFA", width: "100vw", height: "100vh" }}>
+    <div
+      style={{
+        background: "#FAFAFA",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        width: "100%",
+        height: "100%",
+        overflow: "auto",
+      }}
+    >
       <AdminSidebar></AdminSidebar>
       <div style={title}> Overview </div>
 
