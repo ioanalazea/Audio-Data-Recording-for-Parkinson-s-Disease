@@ -1,6 +1,6 @@
 # Parkinson Database Creator
 
-The Parkinson Database Creator can be accessed on this [link](https://free214.cs.upt.ro:6060/). Make sure you follow the steps written in this [tutorial](https://turquoise-hanny-68.tiiny.site/).
+The Parkinson Database Creator can be accessed on this [link](https://free214.cs.upt.ro:6060/). Make sure you follow the steps written in this [tutorial](https://aquamarine-karlen-77.tiiny.site/).
 
 This README file provides an overview and instructions for setting up and running the Parkinson Database Creator app using Yarn package manager.
 
