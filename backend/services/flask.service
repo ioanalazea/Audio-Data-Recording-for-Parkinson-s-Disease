@@ -1,0 +1,11 @@
+[Unit]
+Description=Gunicorn instance to serve Flask
+After=network.target
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/home/sard/hyperion_rest
+Environment="PATH=/home/sard/hyperion_rest/env/bin"
+ExecStart=/home/sard/hyperion_rest/env/bin/gunicorn --bind unix:/home/sard/hyperion_rest/request.sock wsgi:app
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,10 @@
+[Unit]
+Description=ExpressJS instance to serve the React app
+After=network.target
+[Service]
+User=root
+Group=www-data
+WorkingDirectory=/home/sard/express_js_app
+ExecStart=node /home/sard/express_js_app/server.js
+[Install]
+WantedBy=multi-user.target
