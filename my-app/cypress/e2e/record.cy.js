@@ -1,7 +1,7 @@
 const patientName = 'Andrei Popescu';
 const link = 'https://free214.cs.upt.ro:6060/';
 
-describe('Successfully edit a patient', () => {
+describe('Successfully record and play an audio', () => {
     it('passes', () => {
       cy.visit(link);
       // Get an input, type e-mail
