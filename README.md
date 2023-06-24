@@ -76,3 +76,8 @@ This command generates an optimized production build of the app in the build/ fo
 - [React Documentation](https://legacy.reactjs.org/docs/getting-started.html)
 - [Create React App Documentation](https://create-react-app.dev/docs/getting-started/)
 - [Making a Progressive Web App](https://create-react-app.dev/docs/making-a-progressive-web-app/)
+
+## /notebooks
+In the /notebooks folder you can find Python notebooks that can be run in Google Collab.
+## /backend
+The folder contains the files that are used for the backend server to host the app.
