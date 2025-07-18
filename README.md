@@ -81,3 +81,10 @@ This command generates an optimized production build of the app in the build/ fo
 In the /notebooks folder you can find Python notebooks that can be run in Google Collab.
 ## /backend
 The folder contains the files that are used for the backend server to host the app.
+
+<img width="888" height="539" alt="image" src="https://github.com/user-attachments/assets/c081d967-29bb-4d8c-a6c7-d42a10b33628" />
+<img width="1110" height="715" alt="image" src="https://github.com/user-attachments/assets/d9a28132-20a8-4de5-97fc-3ccdedcde362" />
+<img width="1215" height="416" alt="image" src="https://github.com/user-attachments/assets/c5600523-2ecb-4fd0-b81f-d9d5d32d321c" />
+<img width="519" height="121" alt="image" src="https://github.com/user-attachments/assets/ce14aff6-02ce-48eb-8027-2458a85dcf76" />
+
+
